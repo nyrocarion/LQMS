@@ -24,6 +24,8 @@ This is a web application developed during a class at DHBW Mannheim. The project
 
 # Value Proposition Canvas
 
+Das hier würde ich auf jeden Fall auf Deutsch machen
+
 ## Value Map
 
 - Gain creators (how the product / service creates customer gain)
