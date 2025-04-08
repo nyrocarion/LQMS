@@ -10,6 +10,16 @@ Must-Haves:
 - Lernmanagement
 - Loginmaske
 
+- Datenbankanbindung
+    (MySQL, Romote oder lokal?)
+
+- Entitäten
+    - Unit
+    - User
+
+- API mit Extern - Kommunikation
+    - http://numbersapi.com/4/8/date
+
 Optional:
 - Landingpage vor Login
 - Farbkodierung
