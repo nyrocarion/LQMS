@@ -1,5 +1,3 @@
-Klar, hier ist deine Übersetzung auf Deutsch:
-
 ---
 
 # DH-WebAppProject  
@@ -33,5 +31,3 @@ Das hier würde ich auf jeden Fall auf Deutsch machen:
 - **Schmerzen** (Hindernisse, Risiken oder negative Erfahrungen im Zusammenhang mit den Aufgaben)
 
 ---
-
-Wenn du magst, kann ich dir auch helfen, das Value Proposition Canvas konkret für dein Projekt auszufüllen.
