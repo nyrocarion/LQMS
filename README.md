@@ -1,29 +1,33 @@
-# DH-WebAppProject
-This is a web application developed during a class at DHBW Mannheim. The project is in German.
+---
 
-# Commit messages conventions
+# DH-WebAppProject  
+Dies ist eine Webanwendung, die im Rahmen einer Lehrveranstaltung an der DHBW Mannheim entwickelt wurde. Das Projekt ist auf Deutsch.
 
-- feat: A new feature
-- fix: A bug fix
-- docs: Documentation only changes
-- style: Changes that do not affect the meaning of the code (white-space,formatting, missing semi-colons, etc)
-- refactor: A code change that neither fixes a bug nor adds a feature
-- perf: A code change that improves performance
-- test: Adding missing tests
-- chore: Changes to the build process or auxiliary tools and libraries such as documentation generation
+# Konventionen für Commit-Nachrichten
+
+- `feat`: Ein neues Feature (Funktion)
+- `fix`: Ein Bugfix (Fehlerbehebung)
+- `docs`: Änderungen ausschließlich an der Dokumentation
+- `style`: Änderungen, die keine Auswirkungen auf die Funktionalität des Codes haben (z. B. Leerzeichen, Formatierung, fehlende Semikolons usw.)
+- `refactor`: Änderungen am Code, die weder Fehler beheben noch neue Features hinzufügen
+- `perf`: Änderungen am Code zur Leistungsverbesserung
+- `test`: Hinzufügen fehlender Tests
+- `chore`: Änderungen am Build-Prozess oder an unterstützenden Tools und Bibliotheken (z. B. zur Dokumentationserstellung)
 
 # Value Proposition Canvas
 
-Das hier würde ich auf jeden Fall auf Deutsch machen
+Das hier würde ich auf jeden Fall auf Deutsch machen:
 
-## Value Map
+## Value Map (Wertangebot)
 
-- Gain creators (how the product / service creates customer gain)
-- Pain reliever (how the product / service allevaites customer pain)
-- Product + Services (product / services that gets the customers' job done)
+- **Nutzenstifter** (wie das Produkt bzw. der Service dem Kunden einen Mehrwert bietet)
+- **Schmerzlinderer** (wie das Produkt bzw. der Service die Probleme oder Schmerzen des Kunden lindert)
+- **Produkte und Services** (Produkte/Dienstleistungen, die dem Kunden helfen, seine Aufgaben zu erledigen)
 
-## Customer Profile
+## Kundenprofil
 
-- Gains (what customer wants to achieve)
-- Jobs to be done (tasks, problems, needs of the customer)
-- Pains (?)
+- **Gewinne** (was der Kunde erreichen will / sich erhofft)
+- **Zu erledigende Aufgaben** (Aufgaben, Probleme, Bedürfnisse des Kunden)
+- **Schmerzen** (Hindernisse, Risiken oder negative Erfahrungen im Zusammenhang mit den Aufgaben)
+
+---
