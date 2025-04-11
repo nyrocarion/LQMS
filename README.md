@@ -2,6 +2,7 @@
 
 # DH-WebAppProject  
 Dies ist eine Webanwendung, die im Rahmen einer Lehrveranstaltung an der DHBW Mannheim entwickelt wurde. Das Projekt ist auf Deutsch.
+edit
 
 # Konventionen für Commit-Nachrichten
 
