@@ -23,3 +23,7 @@ Must-Haves:
 Optional:
 - Landingpage vor Login
 - Farbkodierung
+- AI Chatbot als Lernberater
+    - Schwierigkeiten bein Konzentration
+    - Schlafen
+    ...
