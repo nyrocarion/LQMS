@@ -48,4 +48,4 @@ $RECYCLE.BIN/
 
 # Others
 *.md
-*.code.workspace
+*.code-workspace
