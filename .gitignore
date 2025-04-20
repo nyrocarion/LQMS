@@ -49,3 +49,4 @@ $RECYCLE.BIN/
 # Others
 *.md
 *.code-workspace
+*.env
