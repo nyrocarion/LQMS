@@ -1,6 +1,6 @@
 ---
 
-# Learn-Quality-Management-System
+# Lern-Qualitäts-Management-System
 <Kurze Beschreibung hier einfuegen bei Gelegenheit>
 
 # Konventionen für Commit-Nachrichten
