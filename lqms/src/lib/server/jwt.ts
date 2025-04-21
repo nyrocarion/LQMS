@@ -1,4 +1,3 @@
-// $lib/server/jwt.ts
 import jwt from 'jsonwebtoken';
 import { JWT_SECRET } from '$env/static/private';
 
@@ -9,7 +8,7 @@ interface UserPayload {
 }
 
 export function createJWT(payload: UserPayload): string {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: '8h' }); // Das Token ist für 1 Stunde gültig
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: '8h' });
 }
 
 export function verifyJWT(token: string): UserPayload | null {

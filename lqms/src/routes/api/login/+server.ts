@@ -3,11 +3,11 @@ import { json, type RequestHandler } from '@sveltejs/kit';
 import { db } from '$lib/server/database';
 import bcrypt from 'bcrypt';
 import { z } from 'zod';
-import { createJWT } from '$lib/server/jwt'; // Importiere die JWT-Funktion
+import { createJWT } from '$lib/server/jwt';
 
 const loginSchema = z.object({
   identifier: z.string().min(2), // Kann Benutzername oder E-Mail sein
-  password: z.string().min(8),
+  password: z.string().min(10),
 });
 
 export const POST: RequestHandler = async ({ request, cookies }) => {
@@ -16,7 +16,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 
     const validationResult = loginSchema.safeParse(body);
     if (!validationResult.success) {
-      return json({ message: 'Ungültige Anmeldedaten', errors: validationResult.error.issues }, { status: 400 });
+      return json({ message: 'UngÃ¼ltige Anmeldedaten', errors: validationResult.error.issues }, { status: 400 });
     }
 
     const { identifier, password } = validationResult.data;
@@ -32,21 +32,20 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
     const user = userByUsername || userByEmail;
 
     if (!user) {
-      return json({ message: 'Ungültige Anmeldedaten' }, { status: 401 }); // 401 Unauthorized
+      return json({ message: 'UngÃ¼ltige Anmeldedaten' }, { status: 401 }); // 401 Unauthorized
     }
 
     // Vergleiche eingegebenes Passwort mit gehashten Passwort aus DB
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
-      return json({ message: 'Ungültige Anmeldedaten' }, { status: 401 }); // 401 Unauthorized
+      return json({ message: 'UngÃ¼ltige Anmeldedaten' }, { status: 401 }); // 401 Unauthorized
     }
 
     // Erfolgreiche Anmeldung: JWT erstellen und als Cookie senden
-    const payload: { id: number; username: string; email: string } = {
+    const payload: { id: number; username: string;} = {
       id: user.id,
       username: user.username,
-      email: user.email,
     };
     const token = createJWT(payload);
 
@@ -55,7 +54,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
       httpOnly: true,
       path: '/',
       maxAge: 60 * 60 * 8, // 8 Stunden
-      secure: process.env.NODE_ENV === 'production', // Nur über HTTPS senden in Produktion
+      secure: process.env.NODE_ENV === 'production', // Nur Ã¼ber HTTPS senden in Produktion
     });
 
     return json({ message: 'Anmeldung erfolgreich', user: { id: user.id, username: user.username, email: user.email } }, { status: 200 });
