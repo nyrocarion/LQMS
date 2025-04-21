@@ -16,7 +16,7 @@ Dies ist eine Webanwendung, die im Rahmen einer Lehrveranstaltung an der DHBW Ma
 
 # Value Proposition Canvas
 
-Das hier würde ich auf jeden Fall auf Deutsch machen:
+![alt text](VPC.png)
 
 ## Value Map (Wertangebot)
 

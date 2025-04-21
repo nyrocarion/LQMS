@@ -54,7 +54,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
       cookies.set('authToken', token, {
         httpOnly: true,
         path: '/',
-        maxAge: 60 * 60, // 1 Stunde
+        maxAge: 60 * 60 * 8,
         secure: process.env.NODE_ENV === 'production',
       });
 

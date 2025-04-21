@@ -89,14 +89,13 @@
         const data = await response.json();
 
         if (response.ok) {
-          console.log('Registrierung erfolgreich:', data);
-          registrationSuccessMessage = 'Registrierung erfolgreich!'; // Erfolgsmeldung setzen
+          registrationSuccessMessage = 'Registrierung erfolgreich!';
           // Optional: Nach kurzer Zeit die Nachricht wieder ausblenden
           setTimeout(() => {
             closeAuthModal();
           }, 1500);
         } else {
-          console.error('Registrierung fehlgeschlagen:', data);
+          console.error('Registrierung fehlgeschlagen');
           registerError.general = data.message || 'Registrierung fehlgeschlagen.';
           if (data.errors) {
             data.errors.forEach((error) => {
