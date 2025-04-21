@@ -1,7 +1,7 @@
 ---
 
-# DH-WebAppProject  
-Dies ist eine Webanwendung, die im Rahmen einer Lehrveranstaltung an der DHBW Mannheim entwickelt wurde. Das Projekt ist auf Deutsch.
+# Learn-Quality-Management-System
+<Kurze Beschreibung hier einfuegen bei Gelegenheit>
 
 # Konventionen für Commit-Nachrichten
 
