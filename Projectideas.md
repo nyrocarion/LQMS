@@ -1,4 +1,4 @@
-Must-Haves:
+Features:
 - Tracking von Wissensfortschritt bezogen auf einzelne VLs
 -> (Notizen durchgearbeitet, PP durchgearbeitet, Script durchgearbeitet, Übungen gemacht, Verstanden)
 
@@ -11,7 +11,7 @@ Must-Haves:
 - Loginmaske
 
 - Datenbankanbindung
-    (MySQL, Romote oder lokal?)
+    MySQL
 
 - Entitäten
     - Unit
@@ -20,10 +20,5 @@ Must-Haves:
 - API mit Extern - Kommunikation
     - http://numbersapi.com/4/8/date
 
-Optional:
 - Landingpage vor Login
 - Farbkodierung
-- AI Chatbot als Lernberater
-    - Schwierigkeiten bein Konzentration
-    - Schlafen
-    ...
