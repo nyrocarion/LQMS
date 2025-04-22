@@ -30,4 +30,41 @@
 - **Zu erledigende Aufgaben** (Aufgaben, Probleme, Bedürfnisse des Kunden)
 - **Schmerzen** (Hindernisse, Risiken oder negative Erfahrungen im Zusammenhang mit den Aufgaben)
 
----
+# Aufbau Ideen Sammlung
+
+```mermaid
+flowchart 
+  subgraph Tabs
+    direction LR
+    subgraph Vorlesungsplan
+        6[VL-Plan API anbinden]
+    end
+    subgraph Notizen
+        7[pro Modul / pro VL erlaubt]
+        8[automatisch die Vls den Modulen zuordnen]
+    end
+    subgraph Checkup
+        9[Checklisten]
+        10[Metriken]
+    end
+    subgraph Dashboard
+        11[Erste Seite nach Dashboard]
+        12[Übersichsmetriken, wie<br>Heatmap, Konzentrationskurve,<br>Balkendiagramm für h, Kuchendiagramm für Progress]
+        13[Numbers API anbinden]
+    end 
+    subgraph Session?
+        14[Start / End Session Knopf im Eck?]
+        15[Stop Timer, Pausen möglich]
+        16[Danach Review, Manuelles Review aber auch möglich]
+        17[Nach der Review wieder auf die Dashboard Page]
+    end
+  end
+  subgraph Landingpage
+    direction LR
+    1[Login / Register System]
+    2[Allgemeine Infos über die Anwendung]
+    3[Platzhalter Bilder]
+    4[Starte Jetzt Knopf<br>-> zum Anmelden oder <br>direkt auf Dashboard]
+    5["Meme API?"]
+  end
+```
