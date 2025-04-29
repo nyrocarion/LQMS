@@ -10,7 +10,7 @@ Test commit für Marco 2
 - `feat`: Ein neues Feature (Funktion)
 - `fix`: Ein Bugfix (Fehlerbehebung)
 - `docs`: Änderungen ausschließlich an der Dokumentation
-- `style`: Änderungen, die keine Auswirkungen auf die Funktionalität des Codes haben (z. B. Leerzeichen, Formatierung, fehlende Semikolons usw.)
+- `style`: Änderungen, die keine Auswirkungen auf die Funktionalität des Codes haben (z. B. Leerzeichen, Formatierung, fehlende Semikolas usw.)
 - `refactor`: Änderungen am Code, die weder Fehler beheben noch neue Features hinzufügen
 - `perf`: Änderungen am Code zur Leistungsverbesserung
 - `test`: Hinzufügen fehlender Tests
