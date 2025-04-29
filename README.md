@@ -48,7 +48,7 @@ flowchart
         10[Metriken]
     end
     subgraph Dashboard
-        11[Erste Seite nach Dashboard]
+        11[Erste Seite nach Landingpage]
         12[Übersichsmetriken, wie<br>Heatmap, Konzentrationskurve,<br>Balkendiagramm für h, Kuchendiagramm für Progress]
         13[Numbers API anbinden]
     end 
