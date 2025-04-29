@@ -3,6 +3,8 @@
 # Lern-Qualitäts-Management-System
 <Kurze Beschreibung hier einfuegen bei Gelegenheit>
 
+Test commit für Marco
+
 # Konventionen für Commit-Nachrichten
 
 - `feat`: Ein neues Feature (Funktion)
