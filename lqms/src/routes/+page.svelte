@@ -89,13 +89,14 @@
         const data = await response.json();
 
         if (response.ok) {
-          registrationSuccessMessage = 'Registrierung erfolgreich!';
+          console.log('Registrierung erfolgreich:', data);
+          registrationSuccessMessage = 'Registrierung erfolgreich!'; // Erfolgsmeldung setzen
           // Optional: Nach kurzer Zeit die Nachricht wieder ausblenden
           setTimeout(() => {
             closeAuthModal();
           }, 1500);
         } else {
-          console.error('Registrierung fehlgeschlagen');
+          console.error('Registrierung fehlgeschlagen:', data);
           registerError.general = data.message || 'Registrierung fehlgeschlagen.';
           if (data.errors) {
             data.errors.forEach((error) => {
@@ -111,12 +112,82 @@
       }
     }
   }
-  
+  async function fetchNumbersFact() {
+        var today = new Date();
+        var day = String(today.getDate()).padStart(2, '0');
+        var month = String(today.getMonth() + 1).padStart(2, '0');
+        const urlParam = month + "/" + day;
+
+        try {
+            const response = await fetch("http://numbersapi.com/" + urlParam + "/date?json");
+            const data = await response.json();
+            // data hat ungefähr den Aufbau
+            // {
+            // "text": "Some sort of relevant info",
+            // "year": 1882,
+            // "number": 120,
+            // "found": true,
+            // "type": "date"
+            // }
+            if (data.found) {
+                document.getElementById("numbersfact").innerHTML = data.text;
+            } else {
+                console.error("Numbers API Error at API side");
+            }
+
+        } catch (error) {
+            console.error("Error getting numbersapi data: ", error);
+        }
+    }
+    fetchNumbersFact();
+
+    async function getMeme() {
+        try {
+            const response = await fetch("https://api.imgflip.com/caption_image", {
+                method: "POST",
+                headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: new URLSearchParams({
+                    template_id: "114585149",
+                    text0: "Ich wenn die Meme API langsam lädt",
+                    text1: "",
+                    username: "webappproject",
+                    password: "webappproject",
+            })
+            });
+            const data = await response.json();
+            // data hat ungefähr den Aufbau:
+            // {
+            // "success": true,
+            // "data": {
+            //     "url": "https://i.imgflip.com/abc.jpg",
+            //     "page_url": "https://imgflip.com/i/abc"
+            //      }
+            // }
+            // Bzw im Fehlerfall:
+            // {
+            // "success": false,
+            // "error_message": "error msg"
+            // }
+            if (data.success) {
+                document.getElementById("meme").src = data.data.url;
+            } else {
+                console.error("Meme API Error: ", data.error_message);
+            }
+        } catch (error) {
+            console.error("Error getting the meme:", error);
+        };
+    };
+    getMeme();
 </script>
 
 <div class="hero">
   <h1>Optimiere dein Studium mit dem Lernqualitätsmanagementsystem</h1>
   <p>Verbessere deinen Lernprozess, behalte den Überblick und arbeite effizient mit deinen Kommilitonen.</p>
+  <img id = "meme" style="width: 200px" src=""/>
+  <span id="numbersfact">Drücke auf den Knopf um einen coolen Fakt über den heutigen Tag zu erfahren!</span>
+  <button class="cta" on:click={() => fetchNumbersFact()}>Random Fact zum heutigen Tag</button>
   <button class="cta">Mehr erfahren</button>
 
   <div class="auth-links">
@@ -128,6 +199,8 @@
       Anmelden
     </button>
   </div>
+
+
 </div>
 
 {#if showAuthModal}
