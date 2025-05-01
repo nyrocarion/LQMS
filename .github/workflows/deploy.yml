@@ -1,24 +1,26 @@
-name: Deploy via SSH
+name: 🚀 Deploy to Server
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: SSH and pull project
-      uses: appleboy/ssh-action@v1.0.0
+    - name: 📦 Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: 🔐 Setup SSH
+      uses: webfactory/ssh-agent@v0.9.0
       with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: |
-          cd /home/
+        ssh-private-key: ${{ secrets.DEPLOY_KEY }}
+
+    - name: 🚀 Deploy via SSH
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} << 'EOF'
+          cd /var/www/lqms
           git pull origin main
-          # optional:
-          # npm install
-          # npm run build
+          # Optional: npm install && npm run build
+        EOF
