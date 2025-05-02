@@ -11,6 +11,8 @@ jobs:
     steps:
     - name: 📦 Checkout Repository
       uses: actions/checkout@v3
+      with:
+        path: /var/www/lqms
 
     - name: 🔐 Setup SSH
       uses: webfactory/ssh-agent@v0.9.0
