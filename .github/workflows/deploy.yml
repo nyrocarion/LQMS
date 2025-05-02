@@ -23,7 +23,7 @@ jobs:
 
     - name: 🚀 Deploy via SSH
       run: |
-        ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_ed25519 ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
+        ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
           cd /var/www/lqms
           
           # Wenn das Repository nicht existiert, initialisiere es
