@@ -25,9 +25,8 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} << 'EOF'
           cd /var/www
-          rm -rf lqms
-          git clone https://github.com/${{ github.repository }} lqms
-          cd lqms
           git pull origin main
-          # Optional: npm install && npm run build
+          cd /var/www/lqms
+          npm install
+          npm run build
         EOF
