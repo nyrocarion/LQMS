@@ -4,7 +4,6 @@ import { JWT_SECRET } from '$env/static/private';
 interface UserPayload {
   id: number;
   username: string;
-  // Weitere Details?
 }
 
 export function createJWT(payload: UserPayload): string {
