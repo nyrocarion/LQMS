@@ -112,34 +112,6 @@
       }
     }
   }
-  async function fetchNumbersFact() {
-        var today = new Date();
-        var day = String(today.getDate()).padStart(2, '0');
-        var month = String(today.getMonth() + 1).padStart(2, '0');
-        const urlParam = month + "/" + day;
-
-        try {
-            const response = await fetch("http://numbersapi.com/" + urlParam + "/date?json");
-            const data = await response.json();
-            // data hat ungefähr den Aufbau
-            // {
-            // "text": "Some sort of relevant info",
-            // "year": 1882,
-            // "number": 120,
-            // "found": true,
-            // "type": "date"
-            // }
-            if (data.found) {
-                document.getElementById("numbersfact").innerHTML = data.text;
-            } else {
-                console.error("Numbers API Error at API side");
-            }
-
-        } catch (error) {
-            console.error("Error getting numbersapi data: ", error);
-        }
-    }
-    fetchNumbersFact();
 
     async function getMeme() {
         try {
@@ -157,19 +129,6 @@
             })
             });
             const data = await response.json();
-            // data hat ungefähr den Aufbau:
-            // {
-            // "success": true,
-            // "data": {
-            //     "url": "https://i.imgflip.com/abc.jpg",
-            //     "page_url": "https://imgflip.com/i/abc"
-            //      }
-            // }
-            // Bzw im Fehlerfall:
-            // {
-            // "success": false,
-            // "error_message": "error msg"
-            // }
             if (data.success) {
                 document.getElementById("meme").src = data.data.url;
             } else {
@@ -186,8 +145,6 @@
   <h1>Optimiere dein Studium mit dem Lernqualitätsmanagementsystem</h1>
   <p>Verbessere deinen Lernprozess, behalte den Überblick und arbeite effizient mit deinen Kommilitonen.</p>
   <img id = "meme" style="width: 200px" src=""/>
-  <span id="numbersfact">Drücke auf den Knopf um einen coolen Fakt über den heutigen Tag zu erfahren!</span>
-  <button class="cta" on:click={() => fetchNumbersFact()}>Random Fact zum heutigen Tag</button>
   <button class="cta">Mehr erfahren</button>
 
   <div class="auth-links">
