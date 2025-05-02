@@ -19,7 +19,7 @@ jobs:
 
     - name: Git safe directory
       run: |
-        ssh ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} "git config --global --add safe.directory /var/www/lqms"
+        ssh -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} "git config --global --add safe.directory /var/www/lqms"
 
     - name: 🚀 Deploy via SSH
       run: |
