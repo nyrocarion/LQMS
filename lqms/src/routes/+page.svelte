@@ -175,7 +175,7 @@
   <p>Verbessere deinen Lernprozess, behalte den Überblick und arbeite effizient mit deinen Kommilitonen.</p>
   <img id = "meme" style="width: 200px" src=""/>
   <button class="cta">Mehr erfahren</button>
-
+  <span id="dateFact">...</span>
   <div class="auth-links">
     <button class="register-button" on:click={() => openAuthModal('register')}>
       Registrieren
