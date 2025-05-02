@@ -1,9 +1,6 @@
 ---
 
 # Lern-Qualitäts-Management-System
-<Kurze Beschreibung hier einfuegen bei Gelegenheit>
-
-Test commit für Marco 3
 
 # Konventionen für Commit-Nachrichten
 
