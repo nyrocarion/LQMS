@@ -17,10 +17,21 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.DEPLOY_KEY }}
 
+    - name: Git safe directory
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} "git config --global --add safe.directory /var/www/lqms"
+
     - name: 🚀 Deploy via SSH
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} << 'EOF'
           cd /var/www/lqms
+          
+          # Wenn das Repository nicht existiert, initialisiere es
+          if [ ! -d ".git" ]; then
+            git init
+            git remote add origin https://github.com/DeinBenutzername/LQMS.git
+          fi
           git pull origin main
-          # Optional: npm install && npm run build
+          npm install
+          npm run build
         EOF
