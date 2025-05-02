@@ -29,7 +29,7 @@ jobs:
           # Wenn das Repository nicht existiert, initialisiere es
           if [ ! -d ".git" ]; then
             git init
-            git remote add origin https://github.com/DeinBenutzername/LQMS.git
+            git remote add origin https://github.com/nyrocarion/LQMS.git
           fi
           git pull origin main
           npm install
