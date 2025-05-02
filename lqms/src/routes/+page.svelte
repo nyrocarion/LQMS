@@ -113,6 +113,35 @@
     }
   }
 
+    async function fetchDateFact() {
+        var today = new Date();
+        var day = String(today.getDate()).padStart(2, '0');
+        var month = String(today.getMonth() + 1).padStart(2, '0'); 
+
+        try {
+            const response = await fetch("https://numbersapi.p.rapidapi.com/"+month+"/"+day+"/date?json=true",
+                {
+                    method: 'GET',
+                    headers: {
+                        'x-rapidapi-key': 'b829319507msh5e68efc7f9de9e3p18add8jsn6c2dcebab1be',
+		                'x-rapidapi-host': 'numbersapi.p.rapidapi.com'
+                    }
+                }
+            );
+            const data = await response.json(); 
+            console.log(data);
+            if (data.found) {
+                document.getElementById("dateFact").innerHTML = data.text;
+            } else {
+                console.error("fact API Error at API side");
+            }
+            
+        } catch (error) {
+            console.error("Error getting fact data: ", error);
+        }
+    }
+    fetchDateFact();
+
     async function getMeme() {
         try {
             const response = await fetch("https://api.imgflip.com/caption_image", {
