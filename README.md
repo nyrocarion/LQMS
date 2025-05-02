@@ -67,3 +67,47 @@ flowchart
     5["Meme API?"]
   end
 ```
+
+# Entitäten-Übersicht
+
+```mermaid
+classDiagram
+direction LR
+    class course {
+	    - id int
+	    - userid int
+	    - module String
+	    - status byte # 0-waiting, 1-doing, 2-done
+	    - displayname String
+	    - date timestamp
+	    - completed boolean
+        - presentationd boolean
+        - scriptd boolean
+        - notesd boolean
+        - exercised boolean
+        - exercisesheet boolean # wenn es eins gibt
+        - exercisesheetd boolean
+    }
+
+    class user {
+	    - id int
+	    - name String
+	    - email String
+	    - password String
+	    - streak short
+        - cookies boolean #True = erlaubt
+    }
+
+    class session {
+	    - id int
+	    - courses Array #Bearbeitete Module ids
+	    - time int #Dauer
+	    - date timestamp #Startpunkt
+	    - efficiency byte
+	    - motivated byte
+	    - completedby int # user id
+    }
+
+    course --> user
+    course --> session
+```
