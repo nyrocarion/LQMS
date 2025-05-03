@@ -34,6 +34,12 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
     // Der Benutzer ist entweder der Name oder die Email.
     const user = userByUsername || userByEmail;
 
+    console.log('User by username:', userByUsername);
+    console.log('User by email:', userByEmail);
+    console.log('Final user:', user);
+    console.log('Password match:', await bcrypt.compare(password, user?.password || ''));
+
+
     /** Wenn die Anmeldung fehlschlägt, weil der Benutzer weder durch Email noch seinen Namen gefunden wurde. */
     if (!user) {
       return json({ message: 'Ungültige Anmeldedaten' }, { status: 401 });
