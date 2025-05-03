@@ -111,3 +111,33 @@ direction LR
     course --> user
     course --> session
 ```
+
+# Login Prozess Diagramm
+```mermaid
+---
+title: Login Prozess
+---
+
+
+sequenceDiagram
+    actor Nutzer
+    box Frontend
+    participant Svelte Router
+    participant Startseite
+    end
+    box Backend
+    participant Interne Login API
+    end
+    box Datenbank
+    participant MySQL Datenbank
+    end
+    Nutzer->>+Svelte Router:Login Anfrage
+    Svelte Router->>+Startseite:Login Anfrage
+    Startseite->>+Interne Login API:Login Anfrage
+    Interne Login API->>+MySQL Datenbank:Login Anfrage
+    MySQL Datenbank->>MySQL Datenbank:Anfrage prüfen
+    MySQL Datenbank-->>-Interne Login API:Login Antwort
+    Interne Login API-->>-Startseite:Login Antwort
+    Startseite-->>-Svelte Router:Login Antwort
+    Svelte Router-->>-Nutzer:Login Antwort
+```
