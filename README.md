@@ -112,12 +112,9 @@ direction LR
     course --> session
 ```
 
-# Login Prozess Diagramm
-```mermaid
----
-title: Login Prozess
----
+# Login Prozess Diagram
 
+```mermaid
 
 sequenceDiagram
     actor Nutzer
