@@ -113,33 +113,56 @@
     }
   }
 
-    async function fetchDateFact() {
-        var today = new Date();
-        var day = String(today.getDate()).padStart(2, '0');
-        var month = String(today.getMonth() + 1).padStart(2, '0'); 
+  async function submitLoginForm() {
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
 
-        try {
-            const response = await fetch("https://numbersapi.p.rapidapi.com/"+month+"/"+day+"/date?json=true",
-                {
-                    method: 'GET',
-                    headers: {
-                        'x-rapidapi-key': 'b829319507msh5e68efc7f9de9e3p18add8jsn6c2dcebab1be',
-		                'x-rapidapi-host': 'numbersapi.p.rapidapi.com'
-                    }
-                }
-            );
-            const data = await response.json(); 
-            console.log(data);
-            if (data.found) {
-                document.getElementById("dateFact").innerHTML = data.text;
-            } else {
-                console.error("fact API Error at API side");
-            }
-            
-        } catch (error) {
-            console.error("Error getting fact data: ", error);
-        }
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log('Login erfolgreich:', data);
+        // Weiterleitung zum Dashboard
+        window.location.href = '/lqms/dashboard';
+      } else {
+        console.error('Login fehlgeschlagen:', data.message);
+        // Zeige ggf. Fehlermeldung im UI
+      }
+    } catch (error) {
+      console.error('Fehler beim Login:', error);
     }
+  }
+
+  async function fetchDateFact() {
+      var today = new Date();
+      var day = String(today.getDate()).padStart(2, '0');
+      var month = String(today.getMonth() + 1).padStart(2, '0'); 
+      try {
+          const response = await fetch("https://numbersapi.p.rapidapi.com/"+month+"/"+day+"/date?json=true",
+              {
+                  method: 'GET',
+                  headers: {
+                      'x-rapidapi-key': 'b829319507msh5e68efc7f9de9e3p18add8jsn6c2dcebab1be',
+	                'x-rapidapi-host': 'numbersapi.p.rapidapi.com'
+                  }
+              }
+          );
+          const data = await response.json(); 
+          console.log(data);
+          if (data.found) {
+              document.getElementById("dateFact").innerHTML = data.text;
+          } else {
+              console.error("fact API Error at API side");
+          }
+          
+      } catch (error) {
+          console.error("Error getting fact data: ", error);
+      }
+    }
+    
     fetchDateFact();
 
     async function getMeme() {
@@ -186,8 +209,6 @@
       Anmelden
     </button>
   </div>
-
-
 </div>
 
 {#if showAuthModal}
@@ -220,9 +241,9 @@
         </form>
       {:else if showAuthModal === 'login'}
         <h2>Anmelden</h2>
-        <form>
-          <input type="text" placeholder="Benutzername oder E-Mail">
-          <input type="password" placeholder="Passwort">
+        <form on:submit|preventDefault={submitLoginForm}>
+          <input type="text" placeholder="Benutzername oder E-Mail" bind:value={username}>
+          <input type="password" placeholder="Passwort" bind:value={password}>
           <button type="submit">Anmelden</button>
           <a href="/forgot-password">Passwort vergessen?</a>
         </form>
