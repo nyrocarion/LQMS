@@ -115,7 +115,6 @@ direction LR
 # Login Prozess Diagram
 
 ```mermaid
-
 sequenceDiagram
     actor Nutzer
     box Frontend
@@ -126,17 +125,18 @@ sequenceDiagram
     participant Interne Login API
     end
     box Datenbank
-    participant MySQL Datenbank
+    participant MySQL
     end
-    Nutzer->>+Svelte Router:Login Anfrage
-    Svelte Router->>+Startseite:Login Anfrage
+    Nutzer->>+Svelte Router: Anfrage
+    Svelte Router->>+Startseite: Anfrage
     Startseite->>+Interne Login API:Login Anfrage
-    Interne Login API->>+MySQL Datenbank:Login Anfrage
-    MySQL Datenbank->>MySQL Datenbank:Anfrage prüfen
-    MySQL Datenbank-->>-Interne Login API:Login Antwort
+    Interne Login API->>+MySQL:Login Anfrage
+    MySQL->>MySQL:Anfrage prüfen
+    MySQL-->>-Interne Login API:Login Antwort
     Interne Login API-->>-Startseite:Login Antwort
-    Startseite-->>-Svelte Router:Login Antwort
-    Svelte Router-->>-Nutzer:Login Antwort
+    Startseite-->>-Svelte Router: Login Antwort
+    Svelte Router-->>-Nutzer: Weiterleitung /<br> Fehlermeldung
+
 ```
 
 # Architektur Diagram
