@@ -138,3 +138,37 @@ sequenceDiagram
     Startseite-->>-Svelte Router:Login Antwort
     Svelte Router-->>-Nutzer:Login Antwort
 ```
+
+# Architektur Diagram
+
+```mermaid
+architecture-beta
+    group server(server)[Server]
+        service db(database)[MySQL_Datenbank] in server
+        service npm(server)[NPM] in server
+        service pm2(server)[PM2] in server
+        service web(server)[Webseite] in server
+        service svelte(server)[SvelteKit] in server
+        service int(cloud)[Interne_APIs] in server
+
+    group github(cloud)[GitHub]
+        service repo(cloud)[Repository] in github
+
+    web:L <--> R:ext
+    svelte:L --> R:web
+    npm:L --> R:svelte
+    repo:L --> R:npm
+    pm2:T -- B:svelte
+    web:B <--> T:int
+    int:B <--> T:db
+
+    group external(internet)
+        service ext(internet)[Externe Schnittstellen] in external
+        service rapla(internet)[Stundenplan_API] in external
+        service numb(internet)[Numbers_API] in external
+        service daily(internet)[Daily_Facts_API] in external
+
+    ext:L -- R:rapla
+    ext:T -- R:numb
+    ext:B -- R:daily
+```
