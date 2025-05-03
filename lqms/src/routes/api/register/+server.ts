@@ -28,7 +28,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
     const { username, email, password } = validationResult.data;
 
     /** 1.) Prüfung für Benutzername */
-    const existingUserByUsername = await db.query('SELECT * FROM user WHERE username = ?', [username]);
+    const existingUserByUsername = await db.query('SELECT * FROM user WHERE name = ?', [username]);
     if (existingUserByUsername[0].length > 0) {
       return json({ message: 'Benutzername bereits vergeben' }, { status: 409 });
     }
