@@ -74,7 +74,7 @@ flowchart
 classDiagram
 direction LR
     class course {
-	    - id int
+	    - id int (primary key)
 	    - userid int
 	    - module String
 	    - status byte # 0-waiting, 1-doing, 2-done
@@ -90,22 +90,26 @@ direction LR
     }
 
     class user {
-	    - id int
+	    - id int (primary key)
 	    - name String
 	    - email String
 	    - password String
 	    - streak short
-        - cookies boolean #True = erlaubt
     }
 
     class session {
-	    - id int
+	    - id int (primary key)
 	    - courses Array #Bearbeitete Module ids
 	    - time int #Dauer
 	    - date timestamp #Startpunkt
 	    - efficiency byte
 	    - motivated byte
 	    - completedby int # user id
+    }
+
+    class session_course {
+	    - session_id (primary key)
+	    - course_id (primary key), (foreign key)
     }
 
     course --> user
