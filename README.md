@@ -95,7 +95,6 @@ direction LR
 	    - email String
 	    - password String
 	    - streak short
-        - cookies boolean #True = erlaubt
     }
 
     class session {
@@ -106,6 +105,11 @@ direction LR
 	    - efficiency byte
 	    - motivated byte
 	    - completedby int # user id
+    }
+
+    class session_course {
+	    - session_id
+	    - course_id
     }
 
     course --> user
