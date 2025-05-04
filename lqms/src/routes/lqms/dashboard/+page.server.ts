@@ -3,7 +3,7 @@ import type { PageServerLoad } from './$types';
 import { verifyJWT } from '$lib/server/jwt';
 
 export const load: PageServerLoad = async ({ cookies }) => {
-  const token = cookies.get('token');
+  const token = cookies.get('authToken');
   const user = token && verifyJWT(token);
 
   if (!user) {
