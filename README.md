@@ -95,6 +95,8 @@ direction LR
 	    - email String
 	    - password String
 	    - streak short
+            - admin boolean
+            - emailv boolean
     }
 
     class session {
