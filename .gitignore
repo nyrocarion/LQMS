@@ -47,6 +47,5 @@ $RECYCLE.BIN/
 *.lnk
 
 # Others
-*.md
 *.code-workspace
 *.env
