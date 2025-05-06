@@ -13,4 +13,14 @@ export const load: PageServerLoad = async ({ cookies }) => {
   return {
     user
   };
+
+  //Tab - Notizen
+
+  //Tab - Checkup
+
+  //Tab - Dashboard
+
+  //Tab - VL-Plan
+
+  //Tab Benutzerverwaltung (Admin only)
 };
