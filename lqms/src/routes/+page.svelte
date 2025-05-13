@@ -199,6 +199,8 @@
   <p>Verbessere deinen Lernprozess, behalte den Überblick und arbeite effizient mit deinen Kommilitonen.</p>
   <img id = "meme" style="width: 200px" src=""/>
   <button class="cta">Mehr erfahren</button>
+  <a href="/lqms/dashboard">Hier geht es zum Dasboard (temporary route)</a>
+  <a href="/lqms"> Another link </a>
   <span><b>Daily Facts</b></span>
   <span id="dateFact">...</span>
   <div class="auth-links">
