@@ -4,10 +4,5 @@
   <span id="tip"> </span>
 </div>
 <script>
-  import { db } from '$lib/server/database';
-  async function getTipFromDB () {
-    const tip = await db.query('SELECT `tipps` FROM `content` WHERE `id`=1;');
-    document.getElementById("tip").innerHTML = tip;
-  }
-  getTipFromDB();
+  
 </script>
