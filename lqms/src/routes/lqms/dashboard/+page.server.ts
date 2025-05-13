@@ -27,7 +27,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 
 };
 
-export const tip: getTipFromDB () => {
+export const tip: getTipFromDB = async () => {
   const tip = await db.query('SELECT `tipps` FROM `content` WHERE `id`=1;');
   document.getElementById("tip").innerHTML = tip;
   return tip;
