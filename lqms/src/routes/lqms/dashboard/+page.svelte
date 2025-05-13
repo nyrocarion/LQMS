@@ -4,5 +4,6 @@
   <span id="tip"> </span>
 </div>
 <script>
-  
+  import { tip } from './hooks.server.ts';
+  console.log(tip);
 </script>
