@@ -1,7 +1,13 @@
-//Session
-let seconds = 0;
-let clock = 0;
-let isRunning = false;
+export function load() {
+    let seconds = 0;
+    let clock = 0;
+    let isRunning = false;
+    return{
+        seconds,
+        clock,
+        isRunning
+    }
+}
 
 function session_start(){
   if(!isRunning){
