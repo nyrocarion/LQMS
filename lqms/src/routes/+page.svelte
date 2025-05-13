@@ -201,6 +201,7 @@
   <button class="cta">Mehr erfahren</button>
   <a href="/lqms/dashboard">Hier geht es zum Dasboard (temporary route)</a>
   <a href="/lqms"> Another link </a>
+  <a href="/lqms/lukas"> Hier gehts zum Button</a>
   <span><b>Daily Facts</b></span>
   <span id="dateFact">...</span>
   <div class="auth-links">
@@ -389,5 +390,3 @@
     font-weight: bold;
   }
 </style>
-
-<p>Time: {seconds} seconds</p>
