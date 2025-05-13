@@ -4,6 +4,6 @@
   <span id="tip"> </span>
 </div>
 <script>
-  import { tip } from './hooks.server.ts';
+  import { tip } from './routes/lqms/dashboard/+page.server.ts';
   console.log(tip);
 </script>
