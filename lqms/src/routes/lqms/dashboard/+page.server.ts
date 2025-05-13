@@ -1,6 +1,7 @@
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { verifyJWT } from '$lib/server/jwt';
+import { db } from '$lib/server/database';
 
 export const load: PageServerLoad = async ({ cookies }) => {
   const token = cookies.get('authToken');
@@ -25,3 +26,9 @@ export const load: PageServerLoad = async ({ cookies }) => {
   //Tab Benutzerverwaltung (Admin only)
 
 };
+
+export const tip: getTipFromDB () => {
+  const tip = await db.query('SELECT `tipps` FROM `content` WHERE `id`=1;');
+  document.getElementById("tip").innerHTML = tip;
+  return tip;
+}
