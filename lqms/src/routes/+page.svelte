@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { set } from "zod";
   let showAuthModal: 'register' | 'login' | null = null;
   let registrationSuccessMessage: string | null = null;
   let username = '';
@@ -386,3 +387,5 @@
     font-weight: bold;
   }
 </style>
+
+<p>Time: {seconds} seconds</p>
