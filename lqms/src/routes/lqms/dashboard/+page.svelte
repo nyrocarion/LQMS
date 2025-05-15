@@ -5,5 +5,5 @@
 </div>
 <script>
   //import { tip } from './+page.server.js';
-  console.log(tip);
+  //console.log(tip);
 </script>
