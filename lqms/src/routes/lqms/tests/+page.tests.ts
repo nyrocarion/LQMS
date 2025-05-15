@@ -22,7 +22,7 @@ describe('Login API-Endpoint', () => {
     };
   });
 
-  it('400: Ungültige Eingaben', async () => {
+  it('Erwartet: 400 - Ungültige Eingaben', async () => {
     request.json.mockResolvedValue({ identifier: 'u', password: 'short' }); // Ungültige Eingaben
 
     const response = await POST({ request, cookies });
@@ -31,7 +31,7 @@ describe('Login API-Endpoint', () => {
     expect(response.body.message).toBe('Ungültige Anmeldedaten');
   });
 
-  it('should return 401 for non-existing user', async () => {
+  it('Erwartet: 401 - Ungültiger Benutzer', async () => {
     request.json.mockResolvedValue({ identifier: 'nonexistent', password: 'validpassword123' });
     db.query.mockResolvedValue([[]]); // Keine Benutzer gefunden
 
