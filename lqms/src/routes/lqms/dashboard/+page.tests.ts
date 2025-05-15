@@ -8,7 +8,7 @@ jest.mock('$lib/server/database'); // Mock der Datenbank
 jest.mock('bcrypt'); // Mock von bcrypt
 jest.mock('$lib/server/jwt'); // Mock von JWT
 
-describe('Login API', () => {
+describe('Login API-Endpoint', () => {
   let request;
   let cookies;
 
