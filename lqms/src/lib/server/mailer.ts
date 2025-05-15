@@ -14,6 +14,9 @@ export async function sendRegistrationMail(to: string, username: string) {
       user: SMTP_USER,
       pass: SMTP_PASS,
     },
+    tls: {
+      rejectUnauthorized: false
+    }
   });
 
   const mailOptions = {
