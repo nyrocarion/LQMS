@@ -1,5 +1,3 @@
-import { sendRegistrationMail } from '$lib/server/mailer';
-
 <script lang="ts">
   let showAuthModal: 'register' | 'login' | null = null;
   let registrationSuccessMessage: string | null = null;
