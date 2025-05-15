@@ -4,6 +4,6 @@
   <span id="tip"> </span>
 </div>
 <script>
-  import { tip } from './+page.server.ts';
+  //import { tip } from './+page.server.js';
   console.log(tip);
 </script>
