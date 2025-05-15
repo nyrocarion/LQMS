@@ -61,7 +61,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
         maxAge: 60 * 60 * 8, // 8 Stunden Gültigkeiten für einen JWT
       });
 
-      await sendRegistrationMail(email, username);
+      sendRegistrationMail(email, username);
 
       if (result[0].affectedRows === 1) {
         return json({ message: 'Registrierung erfolgreich' }, { status: 201 });
