@@ -1,5 +1,6 @@
+import { sendRegistrationMail } from '$lib/server/mailer';
+
 <script lang="ts">
-  import { set } from "zod";
   let showAuthModal: 'register' | 'login' | null = null;
   let registrationSuccessMessage: string | null = null;
   let username = '';
@@ -90,12 +91,11 @@
         const data = await response.json();
 
         if (response.ok) {
-          console.log('Registrierung erfolgreich:', data);
-          registrationSuccessMessage = 'Registrierung erfolgreich!'; // Erfolgsmeldung setzen
+          registrationSuccessMessage = 'Registrierung erfolgreich!';
           // Optional: Nach kurzer Zeit die Nachricht wieder ausblenden
           setTimeout(() => {
             closeAuthModal();
-          }, 1500);
+          }, 500);
         } else {
           console.error('Registrierung fehlgeschlagen:', data);
           registerError.general = data.message || 'Registrierung fehlgeschlagen.';
@@ -125,12 +125,10 @@
       const data = await response.json();
 
       if (response.ok) {
-        console.log('Login erfolgreich:', data);
         // Weiterleitung zum Dashboard
         window.location.href = '/lqms/dashboard';
       } else {
         console.error('Login fehlgeschlagen:', data.message);
-        // Zeige ggf. Fehlermeldung im UI
       }
     } catch (error) {
       console.error('Fehler beim Login:', error);

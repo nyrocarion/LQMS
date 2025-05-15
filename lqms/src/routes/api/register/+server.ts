@@ -3,6 +3,7 @@ import { createJWT } from '$lib/server/jwt';
 import { db } from '$lib/server/database';
 import bcrypt from 'bcrypt';
 import { z } from 'zod';
+import { sendRegistrationMail } from '$lib/server/mailer';
 
 /** Das ist die Anzahl der verwendeten Salt-Runden für die Verschlüsselung des Passworts! */ 
 const SALT_ROUNDS = 15;
@@ -59,6 +60,8 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
         path: '/',
         maxAge: 60 * 60 * 8, // 8 Stunden Gültigkeiten für einen JWT
       });
+
+      await sendRegistrationMail(email, username);
 
       if (result[0].affectedRows === 1) {
         return json({ message: 'Registrierung erfolgreich' }, { status: 201 });
