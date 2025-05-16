@@ -6,4 +6,5 @@
 <script>
   //import { tip } from './+page.server.js';
   //console.log(tip);
+  //document.getElementById("tip").innerHTML = tip;
 </script>
