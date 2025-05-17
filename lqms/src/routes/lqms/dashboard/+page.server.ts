@@ -27,7 +27,12 @@ export const load: PageServerLoad = async ({ cookies }) => {
 
 };
 
-export const tip: getTipFromDB = async () => {
-  const tip = await db.query('SELECT `tipps` FROM `content` WHERE `id`=1;');
-  return tip;
-}
+// gets a tip from the db to use in the dashboard
+export const load: PageServerLoad = async () => {
+  const result = await db.query('SELECT `tipps` FROM `content` WHERE `id`=1;');
+  const tip = result[0];
+  
+  return {
+    tip
+  };
+};
