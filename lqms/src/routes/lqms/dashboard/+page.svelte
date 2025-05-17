@@ -3,6 +3,10 @@
   export let user: any; 
   export let tip: string;
   export let unga: string;
+  // debug
+  console.log("User:", user);
+  console.log("Tip:", tip);
+  console.log("Unga:", unga);
 </script>
 
 <h1>Dashboard</h1>
