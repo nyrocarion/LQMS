@@ -5,6 +5,7 @@
 </div>
 <script>
   import { tip } from './+page.server.js';
+  console.log("script after import is working");
   console.log(tip);
   document.getElementById("tip").innerHTML = tip;
 </script>
