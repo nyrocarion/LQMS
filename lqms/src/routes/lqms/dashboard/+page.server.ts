@@ -5,6 +5,7 @@ import { db } from '$lib/server/database';
 
 // nur eine load Funktion erlaubt pro Datei :(
 export const load: PageServerLoad = async ({ cookies }) => {
+  console.log("Die Load Funktion wird aufgerufen!");
   // User Kram
   const token = cookies.get('authToken');
   const user = token && verifyJWT(token);
@@ -21,6 +22,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 
   // Test Kram
   const unga = "WirdGeladenAusTs";
+  
 
   // Zusammen zurückgeben (wird in dashboard geladen)
   return {
