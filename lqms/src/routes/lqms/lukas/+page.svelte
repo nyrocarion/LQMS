@@ -1,6 +1,6 @@
 <script lang="ts">
 
-import { db } from '$lib/server/database';
+// import { db } from '$lib/server/database';
 
 
 let totalSeconds = 0;
