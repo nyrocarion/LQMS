@@ -93,7 +93,7 @@
           // Optional: Nach kurzer Zeit die Nachricht wieder ausblenden
           setTimeout(() => {
             closeAuthModal();
-          }, 500);
+          }, 1000);
         } else {
           console.error('Registrierung fehlgeschlagen:', data);
           registerError.general = data.message || 'Registrierung fehlgeschlagen.';

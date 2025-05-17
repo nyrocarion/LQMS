@@ -1,4 +1,3 @@
-import { json, type RequestHandler } from '@sveltejs/kit';
 import { db } from '$lib/server/database';
 import { POST } from '../../api/login/+server'; // Pfad zur API-Datei
 import bcrypt from 'bcrypt';
