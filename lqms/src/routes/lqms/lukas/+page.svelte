@@ -2,6 +2,7 @@
 let totalSeconds = 0;
 let clock = 0;
 let isRunning = false;
+let isSession = false;
 
 // Zeitberechnung
 $: hours = Math.floor(totalSeconds / 3600);
@@ -10,10 +11,15 @@ $: seconds = totalSeconds % 60;
 
 //Startet den Sessiontimer
 function session_start(){
-  if(!isRunning){
+    totalSeconds = 0;
+    isSession = true
     isRunning = true;
     clock = setInterval(() => {totalSeconds +=1}, 1000);
-  }
+}
+
+function session_resume(){
+    isRunning = true;
+    clock = setInterval(() => {totalSeconds +=1}, 1000);
 }
 
 //Pausiert den Sessiontimer
@@ -27,14 +33,19 @@ function session_end(){
   isRunning = false;
   clearInterval(clock);
   openFeedbackPopup();
+  isSession = false;
 }
 
 // Start/Pause Umschaltfunktion
 function toggle_timer() {
   if (isRunning) {
     session_pause();
-  } else {
-    session_start();
+  } else{
+    if(isSession) {
+      session_start()
+    } else {
+      session_resume();
+    }
   }
 }
 
@@ -161,7 +172,7 @@ function number_padding(value){
     </div>
   </div>
 {/if}
-{totalSeconds = 0}
+
 <style>
   body{
     font-family: Verdana, Geneva, Tahoma, sans-serif
