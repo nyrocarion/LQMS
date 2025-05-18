@@ -72,7 +72,12 @@ function number_padding(value){
 				</svg>
 			{/if}
 		</button>
-    <button class="clock" on:click={session_end}>Stop</button>
+    <button class="clock" on:click={session_end}>
+      <!-- Stop Icon -->
+			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+				<path d="M6 6h12v12H6z"/>
+			</svg>
+    </button>
   </div>
 </div>
 
