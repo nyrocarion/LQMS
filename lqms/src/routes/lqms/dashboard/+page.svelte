@@ -2,10 +2,11 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	export let data: PageData;
-	const { user, tip, unga } = data;
+	const { user, tip, tip2, unga } = data;
   // debug
   console.log("User:", user);
   console.log("Tip:", tip);
+  console.log("Different aproach:", tip2);
   console.log("Unga:", unga);
 
   let test = "Hello";
