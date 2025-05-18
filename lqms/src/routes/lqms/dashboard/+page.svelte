@@ -7,6 +7,8 @@
   console.log("User:", user);
   console.log("Tip:", tip);
   console.log("Unga:", unga);
+
+  let test: "Hello";
 </script>
 
 <h1>Dashboard</h1>
@@ -19,6 +21,7 @@
 <div style="height:100px;width:300px;background-color:red;">  
   <h2>Die genialen Lerntipps</h2>
   <span>{unga}</span>
+  <span>{test}</span>
   <!--beim Laden der Seite automatisch geladen-->
   <span>{tip}</span>
 </div>
