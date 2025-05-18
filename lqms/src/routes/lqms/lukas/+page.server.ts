@@ -28,8 +28,8 @@ export const actions: Actions = {
 
       // DB-Eintrag
       await db.query(
-        'INSERT INTO session (id, time, date, efficiency, motivated, completedby) VALUES (0, ?, ?, ?, ?)',
-        [timestamp, efficiency, motivation, userId]
+        'INSERT INTO session (time, efficiency, motivated, completedby) VALUES (0, ?, ?, ?)',
+        [efficiency, motivation, userId]
       );
 
       return { success: 'Feedback gespeichert!' };
