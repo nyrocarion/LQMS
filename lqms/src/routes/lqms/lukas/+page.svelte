@@ -41,7 +41,7 @@ function toggle_timer() {
   if (isRunning) {
     session_pause();
   } else{
-    if(isSession) {
+    if(isSession == false) {
       session_start()
     } else {
       session_resume();
