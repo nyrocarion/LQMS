@@ -29,6 +29,15 @@ function session_end(){
   totalSeconds = 0;
 }
 
+// Start/Pause Umschaltfunktion
+function toggle_timer() {
+  if (isRunning) {
+    session_pause();
+  } else {
+    session_start();
+  }
+}
+
 function number_padding(value){
   if (value < 10){
     return '0${value}';
@@ -42,16 +51,15 @@ function number_padding(value){
 <div class="timer-block">
   <h1>
     Sessiondauer: 
-    <span class ="timer-number">{hours}</span>
+    <span class ="timer-number">{number_padding(hours)}</span>
     <span class="timer-dot">:</span>
-    <span class="timer-number">{minutes}</span>
+    <span class="timer-number">{number_padding(minutes)}</span>
     <span class="timer-dot">:</span>
-    <span class="timer-number">{seconds}</span>
+    <span class="timer-number">{number_padding(seconds)}</span>
 
   </h1>
   <div class="button-grid">
-    <button class="clock" on:click={session_start} disabled={isRunning}>Start</button>
-    <button class="clock" on:click={session_pause} disabled={!isRunning}>Pause</button>
+    <button class="clock" on:click={toggle_timer}>{isRunning ? 'Pause' : 'Start'}
     <button class="clock" on:click={session_end}>Stop</button>
   </div>
 </div>
