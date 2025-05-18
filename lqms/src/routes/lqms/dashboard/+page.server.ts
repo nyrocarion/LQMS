@@ -25,8 +25,8 @@ export const load: PageServerLoad = async ({ cookies }) => {
   
 
   // Zusammen zurückgeben (wird in dashboard geladen)
-  // return user hier rausgemacht
   return {
+    user,
     tip,
     unga
   };
