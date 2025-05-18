@@ -95,7 +95,6 @@
             closeAuthModal();
           }, 1000);
         } else {
-          console.error('Registrierung fehlgeschlagen:', data);
           registerError.general = data.message || 'Registrierung fehlgeschlagen.';
           if (data.errors) {
             data.errors.forEach((error) => {

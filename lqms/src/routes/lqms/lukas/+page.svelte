@@ -27,6 +27,7 @@ function session_end(){
   isRunning = false;
   clearInterval(clock);
   totalSeconds = 0;
+  openFeedbackPopup();
 }
 
 // Start/Pause Umschaltfunktion
@@ -44,83 +45,25 @@ function number_padding(value){
   }
   return value.toString();
 }
-
-// import Modal,{getModal} from './Modal.svelte'
-// 	let name = 'world';
-	
-// 	let selection
-	
-// 	// Callback function provided to the `open` function, it receives the value given to the `close` function call, or `undefined` if the Modal was closed with escape or clicking the X, etc.
-// 	function setSelection(res){
-// 		selection=res
-// 	}
 	
   // --- Session Feedback Popup Logic ---
   let showFeedbackPopup: boolean = false;
-  let productiveness: number = 5; // Default value 1-10
-  let mood: number = 5; // Default value 1-10
-  let feedbackPopupMessage: string | null = null; // For success/error messages after submission
-
+  let efficiency: number = 5; // Default value 1-10
+  let motivation: number = 5; // Default value 1-10
+  
   function openFeedbackPopup(): void {
     // Reset values when opening the popup
-    productiveness = 5;
-    mood = 5;
-    feedbackPopupMessage = null; // Clear any previous messages
+    efficiency = 5;
+    motivation = 5;
     showFeedbackPopup = true;
   }
 
   function closeFeedbackPopup(): void {
     showFeedbackPopup = false;
-    // Optionally, you might want to clear feedbackPopupMessage here too,
-    // or let it persist until the next open if it was an error.
   }
 
-  async function handleSubmitFeedback(): Promise<void> {
-    const feedbackData = {
-      productiveness,
-      mood,
-      // You could add other relevant data here, like a user ID or session ID
-      // if they are available in this component's scope.
-    };
-
-    console.log("Submitting session feedback:", feedbackData);
-    feedbackPopupMessage = "Sende Feedback..."; // Show a loading message
-
-    // --- Replace this with your actual API call to your backend ---
-    try {
-      // Example:
-      // const response = await fetch('/api/your-feedback-endpoint', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(feedbackData),
-      // });
-
-      // if (!response.ok) {
-      //   const errorData = await response.json();
-      //   throw new Error(errorData.message || 'Feedback konnte nicht gesendet werden.');
-      // }
-      // const result = await response.json();
-      // console.log('Feedback submission successful:', result);
-
-      // Simulate a successful API call for now
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network delay
-      feedbackPopupMessage = "Feedback erfolgreich gesendet!";
-
-      // Close the popup after a short delay so the user can see the success message
-      setTimeout(() => {
-        closeFeedbackPopup();
-      }, 2000);
-
-    } catch (error: any) {
-      console.error("Error submitting feedback:", error);
-      feedbackPopupMessage = `Fehler: ${error.message || 'Unbekannter Fehler beim Senden.'}`;
-      // Do not close the popup on error, so the user can see the message and try again or correct something.
-    }
-    // --- End of API call section ---
-  }
-
-  // Helper function to get an emoji based on the mood value
-  const getMoodEmoji = (value: number): string => {
+  // Helper function to get an emoji based on the motivation value
+  const getmotivationEmoji = (value: number): string => {
     if (value <= 3) return '🙁'; // Sad
     if (value <= 7) return '😐'; // Neutral
     return '🙂'; // Happy
@@ -161,7 +104,62 @@ function number_padding(value){
   </div>
 </div>
 
+
+<!-- Session Feedback Popup -->
+{#if showFeedbackPopup}
+  <div class="feedback-modal-overlay" on:click={closeFeedbackPopup}>
+    <div class="feedback-modal-content" on:click|stopPropagation>
+      <button class="feedback-close-button" on:click={closeFeedbackPopup}>&times;</button>
+      <h2>Session Feedback</h2>
+
+      <!-- Show the form if there's no message or if the message is an error (allowing retry) -->
+        <form method="POST">
+          <div class="form-group">
+            <label for="efficiency-slider">
+              Ihre Produktivität: <span class="value-display">{efficiency}</span>
+            </label>
+            <input
+              type="range"
+              id="efficiency-slider"
+              min="0"
+              max="10"
+              bind:value={efficiency}
+              class="slider"
+            />
+            <div class="slider-labels">
+              <span>Niedrig</span>
+              <span>Hoch</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="motivation-slider">
+              Ihre Stimmung: <span class="emoji-display">{getmotivationEmoji(motivation)}</span> (<span class="value-display">{motivation}</span>)
+            </label>
+            <input
+              type="range"
+              id="motivation-slider"
+              min="0"
+              max="10"
+              bind:value={motivation}
+              class="slider motivation-slider"
+            />
+            <div class="slider-labels">
+              <span>Schlecht</span>
+              <span>Gut</span>
+            </div>
+          </div>
+          <button type="submit" class="submit-button" value="Feedback senden!"></button>
+        </form>
+    </div>
+  </div>
+{/if}
+
 <style>
+  body{
+    font-family: Verdana, Geneva, Tahoma, sans-serif
+  }
+
   .timer-dot{
     padding: 0 0.2em;
   }
@@ -238,7 +236,6 @@ function number_padding(value){
     padding: 25px 30px;
     border-radius: 8px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Common sans-serif font */
     width: 400px;
     max-width: 90%;
     position: relative;
@@ -284,11 +281,11 @@ function number_padding(value){
   .slider {
     width: 100%;
     cursor: pointer;
-    /* Default accent color for sliders (e.g., for productiveness) */
+    /* Default accent color for sliders (e.g., for efficiency) */
     accent-color: #007bff;
   }
-  .mood-slider {
-    /* Specific accent color for the mood slider */
+  .motivation-slider {
+    /* Specific accent color for the motivation slider */
     accent-color: #e83e8c; /* A pinkish color */
   }
 
@@ -351,78 +348,3 @@ function number_padding(value){
     border: 1px solid #f5c0c0;
   }
 </style>
-
-<!-- This is where your main page content would go. -->
-<!-- For demonstration, I'm adding a button to trigger the feedback popup. -->
-<div style="padding: 20px; text-align: center;">
-  <h2>Ihre Lernsitzung</h2>
-  <p>Hier sind Ihre Lerninhalte...</p>
-  <button
-    class="cta-button"
-    on:click={openFeedbackPopup}
-  >
-    Lernsitzung Beenden & Feedback Geben
-  </button>
-</div>
-
-<!-- Session Feedback Popup -->
-{#if showFeedbackPopup}
-  <div class="feedback-modal-overlay" on:click={closeFeedbackPopup}>
-    <div class="feedback-modal-content" on:click|stopPropagation>
-      <button class="feedback-close-button" on:click={closeFeedbackPopup}>&times;</button>
-      <h2>Session Feedback</h2>
-
-      {#if feedbackPopupMessage}
-        <!-- Display success or error messages -->
-        <p class="feedback-message {feedbackPopupMessage.startsWith('Fehler') ? 'error' : 'success'}">
-          {feedbackPopupMessage}
-        </p>
-      {/if}
-
-      <!-- Show the form if there's no message or if the message is an error (allowing retry) -->
-      {#if !feedbackPopupMessage || feedbackPopupMessage.startsWith('Fehler')}
-        <form on:submit|preventDefault={handleSubmitFeedback}>
-          <div class="form-group">
-            <label for="productiveness-slider">
-              Ihre Produktivität: <span class="value-display">{productiveness}</span>
-            </label>
-            <input
-              type="range"
-              id="productiveness-slider"
-              min="1"
-              max="10"
-              bind:value={productiveness}
-              class="slider"
-            />
-            <div class="slider-labels">
-              <span>Niedrig</span>
-              <span>Hoch</span>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="mood-slider">
-              Ihre Stimmung: <span class="emoji-display">{getMoodEmoji(mood)}</span> (<span class="value-display">{mood}</span>)
-            </label>
-            <input
-              type="range"
-              id="mood-slider"
-              min="1"
-              max="10"
-              bind:value={mood}
-              class="slider mood-slider"
-            />
-            <div class="slider-labels">
-              <span>Schlecht</span>
-              <span>Gut</span>
-            </div>
-          </div>
-
-          <button type="submit" class="submit-button" disabled={feedbackPopupMessage === "Sende Feedback..."}>
-            {feedbackPopupMessage === "Sende Feedback..." ? "Sende..." : "Feedback Senden"}
-          </button>
-        </form>
-      {/if}
-    </div>
-  </div>
-{/if}
