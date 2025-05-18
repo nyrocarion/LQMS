@@ -127,6 +127,11 @@ function number_padding(value){
               bind:value={efficiency}
               class="slider"
             />
+            <input
+              type="hidden"
+              name="totalseconds"
+              bind:value={totalSeconds}
+            />
             <div class="slider-labels">
               <span>Niedrig</span>
               <span>Hoch</span>
