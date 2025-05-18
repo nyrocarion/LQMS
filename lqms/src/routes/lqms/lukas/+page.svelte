@@ -120,6 +120,7 @@ function number_padding(value){
             </label>
             <input
               type="range"
+              name="efficiency"
               id="efficiency-slider"
               min="0"
               max="10"
@@ -138,6 +139,7 @@ function number_padding(value){
             </label>
             <input
               type="range"
+              name="motivation"
               id="motivation-slider"
               min="0"
               max="10"
