@@ -1,8 +1,4 @@
 <script lang="ts">
-
-// import { db } from '$lib/server/database';
-
-
 let totalSeconds = 0;
 let clock = 0;
 let isRunning = false;
@@ -27,13 +23,14 @@ function session_pause(){
 function session_end(){
   isRunning = false;
   clearInterval(clock);
-  seconds = 0;
+  totalSeconds = 0;
 }
+
 </script>
 
 <!-- Container für Zeit + Buttons -->
 <div class="timer-block">
-  <h1>Sessiondauer: {seconds} Sekunden</h1>
+  <h1>Sessiondauer: {hours}:{minutes}:{seconds} </h1>
   <div class="button-grid">
     <button class="clock" on:click={session_start} disabled={isRunning}>Start</button>
     <button class="clock" on:click={session_pause} disabled={!isRunning}>Pause</button>
