@@ -10,10 +10,10 @@ $: seconds = totalSeconds % 60;
 
 //Startet den Sessiontimer
 function session_start(){
-if(!isRunning){
-  isRunning = true;
-  clock = setInterval(() => {totalSeconds +=1}, 1000);
-}
+  if(!isRunning){
+    isRunning = true;
+    clock = setInterval(() => {totalSeconds +=1}, 1000);
+  }
 }
 
 //Pausiert den Sessiontimer
@@ -28,11 +28,27 @@ function session_end(){
   clearInterval(clock);
   totalSeconds = 0;
 }
+
+function number_padding(value){
+  if (value < 10){
+    return '0${value}';
+  }
+  return value.toString();
+}
+
 </script>
 
 <!-- Container für Zeit + Buttons -->
 <div class="timer-block">
-  <h1>Sessiondauer: {hours}:{minutes}:{seconds} </h1>
+  <h1>
+    Sessiondauer: 
+    <span class ="timer-number">{hours}</span>
+    <span class="timer-dot">:</span>
+    <span class="timer-number">{minutes}</span>
+    <span class="timer-dot">:</span>
+    <span class="timer-number">{seconds}</span>
+
+  </h1>
   <div class="button-grid">
     <button class="clock" on:click={session_start} disabled={isRunning}>Start</button>
     <button class="clock" on:click={session_pause} disabled={!isRunning}>Pause</button>
@@ -41,6 +57,14 @@ function session_end(){
 </div>
 
 <style>
+  .timer-dot{
+
+  }
+
+  .timer-number{
+    padding: 0 0.2em;
+  }
+
   .timer-block {
     display: grid;
     gap: 1rem;
