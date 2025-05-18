@@ -3,7 +3,6 @@ import { db } from '$lib/server/database';
 import { z } from 'zod';
 import { verifyJWT } from '../../../lib/server/jwt';
 
-// Dein Schema zur Validierung
 const feedbackSchema = z.object({
   efficiency: z.coerce.number().int(),
   totalseconds: z.coerce.number().int(),
@@ -24,8 +23,8 @@ export const actions: Actions = {
     console.log(totalseconds)
 
     try {
-      // Beispiel: JWT vom Cookie holen und decoded ID extrahieren
-      const jwt = cookies.get('authToken'); // Falls du JWT im Cookie hast
+      // JWT wird vom Cookie abgegriffen und decoded um ID zu extrahieren
+      const jwt = cookies.get('authToken');
       const userId = verifyJWT(jwt)?.id ?? 0;
 
       // DB-Eintrag

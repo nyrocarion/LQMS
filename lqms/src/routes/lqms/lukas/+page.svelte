@@ -56,31 +56,31 @@ function number_padding(value){
   return value.toString();
 }
 	
-  // --- Session Feedback Popup Logic ---
-  let showFeedbackPopup: boolean = false;
-  let efficiency: number = 5; // Default value 1-10
-  let motivation: number = 5; // Default value 1-10
+//Session Feedback Popup Logik
+let showFeedbackPopup: boolean = false;
+let efficiency: number = 5; //Default Wert
+let motivation: number = 5; //Default Wert
   
-  function openFeedbackPopup(): void {
-    // Reset values when opening the popup
-    efficiency = 5;
-    motivation = 5;
-    showFeedbackPopup = true;
-  }
+function openFeedbackPopup(): void {
+  //Beim Öfnnen der Popups wird der Wert auf den Default Wert zurückgesetzt
+  efficiency = 5;
+  motivation = 5;
+  showFeedbackPopup = true;
+}
 
-  function closeFeedbackPopup(): void {
-    showFeedbackPopup = false;
-  }
+function closeFeedbackPopup(): void {
+  showFeedbackPopup = false;
+}
 
-  // Helper function to get an emoji based on the motivation value
-  const getmotivationEmoji = (value: number): string => {
-    if (value <= 3) return '🙁'; // Sad
-    if (value <= 7) return '😐'; // Neutral
-    return '🙂'; // Happy
-  };
+// Funktion
+const getmotivationEmoji = (value: number): string => {
+  if (value <= 3) return '🙁'; // Traurig
+  if (value <= 7) return '😐'; // Neutral
+  return '🙂'; // Fröhlich
+};
 </script>
 
-<!-- Container für Zeit + Buttons -->
+<!-- Timer Block -->
 <div class="timer-block">
   <h1>
     Sessiondauer: 
@@ -89,7 +89,6 @@ function number_padding(value){
     <span class="timer-number">{number_padding(minutes)}</span>
     <span class="timer-dot">:</span>
     <span class="timer-number">{number_padding(seconds)}</span>
-
   </h1>
   <div class="button-grid">
     <button class="clock" on:click={toggle_timer}>
@@ -99,13 +98,13 @@ function number_padding(value){
 					<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
 				</svg>
 			{:else}
-				<!-- Play Icon -->
+				<!-- Start Icon -->
 				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
 					<path d="M8 5v14l11-7z"/>
 				</svg>
 			{/if}
 		</button>
-    <button class="clock" on:click={session_end}>
+    <button class="clock" on:click={session_end}  disabled={isSession == false}>
       <!-- Stop Icon -->
 			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
 				<path d="M6 6h12v12H6z"/>
@@ -121,8 +120,6 @@ function number_padding(value){
     <div class="feedback-modal-content" on:click|stopPropagation>
       <button class="feedback-close-button" on:click={closeFeedbackPopup}>&times;</button>
       <h2>Session Feedback</h2>
-
-      <!-- Show the form if there's no message or if the message is an error (allowing retry) -->
         <form method="POST">
           <div class="form-group">
             <label for="efficiency-slider">
@@ -148,7 +145,6 @@ function number_padding(value){
               <span>Hoch</span>
             </div>
           </div>
-
           <div class="form-group">
             <label for="motivation-slider">
               Ihre Stimmung: <span class="emoji-display">{getmotivationEmoji(motivation)}</span> (<span class="value-display">{motivation}</span>)
@@ -215,15 +211,16 @@ function number_padding(value){
     flex: 1;
   }
 
-/* Wenn Button nicht geht */
+  /* Wenn Button nicht gehen soll */
   .clock:disabled {
     background-color: #ccc;
     cursor: not-allowed;
   }
-  /* Basic styles for the trigger button (you can adapt this) */
+
+  /* Button */
   .cta-button {
     padding: 10px 20px;
-    background-color: #007bff; /* Blue color */
+    background-color: #007bff;
     color: white;
     border: none;
     border-radius: 5px;
@@ -235,18 +232,18 @@ function number_padding(value){
     background-color: #0056b3;
   }
 
-  /* Styles for the Feedback Popup (inspired by common modal patterns) */
+  /* Styles für das Feedback Popup */
   .feedback-modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.6); /* Slightly darker overlay */
+    background-color: rgba(0, 0, 0, 0.6);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1050; /* Ensure it's on top */
+    z-index: 1050;
   }
 
   .feedback-modal-content {
@@ -299,12 +296,10 @@ function number_padding(value){
   .slider {
     width: 100%;
     cursor: pointer;
-    /* Default accent color for sliders (e.g., for efficiency) */
     accent-color: #007bff;
   }
   .motivation-slider {
-    /* Specific accent color for the motivation slider */
-    accent-color: #e83e8c; /* A pinkish color */
+    accent-color: #e83e8c;
   }
 
   .slider-labels {
@@ -320,8 +315,8 @@ function number_padding(value){
     color: #333;
   }
   .emoji-display {
-    font-size: 1.2em; /* Make emoji slightly larger */
-    vertical-align: -0.15em; /* Adjust vertical alignment */
+    font-size: 1.2em; /* Um Emoji größer zu machen */
+    vertical-align: -0.15em; /* Vertikale Verschiebung */
     margin-right: 3px;
   }
 
@@ -329,7 +324,7 @@ function number_padding(value){
     display: block;
     width: 100%;
     padding: 10px 15px;
-    background-color: #28a745; /* Green color for submit */
+    background-color: #28a745;
     color: white;
     border: none;
     border-radius: 5px;
@@ -345,24 +340,5 @@ function number_padding(value){
   .submit-button:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
-  }
-
-  .feedback-message {
-    padding: 10px 15px;
-    margin-bottom: 15px;
-    border-radius: 4px;
-    text-align: center;
-    font-size: 0.9em;
-    font-weight: 500;
-  }
-  .feedback-message.success {
-    background-color: #e6ffed; /* Lighter green */
-    color: #1d742d;
-    border: 1px solid #b8e6c3;
-  }
-  .feedback-message.error {
-    background-color: #ffeeee; /* Lighter red */
-    color: #c01c1c;
-    border: 1px solid #f5c0c0;
   }
 </style>
