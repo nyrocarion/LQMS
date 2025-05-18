@@ -95,7 +95,7 @@
   </style>
 </svelte:head>
 
-<h1>Dashboard</h1>
+<h1 style="font-size:100px;">Dashboard</h1>
 <!--Wird nur angezeigt wenn ein User angemeldet ist-->
 {#if user}
   <p>Willkommen zurück, {user.name}!</p>
@@ -107,9 +107,9 @@
     <div class="panel medium beige_bg">Arbeitszeiten Diagramm</div>
     <div class="panel medium beige_bg">
       <h2>Tipps+Tricks API</h2>
-      <span>{test}</span>
+      <span>{test}</span><br>
       <!--beim Laden der Seite automatisch geladen-->
-      <span>{tip}</span>
+      <span>Dieser Text wird aus der DB geladen: {tip}</span>
     </div>
     <div class="panel beige_bg" style="flex:1">Heat Map</div>
   </div>
@@ -122,7 +122,7 @@
       <div class="halfpanel panel beige_bg">heutige Vorlesungen</div>
     </div>
     <div class="panel beige_bg" style="flex:1">
-      <span><b>Hallo hier steht Text!</b></span>
+      <span><b>Hallo hier steht Text!</b></span><br>
       <span>{unga}</span>
     </div>
   </div>
