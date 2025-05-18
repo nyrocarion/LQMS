@@ -1,8 +1,8 @@
 <!--Daten aus dem Typscript Programm holen-->
 <script lang="ts">
-  export let user: any; 
-  export let tip: string;
-  export let unga: string;
+	import type { PageData } from './$types';
+	export let data: PageData;
+	const { user, tip, unga } = data;
   // debug
   console.log("User:", user);
   console.log("Tip:", tip);
