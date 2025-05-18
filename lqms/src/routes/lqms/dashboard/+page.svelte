@@ -99,7 +99,9 @@
 
       <!--Wird nur angezeigt wenn ein User angemeldet ist-->
       {#if user}
-        <p>Willkommen zurück, {user.name}!</p>
+        <p>Willkommen zurück Nutzer!</p>
+      {:else}
+  	<p>Bitte anmelden</p>
       {/if}
       <section class="dashboard">
         <!-- L -->
