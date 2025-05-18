@@ -78,7 +78,7 @@ function number_padding(value){
 
 <style>
   .timer-dot{
-
+    padding: 0 0.2em;
   }
 
   .timer-number{
