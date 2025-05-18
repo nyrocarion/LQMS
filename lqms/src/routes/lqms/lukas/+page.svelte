@@ -132,6 +132,7 @@ function number_padding(value){
               name="totalseconds"
               bind:value={totalSeconds}
             />
+            {console.log(totalSeconds)}
             <div class="slider-labels">
               <span>Niedrig</span>
               <span>Hoch</span>
