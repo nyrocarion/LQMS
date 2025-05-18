@@ -4,28 +4,30 @@ let clock = 0;
 let isRunning = false;
 
 // Zeitberechnung
-  $: hours = Math.floor(totalSeconds / 3600);
-  $: minutes = Math.floor((totalSeconds % 3600) / 60);
-  $: seconds = totalSeconds % 60;
+$: hours = Math.floor(totalSeconds / 3600);
+$: minutes = Math.floor((totalSeconds / 60) % 3600);
+$: seconds = totalSeconds % 60;
 
+//Startet den Sessiontimer
 function session_start(){
-  if(!isRunning){
-    isRunning = true;
-    clock = setInterval(() => {seconds +=1}, 1000);
-  }
+if(!isRunning){
+  isRunning = true;
+  clock = setInterval(() => {totalSeconds +=1}, 1000);
+}
 }
 
+//Pausiert den Sessiontimer
 function session_pause(){
   isRunning = false;
   clearInterval(clock);
 }
 
+//Beendet den Sessiontimer
 function session_end(){
   isRunning = false;
   clearInterval(clock);
   totalSeconds = 0;
 }
-
 </script>
 
 <!-- Container für Zeit + Buttons -->
