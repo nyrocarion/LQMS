@@ -27,7 +27,6 @@ function session_end(){
   isRunning = false;
   clearInterval(clock);
   openFeedbackPopup();
-  totalSeconds = 0;
 }
 
 // Start/Pause Umschaltfunktion
@@ -133,6 +132,7 @@ function number_padding(value){
               bind:value={totalSeconds}
             />
             {console.log(totalSeconds)}
+            {totalSeconds = 0}
             <div class="slider-labels">
               <span>Niedrig</span>
               <span>Hoch</span>
@@ -157,7 +157,7 @@ function number_padding(value){
               <span>Gut</span>
             </div>
           </div>
-          <button type="submit" class="submit-button" value="Feedback senden!"></button>
+          <button type="submit" class="submit-button"> Feedback senden! </button>
         </form>
     </div>
   </div>
