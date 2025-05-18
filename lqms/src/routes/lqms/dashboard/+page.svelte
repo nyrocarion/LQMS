@@ -8,20 +8,131 @@
   console.log("Tip:", tip);
   console.log("Unga:", unga);
 
-  let test: "Hello";
+  let test = "Hello";
 </script>
 
-<h1>Dashboard</h1>
+<head>
+    <style>
+      :root {
+        --col-gap: 1rem;
+        --row-gap: 1rem;
+        --bg-col: #fae4d8;
+        --panel-col: #ffece3;
+        --beige: #ffc8b2;
+        --lightred: #ff9e8c;
+        font-family: "Inter", sans-serif;
+      }
 
-<!--Wird nur angezeigt wenn ein User angemeldet ist-->
-{#if user}
-  <p>Willkommen zurück, {user.name}!</p>
-{/if}
+      body {
+        margin: 0;
+        background: var(--bg-col);
+        display: flex;
+        justify-content: center;
+        padding: 2rem;
+      }
 
-<div style="height:100px;width:300px;background-color:red;">  
-  <h2>Die genialen Lerntipps</h2>
-  <span>{unga}</span>
-  <span>{test}</span>
-  <!--beim Laden der Seite automatisch geladen-->
-  <span>{tip}</span>
-</div>
+      .dashboard {
+        display: flex;
+        gap: var(--col-gap);
+        width: 100%;
+        max-width: 1920px;
+        background: #ffb49c;
+        padding: var(--col-gap);
+        border-radius: 12px;
+      }
+
+      .column {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: var(--row-gap);
+        align-items:stretch;
+        background-color: var(--panel-col);
+        border-radius: 8px;
+        padding: var(--col-gap);
+      }
+
+      .panel {
+        background: var(--panel-col);
+        border-radius: 8px;
+        min-height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        color: #655a55;
+      }
+
+        .row{
+        display:flex;
+        gap:var(--row-gap);
+        flex:1;           /* darf volle Höhe der Spalte belegen */
+        min-height:0;     /* lässt die Kinder bestimmen, wie hoch sie sein wollen */
+        }
+
+        /* halbe Breite pro Kasten */
+        .halfpanel{
+        flex:1;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        }
+
+      /* individual sizes */
+      .tall {
+        min-height: 180px;
+      }
+      .medium {
+        min-height: 120px;
+      }
+      /* Placeholder colors */
+      .beige_bg {
+        background: var(--beige);
+      }
+      .lightred_bg {
+        background: var(--lightred);
+      }
+    </style>
+  </head>
+  <body>
+      <h1>Dashboard</h1>
+
+      <!--Wird nur angezeigt wenn ein User angemeldet ist-->
+      {#if user}
+        <p>Willkommen zurück, {user.name}!</p>
+      {/if}
+      <section class="dashboard">
+        <!-- L -->
+        <div class="column">
+            <div class="panel medium beige_bg">Lernverhalten / Konzentrationskurve</div>
+            <div class="panel medium beige_bg">Arbeitszeiten Diagramm</div>
+            <div class="panel medium beige_bg"><h2>Tipps+Tricks API</h2>
+              <span>{test}</span>
+              <!--beim Laden der Seite automatisch geladen-->
+              <span>{tip}</span>
+            </div>
+            <div class="panel beige_bg" style="flex:1">Heat Map</div>
+        </div>
+
+        <!-- M -->
+        <div class="column">
+            <div class="panel tall beige_bg" style="flex:1">VL Plan</div>
+              <div class="row">
+                <div class="halfpanel panel beige_bg">Numbers API</div>
+                <div class="halfpanel panel beige_bg">heutige Vorlesungen</div>
+            </div>
+            <div class="panel beige_bg" style="flex:1">
+              <span><b>Hallo hier steht Text!</b></span>
+              <span>{unga}</span>
+            </div>
+        </div>
+
+        <!-- R -->
+        <div class="column">
+            <div class="panel medium beige_bg">Profil Area</div>
+            <div class="panel beige_bg">Start Timer Knopf</div>
+            <div class="panel tall beige_bg">To Do Liste</div>
+            <div class="panel tall beige_bg">Progress Chart</div>
+        </div>
+      </section>
+  </body>
