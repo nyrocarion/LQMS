@@ -5,7 +5,7 @@ let isRunning = false;
 
 // Zeitberechnung
 $: hours = Math.floor(totalSeconds / 3600);
-$: minutes = Math.floor((totalSeconds / 60) % 3600);
+$: minutes = Math.floor(totalSeconds / 60) % 3600;
 $: seconds = totalSeconds % 60;
 
 //Startet den Sessiontimer
