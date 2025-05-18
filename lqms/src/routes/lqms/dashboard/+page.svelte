@@ -1,6 +1,6 @@
 <!--Daten aus dem Typscript Programm holen-->
 <script lang="ts">
-  export let user: any; 
+  export let user: any | "Nicht Angemeldeter Nutzer"; 
   export let tip: string;
   export let unga: string;
   // debug
