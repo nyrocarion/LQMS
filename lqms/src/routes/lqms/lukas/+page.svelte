@@ -26,8 +26,8 @@ function session_pause(){
 function session_end(){
   isRunning = false;
   clearInterval(clock);
-  totalSeconds = 0;
   openFeedbackPopup();
+  totalSeconds = 0;
 }
 
 // Start/Pause Umschaltfunktion
