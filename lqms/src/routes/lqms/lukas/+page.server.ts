@@ -6,8 +6,9 @@ import { verifyJWT } from '../../../lib/server/jwt';
 // Dein Schema zur Validierung
 const feedbackSchema = z.object({
   efficiency: z.coerce.number().int(),
-  motivation: z.coerce.number().int(),
-  totalseconds: z.coerce.number().int()
+  totalseconds: z.coerce.number().int(),
+  motivation: z.coerce.number().int()
+  
 });
 
 export const actions: Actions = {
@@ -19,8 +20,8 @@ export const actions: Actions = {
       return fail(400, { error: 'Ungültige Eingabedaten' });
     }
 
-    const { efficiency, motivation, totalseconds } = parsed.data;
-    const timestamp = Date.now();
+    const { efficiency, totalseconds, motivation } = parsed.data;
+    console.log(totalseconds)
 
     try {
       // Beispiel: JWT vom Cookie holen und decoded ID extrahieren
