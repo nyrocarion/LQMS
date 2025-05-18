@@ -20,6 +20,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
   console.log('DB‑Result:', result);
   // Gibt eine Ausgabe egal welcher Fall auftritt
   const tip = result[0]?.tipps ?? 'Kein Tipp gefunden';
+  const tip2 = result.rows[0]?.tipps;
 
   // Test Kram
   const unga = "WirdGeladenAusTs";
@@ -29,6 +30,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
   return {
     user,
     tip,
+    tip2,
     unga
   };
 };
