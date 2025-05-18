@@ -40,7 +40,7 @@ function toggle_timer() {
 
 function number_padding(value){
   if (value < 10){
-    return '0${value}';
+    return `0${value}`;
   }
   return value.toString();
 }
