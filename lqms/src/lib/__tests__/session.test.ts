@@ -1,5 +1,5 @@
-import { db } from '$lib/server/database';
-import { actions } from '../../../src/routes/lqms/lukas/+page.server';
+import { db } from '../server/database.ts';
+import { actions } from '../../../src/routes/lqms/lukas/+page.server.ts';
 
 jest.mock('$lib/server/database');
 
@@ -8,6 +8,9 @@ describe('Session-Speicherung', () => {
   let cookies;
 
   beforeEach(() => {
+    // console.error stumm schalten
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+
     request = {
       formData: jest.fn().mockResolvedValue(new Map([
         ['efficiency', '5'],
@@ -24,10 +27,9 @@ describe('Session-Speicherung', () => {
   it('gibt 500 zurück, wenn die Datenbank einen Fehler wirft', async () => {
     db.query.mockRejectedValue(new Error('Datenbankfehler'));
 
-    await expect(actions.default({ request, cookies }))
-      .rejects.toMatchObject({
-        status: 500,
-        message: 'Fehler beim Speichern'
-      });
+    const response = await actions.default({ request, cookies });
+
+    expect(response.status).toBe(500);
+    expect(response.data.error).toBe('Fehler beim Speichern');
   });
 });
