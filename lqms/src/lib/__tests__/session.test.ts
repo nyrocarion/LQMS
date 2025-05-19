@@ -1,5 +1,5 @@
 import { db } from '../server/database';
-import { POST } from '../../../src/routes/lqms/lukas/+page.server'; // Pfad zur API-Datei
+import { actions } from '../../../src/routes/lqms/lukas/+page.server'; // Pfad zur API-Datei
 
 jest.mock('$lib/server/database');
 
