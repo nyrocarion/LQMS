@@ -1,7 +1,8 @@
-import { db } from '../server/database.ts';
-import { actions } from '../../../src/routes/lqms/lukas/+page.server.ts';
 
-jest.mock('$lib/server/database'); // Mock der Datenbank
+import { db } from '../server/database';
+import { actions } from '../../../src/routes/lqms/lukas/+page.server';
+
+jest.mock('$lib/server/database');
 
 describe('Session-Speicherung', () => {
   let request;
@@ -38,7 +39,7 @@ describe('Session-Speicherung', () => {
   });
 
   it('gibt Erfolg zurück, wenn die Datenbankabfrage erfolgreich ist', async () => {
-  db.query.mockResolvedValue({}); // Mock Erfolgsantwort
+  db.query.mockResolvedValue({});
 
   const response = await actions.default({ request, cookies });
 
