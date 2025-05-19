@@ -1,8 +1,8 @@
 import { json, type RequestHandler } from '@sveltejs/kit';
-import { db } from '$lib/server/database';
+import { db } from '../../../lib/server/database';
 import bcrypt from 'bcrypt';
 import { z } from 'zod';
-import { createJWT } from '$lib/server/jwt';
+import { createJWT } from '../../../lib/server/jwt';
 
 /** Ein Schema zur Sicherstellung der benötigten Daten beim Login */
 const loginSchema = z.object({

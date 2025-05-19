@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { JWT_SECRET } from '$env/static/private';
+import dotenv from 'dotenv';
 
 interface UserPayload {
   id: number;
@@ -7,12 +7,12 @@ interface UserPayload {
 }
 
 export function createJWT(payload: UserPayload): string {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: '8h' });
+  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '8h' });
 }
 
 export function verifyJWT(token: string): UserPayload | null {
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as UserPayload;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET) as UserPayload;
     return decoded;
   } catch (error) {
     return null;

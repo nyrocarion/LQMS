@@ -1,18 +1,14 @@
 import nodemailer from 'nodemailer';
-import { SMTP_HOST,
-  SMTP_PORT,
-  SMTP_USER,
-  SMTP_PASS,
-  SMTP_FROM } from '$env/static/private';
+import dotenv from 'dotenv';
 
 export async function sendRegistrationMail(to: string, username: string) {
   const transporter = nodemailer.createTransport({
-    host: SMTP_HOST,
-    port: Number(SMTP_PORT),
+    host: process.env.SMTP_HOST,
+    port: Number(process.env.SMTP_PORT),
     secure: false, // nur true für Port 465
     auth: {
-      user: SMTP_USER,
-      pass: SMTP_PASS,
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
     },
     tls: {
       rejectUnauthorized: false
@@ -20,7 +16,7 @@ export async function sendRegistrationMail(to: string, username: string) {
   });
 
   const mailOptions = {
-    from: SMTP_FROM,
+    from: process.env.SMTP_FROM,
     to,
     subject: 'Willkommen bei LQMS!',
     html: `<h3>Hallo ${username},</h3><p>Danke für deine Registrierung bei LQMS.</p><p>Viel Erfolg beim Lernen!</p>`,
