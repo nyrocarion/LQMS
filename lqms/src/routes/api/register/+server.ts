@@ -1,9 +1,9 @@
 import { json, type RequestHandler } from '@sveltejs/kit';
-import { createJWT } from '$lib/server/jwt';
-import { db } from '$lib/server/database';
+import { createJWT } from '../../../lib/server/jwt';
+import { db } from '../../../lib/server/database';
 import bcrypt from 'bcrypt';
 import { z } from 'zod';
-import { sendRegistrationMail } from '$lib/server/mailer';
+import { sendRegistrationMail } from '../../../lib/server/mailer';
 
 /** Das ist die Anzahl der verwendeten Salt-Runden für die Verschlüsselung des Passworts! */ 
 const SALT_ROUNDS = 15;

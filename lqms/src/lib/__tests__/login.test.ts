@@ -1,5 +1,5 @@
 import { db } from '$lib/server/database';
-import { POST } from '../../api/login/+server'; // Pfad zur API-Datei
+import { POST } from '../../routes/api/login/+server'; // Pfad zur API-Datei
 import bcrypt from 'bcrypt';
 import { createJWT } from '$lib/server/jwt';
 

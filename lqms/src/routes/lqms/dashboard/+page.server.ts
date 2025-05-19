@@ -1,7 +1,7 @@
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { verifyJWT } from '$lib/server/jwt';
-import { db } from '$lib/server/database';
+import { verifyJWT } from '../../../lib/server/jwt';
+import { db } from '../../../lib/server/database';
 
 // nur eine load Funktion erlaubt pro Datei :(
 export const load: PageServerLoad = async ({ cookies }) => {

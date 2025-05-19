@@ -1,5 +1,5 @@
 import { fail, type Actions } from '@sveltejs/kit';
-import { db } from '$lib/server/database';
+import { db } from '../../../lib/server/database';
 import { z } from 'zod';
 import { verifyJWT } from '../../../lib/server/jwt';
 
