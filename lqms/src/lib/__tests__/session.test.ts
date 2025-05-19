@@ -1,7 +1,7 @@
 import { db } from '../server/database.ts';
 import { actions } from '../../../src/routes/lqms/lukas/+page.server.ts';
 
-jest.mock('$lib/server/database');
+jest.mock('$lib/server/database'); // Mock der Datenbank
 
 describe('Session-Speicherung', () => {
   let request;
@@ -24,7 +24,8 @@ describe('Session-Speicherung', () => {
     };
   });
 
-  it('gibt 500 zurück, wenn die Datenbank einen Fehler wirft', async () => {
+
+  it('Erwartet: 500 - Datenbankfehler', async () => {
     db.query.mockRejectedValue(new Error('Datenbankfehler'));
 
     try {
@@ -34,5 +35,13 @@ describe('Session-Speicherung', () => {
       expect(err.status).toBe(500);
       expect(err.message).toBe('Fehler beim Speichern');
     }
+  });
+
+  it('gibt Erfolg zurück, wenn die Datenbankabfrage erfolgreich ist', async () => {
+  db.query.mockResolvedValue({}); // Mock Erfolgsantwort
+
+  const response = await actions.default({ request, cookies });
+
+  expect(response.success).toBe('Feedback gespeichert!');
   });
 });
