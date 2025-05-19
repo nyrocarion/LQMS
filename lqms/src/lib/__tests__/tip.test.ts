@@ -1,4 +1,4 @@
-import { load } from '$routes/lqms/dashboard/+page.server';
+import { load } from '../../routes/lqms/dashboard/+page.server';
 import { db } from '$lib/server/database';
 
 jest.mock('$lib/server/database', () => ({
