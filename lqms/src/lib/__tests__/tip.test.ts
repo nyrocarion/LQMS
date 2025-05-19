@@ -5,21 +5,21 @@ jest.mock('$lib/server/database', () => ({
   db: { query: jest.fn() }
 }));
 
-// Minimal‑Mock für cookies
-const fakeCookies = {
-  get: jest.fn(() => undefined) // hier kannst du später auch einen Token zurückgeben
-} as any;
+const fakeCookies = { get: jest.fn(() => undefined) } as any;
 
 describe('Tip von der DB laden', () => {
   it('liefert DB‑Wert', async () => {
-    (db.query as jest.Mock).mockResolvedValueOnce([{ tipps: 'Unga Bunga' }]);
+    (db.query as jest.Mock).mockResolvedValueOnce([
+      [{ tipps: 'Unga Bunga' }], // rows
+      []                         // fields
+    ]);
 
     const { tip } = await load({ cookies: fakeCookies } as any);
     expect(tip).toBe('Unga Bunga');
   });
 
   it('liefert Fallback‑String', async () => {
-    (db.query as jest.Mock).mockResolvedValueOnce([]);   // DB gibt nichts zurück
+    (db.query as jest.Mock).mockResolvedValueOnce([[], []]); // keine rows
 
     const { tip } = await load({ cookies: fakeCookies } as any);
     expect(tip).toBe('Kein Tipp gefunden');
