@@ -9,7 +9,7 @@ describe('Session-Speicherung', () => {
 
   beforeEach(() => {
     jest.spyOn(console, 'error').mockImplementation(() => {});
-    jest.spyOn(console, 'log').mockImplementation(() => {}); // optional
+    jest.spyOn(console, 'log').mockImplementation(() => {});
 
     request = {
       formData: jest.fn().mockResolvedValue(new Map([

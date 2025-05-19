@@ -12,6 +12,9 @@ describe('Login API-Endpoint', () => {
   let cookies;
 
   beforeEach(() => {
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+    jest.spyOn(console, 'log').mockImplementation(() => {});
+
     request = {
       json: jest.fn(),
     };
