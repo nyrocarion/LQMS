@@ -1,5 +1,5 @@
-import { load } from './src/routes/lqms/dashboard/+page.server.ts'; 
-import { db } from './src/lib/server/database.ts';
+import { load } from './src/routes/lqms/dashboard/+page.server'; 
+import { db } from './src/lib/server/database';
 
 // Mocken der db.query Methode
 jest.mock('$lib/server/database'); 
