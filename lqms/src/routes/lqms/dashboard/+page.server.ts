@@ -19,7 +19,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
   const result = await db.query('SELECT `tipps` FROM `content` WHERE `id`=1;');
   console.log('DB‑Result:', result);
   // Gibt eine Ausgabe egal welcher Fall auftritt
-  const tip = result[0] && result[0][0]?.tipps ?? 'Kein Tipp gefunden';
+  const tip = (result[0] && result[0][0]?.tipps) ?? 'Kein Tipp gefunden';
 
   // Test Kram
   const unga = "WirdGeladenAusTs";
