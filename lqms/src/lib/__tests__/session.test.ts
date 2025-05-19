@@ -1,8 +1,6 @@
-
 import { db } from '../server/database';
 import { actions } from '../../../src/routes/lqms/lukas/+page.server';
 
-jest.mock('$lib/server/database');
 jest.mock('$lib/server/database');
 
 describe('Session-Speicherung', () => {
