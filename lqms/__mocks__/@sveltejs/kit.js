@@ -9,5 +9,14 @@ module.exports = {
     const err = new Error(message);
     err.status = status;
     throw err;
-  }
+  },
+  fail: (status, body) => {
+    const err = new Error(body?.error ?? 'Mocked fail');
+    err.status = status;
+    throw err;
+  },
+  json: (body, init = {}) => ({
+    ...init,
+    body,
+  }),
 };
