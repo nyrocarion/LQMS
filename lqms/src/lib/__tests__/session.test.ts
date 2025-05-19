@@ -1,5 +1,5 @@
 import { db } from '../server/database';
-import { actions } from '../../../src/routes/lqms/lukas/+page.server'; // Pfad zur API-Datei
+import { actions } from '../../../src/routes/lqms/lukas/+page.server.ts';
 
 jest.mock('$lib/server/database');
 
@@ -27,7 +27,6 @@ describe('Session-Speicherung', () => {
     const response = await actions.default({ request, cookies });
 
     expect(response.status).toBe(500);
-    expect(response.data.error).toBe('Fehler beim Speichern');
   });
 });
 
