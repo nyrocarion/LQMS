@@ -53,8 +53,8 @@ describe('Login API-Endpoint', () => {
 
   /** Test füe gültige Eingaben (Login) und Token */
   it('Erwartet: 200 - Login erfolgreich', async () => {
-    request.json.mockResolvedValue({ identifier: 'testuser', password: 'test' });
-    db.query.mockResolvedValue([[{ id: 0, username: 'testuser', password: '$2y$15$/Tn/kbvJOVCrPWZ6VAJJl.VZ5imAwjQXTFqxHy3eyGColW0r0oMKa' }]]);
+    request.json.mockResolvedValue({ identifier: 'testuser', password: '12345678910' });
+    db.query.mockResolvedValue([[{ id: 0, username: 'testuser', password: '$2y$15$Eq9Xpcc4tIqwoZ3KwCLYBOsQ4po8HDPtzaFuwAKzf994sKUoi3swy' }]]);
     bcrypt.compare.mockResolvedValue(true); 
     createJWT.mockReturnValue('valid.jwt.token');
 
@@ -66,7 +66,7 @@ describe('Login API-Endpoint', () => {
 
   /** Test für möglichen Datenbankfehler */
   it('Erwartet: 500 - Serverfehler', async () => {
-    request.json.mockResolvedValue({ identifier: 'testuser', password: 'test' });
+    request.json.mockResolvedValue({ identifier: 'testuser', password: '12345678910' });
     db.query.mockRejectedValue(new Error('Datenbankfehler'));
 
     const response = await POST({ request, cookies });
