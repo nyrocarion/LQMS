@@ -5,7 +5,6 @@ import { db } from '../../../lib/server/database';
 
 // nur eine load Funktion erlaubt pro Datei :(
 export const load: PageServerLoad = async ({ cookies }) => {
-  console.log("Die Load Funktion wird aufgerufen!");
   // User Kram
   const token = cookies.get('authToken');
   const user = token && verifyJWT(token);
@@ -17,7 +16,6 @@ export const load: PageServerLoad = async ({ cookies }) => {
 
   // Tip aus Datenbank holen
   const result = await db.query('SELECT `tipps` FROM `content` WHERE `id`=1;');
-  console.log('DB‑Result:', result);
   // Gibt eine Ausgabe egal welcher Fall auftritt
   const tip = (result[0] && result[0][0]?.tipps) ?? 'Kein Tipp gefunden';
 
