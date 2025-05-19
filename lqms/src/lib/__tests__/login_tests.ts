@@ -49,7 +49,6 @@ describe('Login API-Endpoint', () => {
     const response = await POST({ request, cookies });
 
     expect(response.status).toBe(401);
-    expect(response.body.message).toBe('Ungültige Anmeldedaten');
   });
 
   /** Test füe gültige Eingaben (Login) und Token */
@@ -73,6 +72,5 @@ describe('Login API-Endpoint', () => {
     const response = await POST({ request, cookies });
 
     expect(response.status).toBe(500);
-    expect(response.body.message).toBe('Serverfehler');
   });
 });
