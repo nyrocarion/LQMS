@@ -1,5 +1,5 @@
-import { db } from '../server/database';
-import { actions } from '../../../src/routes/lqms/lukas/+page.server.ts';
+import { db } from '$lib/server/database';
+import { actions } from '../../../src/routes/lqms/lukas/+page.server';
 
 jest.mock('$lib/server/database');
 
@@ -24,29 +24,10 @@ describe('Session-Speicherung', () => {
   it('gibt 500 zurück, wenn die Datenbank einen Fehler wirft', async () => {
     db.query.mockRejectedValue(new Error('Datenbankfehler'));
 
-    const response = await actions.default({ request, cookies });
-
-    expect(response.status).toBe(500);
+    await expect(actions.default({ request, cookies }))
+      .rejects.toMatchObject({
+        status: 500,
+        message: 'Fehler beim Speichern'
+      });
   });
 });
-
-// import { db } from '$lib/server/database';
-// import { POST } from '../../api/login/+server'; // Pfad zur API-Datei
-
-// jest.mock('$lib/server/database'); // Mock der Datenbank
-
-// describe('Session-Speicherung', () => {
-//   let request;
-//   let cookies;
-
-// /** Test für möglichen Datenbankfehler */
-//   it('Erwartet: 500 - Serverfehler', async () => {
-//     request.json.mockResolvedValue({});
-//     db.query.mockRejectedValue(new Error('Datenbankfehler'));
-
-//     const response = await POST({ request, cookies });
-
-//     expect(response.status).toBe(500);
-//   });
-// });
-
