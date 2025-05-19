@@ -32,7 +32,7 @@ describe('Login API-Endpoint', () => {
 
   /** Test für ungültige Benutzerangabe */
   it('Erwartet: 401 - Ungültiger Benutzer', async () => {
-    request.json.mockResolvedValue({ identifier: 't', password: 'test123456' });
+    request.json.mockResolvedValue({ identifier: 'test', password: 'test123456' });
     db.query.mockResolvedValue([[]]);
 
     const response = await POST({ request, cookies });
@@ -54,7 +54,7 @@ describe('Login API-Endpoint', () => {
   /** Test füe gültige Eingaben (Login) und Token */
   it('Erwartet: 200 - Login erfolgreich', async () => {
     request.json.mockResolvedValue({ identifier: 'testuser', password: 'test' });
-    db.query.mockResolvedValue([[{ id: 1, username: 'testuser', password: '$2y$15$c2D5gEeSvH70J9zMuCyHpeM448fAQzriJezKMJa8APyVOxS7xAFRW' }]]);
+    db.query.mockResolvedValue([[{ id: 0, username: 'testuser', password: '$2y$15$/Tn/kbvJOVCrPWZ6VAJJl.VZ5imAwjQXTFqxHy3eyGColW0r0oMKa' }]]);
     bcrypt.compare.mockResolvedValue(true); 
     createJWT.mockReturnValue('valid.jwt.token');
 
