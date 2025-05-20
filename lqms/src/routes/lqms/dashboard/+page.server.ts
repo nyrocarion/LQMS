@@ -74,8 +74,8 @@ export const load: PageServerLoad = async ({ cookies }) => {
   const tip = (result[0] && result[0][0]?.tipps) ?? 'Kein Tipp gefunden';
 
   // Aus Api geladen
-  const dailyfact = fetchDateFact();
-  const dailymeme = getMeme();
+  const dailyfact = await fetchDateFact();
+  const dailymeme = await getMeme();
 
   // Zusammen zurückgeben (wird in dashboard geladen)
   return {
