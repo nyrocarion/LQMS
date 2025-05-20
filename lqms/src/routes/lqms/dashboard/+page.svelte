@@ -2,13 +2,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	export let data: PageData;
-	const { user, tip, unga } = data;
-  // debug
-  console.log("User:", user);
-  console.log("Tip:", tip);
-  console.log("Unga:", unga);
-
-  let test = "Hello";
+	const { user, tip, dailyfact, dailymeme } = data;
 </script>
 
 <svelte:head>
@@ -107,9 +101,7 @@
     <div class="panel medium beige_bg">Arbeitszeiten Diagramm</div>
     <div class="panel medium beige_bg">
       <h2>Tipps+Tricks API</h2>
-      <span>{test}</span><br>
-      <!--beim Laden der Seite automatisch geladen-->
-      <span>Dieser Text wird aus der DB geladen: {tip}</span>
+      <span>{tip}</span>
     </div>
     <div class="panel beige_bg" style="flex:1">Heat Map</div>
   </div>
@@ -118,12 +110,14 @@
   <div class="column">
     <div class="panel tall beige_bg" style="flex:1">VL Plan</div>
     <div class="row">
-      <div class="halfpanel panel beige_bg">Numbers API</div>
+      <div class="halfpanel panel beige_bg">
+        <h2>Numbers API</h2><br>
+        <span style="color:red;">{dailyfact}</span>
+      </div>
       <div class="halfpanel panel beige_bg">heutige Vorlesungen</div>
     </div>
     <div class="panel beige_bg" style="flex:1">
-      <span><b>Hallo hier steht Text!</b></span><br>
-      <span>{unga}</span>
+      <img src={dailymeme}/>
     </div>
   </div>
 
