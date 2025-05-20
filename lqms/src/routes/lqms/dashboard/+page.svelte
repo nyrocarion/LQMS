@@ -1,12 +1,15 @@
 <!--Daten aus dem Typscript Programm holen-->
 <script lang="ts">
 	import type { PageData } from './$types';
+  import { onMount } from 'svelte';
 	export let data: PageData;
 	const { user, tip, dailyfact, dailymeme } = data;
   console.log(dailyfact);
   console.log(dailymeme);
-  const memeElement = document.getElementById("meme") as HTMLImageElement;
-  memeElement.src = dailymeme;
+  onMount(() => {
+    const memeElement = document.getElementById("meme") as HTMLImageElement;
+    memeElement.src = dailymeme;
+  })
 </script>
 
 <svelte:head>
