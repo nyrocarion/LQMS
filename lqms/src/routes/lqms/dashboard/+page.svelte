@@ -3,9 +3,10 @@
 	import type { PageData } from './$types';
 	export let data: PageData;
 	const { user, tip, dailyfact, dailymeme } = data;
-  console.log(dailyfact)
-  console.log(dailymeme)
-  document.getElementById("meme").src = dailymeme;
+  console.log(dailyfact);
+  console.log(dailymeme);
+  const memeElement = document.getElementById("meme") as HTMLImageElement;
+  memeElement.src = dailymeme;
 </script>
 
 <svelte:head>
