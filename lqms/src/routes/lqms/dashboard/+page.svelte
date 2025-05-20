@@ -101,11 +101,6 @@
     }
   </style>
 </svelte:head>
-<div style="width=100%"><h1 style="font-size:100px;">Dashboard</h1><br><span>some text</span></div>
-<!--Wird nur angezeigt wenn ein User angemeldet ist-->
-{#if user}
-  <p>Willkommen zurück, {user.name}!</p>
-{/if}
 <section class="dashboard">
   <!-- L -->
   <div class="column">
