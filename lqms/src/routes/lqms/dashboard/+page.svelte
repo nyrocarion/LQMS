@@ -42,6 +42,12 @@
       border-radius: 12px;
     }
 
+    .dashboard img {
+      max-width: 100%;  /* Das Bild nimmt maximal 100% der Breite des Containers ein */
+      max-height: 100%; /* Das Bild nimmt maximal 100% der Höhe des Containers ein */
+      object-fit: contain;  /* Das Bild wird im Container skaliert, behält aber sein Seitenverhältnis */
+    }
+
     .column {
       flex: 1;
       display: flex;
@@ -119,7 +125,7 @@
     <div class="row">
       <div class="halfpanel panel beige_bg">
         <h2>Numbers API</h2><br>
-        <span style="color:red;">{dailyfact}</span>
+        <span>{dailyfact}</span>
       </div>
       <div class="halfpanel panel beige_bg">heutige Vorlesungen</div>
     </div>
