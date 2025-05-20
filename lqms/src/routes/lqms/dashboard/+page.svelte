@@ -3,6 +3,9 @@
 	import type { PageData } from './$types';
 	export let data: PageData;
 	const { user, tip, dailyfact, dailymeme } = data;
+  console.log(dailyfact)
+  console.log(dailymeme)
+  document.getElementById("meme").src = dailymeme;
 </script>
 
 <svelte:head>
@@ -100,7 +103,7 @@
     <div class="panel medium beige_bg">Lernverhalten / Konzentrationskurve</div>
     <div class="panel medium beige_bg">Arbeitszeiten Diagramm</div>
     <div class="panel medium beige_bg">
-      <h2>Tipps+Tricks API</h2>
+      <h2>Tipps+Tricks API</h2><br>
       <span>{tip}</span>
     </div>
     <div class="panel beige_bg" style="flex:1">Heat Map</div>
@@ -117,7 +120,7 @@
       <div class="halfpanel panel beige_bg">heutige Vorlesungen</div>
     </div>
     <div class="panel beige_bg" style="flex:1">
-      <img src={dailymeme}/>
+      <img id="meme" src="" alt="Meme"/>
     </div>
   </div>
 
