@@ -3,7 +3,6 @@ import { db } from '../server/database';
 import { actions } from '../../../src/routes/lqms/lukas/+page.server';
 
 jest.mock('$lib/server/database');
-jest.mock('$lib/server/database');
 
 describe('Session-Speicherung', () => {
   let request;
@@ -39,10 +38,10 @@ describe('Session-Speicherung', () => {
   });
 
   it('Erwartet: Erfolg - Erfolgreiche Datenspeicherung', async () => {
-  db.query.mockResolvedValue({});
+    db.query.mockResolvedValue({});
 
-  const response = await actions.default({ request, cookies });
+    const response = await actions.default({ request, cookies });
 
-  expect(response.success).toBe('Feedback gespeichert!');
+    expect(response.success).toBe('Feedback gespeichert!');
   });
 });
