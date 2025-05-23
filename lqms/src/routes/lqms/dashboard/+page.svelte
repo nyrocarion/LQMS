@@ -1,14 +1,15 @@
 <!--Daten aus dem Typscript Programm holen-->
 <script lang="ts">
 	import type { PageData } from './$types';
+  import { onMount } from 'svelte';
 	export let data: PageData;
-	const { user, tip, unga } = data;
-  // debug
-  console.log("User:", user);
-  console.log("Tip:", tip);
-  console.log("Unga:", unga);
-
-  let test = "Hello";
+	const { user, tip, dailyfact, dailymeme } = data;
+  console.log(dailyfact);
+  console.log(dailymeme);
+  onMount(() => {
+    const memeElement = document.getElementById("meme") as HTMLImageElement;
+    memeElement.src = dailymeme;
+  })
 </script>
 
 <svelte:head>
@@ -39,6 +40,12 @@
       background: #ffb49c;
       padding: var(--col-gap);
       border-radius: 12px;
+    }
+
+    .dashboard img {
+      max-width: 100%;  /* Das Bild nimmt maximal 100% der Breite des Containers ein */
+      max-height: 100%; /* Das Bild nimmt maximal 100% der Höhe des Containers ein */
+      object-fit: contain;  /* Das Bild wird im Container skaliert, behält aber sein Seitenverhältnis */
     }
 
     .column {
@@ -94,22 +101,14 @@
     }
   </style>
 </svelte:head>
-
-<h1 style="font-size:100px;">Dashboard</h1>
-<!--Wird nur angezeigt wenn ein User angemeldet ist-->
-{#if user}
-  <p>Willkommen zurück, {user.name}!</p>
-{/if}
 <section class="dashboard">
   <!-- L -->
   <div class="column">
     <div class="panel medium beige_bg">Lernverhalten / Konzentrationskurve</div>
     <div class="panel medium beige_bg">Arbeitszeiten Diagramm</div>
     <div class="panel medium beige_bg">
-      <h2>Tipps+Tricks API</h2>
-      <span>{test}</span><br>
-      <!--beim Laden der Seite automatisch geladen-->
-      <span>Dieser Text wird aus der DB geladen: {tip}</span>
+      <h2>Tipps+Tricks API</h2><br>
+      <span>{tip}</span>
     </div>
     <div class="panel beige_bg" style="flex:1">Heat Map</div>
   </div>
@@ -118,12 +117,14 @@
   <div class="column">
     <div class="panel tall beige_bg" style="flex:1">VL Plan</div>
     <div class="row">
-      <div class="halfpanel panel beige_bg">Numbers API</div>
+      <div class="halfpanel panel beige_bg">
+        <h2>Numbers API</h2><br>
+        <span>{dailyfact}</span>
+      </div>
       <div class="halfpanel panel beige_bg">heutige Vorlesungen</div>
     </div>
     <div class="panel beige_bg" style="flex:1">
-      <span><b>Hallo hier steht Text!</b></span><br>
-      <span>{unga}</span>
+      <img id="meme" src="" alt="Meme"/>
     </div>
   </div>
 

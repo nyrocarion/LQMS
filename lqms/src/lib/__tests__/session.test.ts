@@ -37,10 +37,10 @@ describe('Session-Speicherung', () => {
   });
 
   it('Erwartet: Erfolg - Erfolgreiche Datenspeicherung', async () => {
-  db.query.mockResolvedValue({});
+    db.query.mockResolvedValue({});
 
-  const response = await actions.default({ request, cookies });
+    const response = await actions.default({ request, cookies });
 
-  expect(response.success).toBe('Feedback gespeichert!');
+    expect(response.success).toBe('Feedback gespeichert!');
   });
 });
