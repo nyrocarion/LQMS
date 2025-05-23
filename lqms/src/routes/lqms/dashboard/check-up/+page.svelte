@@ -3,8 +3,7 @@
 
   type SessionData = {
     date: string;
-    efficiency: number;
-    motivated: number;
+    count: number;
   };
 
   let heatmapData: SessionData[] = [];
@@ -15,11 +14,11 @@
     heatmapData = await heatmapRes.json();
   });
 
-  // Hilfsfunktion, um die Farbe basierend auf den Effizienz- und Motivationswerten zu berechnen
-  function getHeatmapColor(efficiency: number, motivated: number) {
-    const effColor = Math.min(efficiency * 2.55, 255); // Skaliert den Wert von 0-100 auf 0-255
-    const motColor = Math.min(motivated * 2.55, 255); // Skaliert den Wert von 0-100 auf 0-255
-    return `rgb(${effColor}, ${motColor}, 150)`;
+  // Hilfsfunktion, um die Farbe basierend auf der Häufigkeit der Sessions zu berechnen
+  function getHeatmapColor(count: number) {
+    // Je mehr Sessions, desto intensiver wird die Farbe
+    const intensity = Math.min(count * 50, 255); // Maximale Intensität von 255
+    return `rgb(${intensity}, ${255 - intensity}, 150)`; // Rot-Grün Farbskala
   }
 
   // Hilfsfunktion, um das Datum in eine menschenlesbare Form zu bringen
@@ -30,11 +29,11 @@
 </script>
 
 <div class="heatmap-container">
-  {#each heatmapData as { date, efficiency, motivated }, index}
+  {#each heatmapData as { date, count }, index}
     <div 
       class="heatmap-day" 
-      style="background-color: {getHeatmapColor(efficiency, motivated)}" 
-      title={`Effizienz: ${efficiency}, Motivation: ${motivated}\nDatum: ${formatDate(date)}`}>
+      style="background-color: {getHeatmapColor(count)}" 
+      title={`Sessions: ${count}\nDatum: ${formatDate(date)}`}>
       {formatDate(date)}
     </div>
   {/each}

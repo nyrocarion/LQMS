@@ -7,17 +7,21 @@ export const GET: RequestHandler = async ({ locals }) => {
 
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-  
+
+  // Zählt die Sessions pro Tag für den aktuellen Benutzer
   const sessions = await db.query(
-    `SELECT date, efficiency, motivated FROM session WHERE completedby = ? AND date >= ? ORDER BY date DESC`,
+    `SELECT DATE(date) AS sessionDate, COUNT(*) AS sessionCount
+     FROM session
+     WHERE completedby = ? AND date >= ?
+     GROUP BY sessionDate
+     ORDER BY sessionDate DESC`,
     [userId, thirtyDaysAgo.toISOString().split('T')[0]] // ISO-Format für den Vergleich
   );
 
-  // Formatiere die Daten für die Heatmap
+  // Formatiere die Daten für die Heatmap (sessionDate, sessionCount)
   const heatmapData = sessions.map(session => ({
-    date: session.date,
-    efficiency: session.efficiency,
-    motivated: session.motivated,
+    date: session.sessionDate,
+    count: session.sessionCount,
   }));
 
   return json(heatmapData);
