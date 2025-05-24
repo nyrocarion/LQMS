@@ -27,6 +27,19 @@
     const d = new Date(date);
     return `${d.getDate()}.${d.getMonth() + 1}`;
   }
+
+  function groupTasks(tasks) {
+    return tasks.reduce((acc, task) => {
+      const modul = task.module || 'Unbekannt';
+      if (!acc[modul]) acc[modul] = [];
+      acc[modul].push(task);
+      return acc;
+    }, {});
+  }
+
+  function getStatusLabel(status: number): string {
+    return ['Waiting', 'Doing', 'Done'][status] || 'Unknown';
+  }
 </script>
 
 <div class="parent">
@@ -60,7 +73,7 @@
     <h3>Aktivitäten (30 Tage)</h3>
     <div class="heatmap">
       {#each heatmapData as { date, count }}
-        <div class="heatmap-day" style="background-color: {getHeatmapColor(count)}" title={`{formatDate(date)}: ${count} Sessions`}></div>
+        <div class="heatmap-day" style="background-color: {getHeatmapColor(count)}" title={`${formatDate(date)}: ${count} Sessions`}></div>
       {/each}
     </div>
   </div>
@@ -108,18 +121,3 @@
     margin-right: 0.5rem;
   }
 </style>
-
-<script lang="ts">
-  function groupTasks(tasks) {
-    return tasks.reduce((acc, task) => {
-      const modul = task.module || 'Unbekannt';
-      if (!acc[modul]) acc[modul] = [];
-      acc[modul].push(task);
-      return acc;
-    }, {});
-  }
-
-  function getStatusLabel(status: number): string {
-    return ['Waiting', 'Doing', 'Done'][status] || 'Unknown';
-  }
-</script>
