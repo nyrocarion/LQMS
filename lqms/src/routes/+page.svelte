@@ -57,7 +57,7 @@
       registerError.username = 'Der Benutzername darf max. 16 Zeichen enthalten.';
       isValid = false;
     } else if (username.length < 2) {
-      registerError.username = 'Der Benutzername muss mind. 2 Zeichen enthalten. Und darf nicht: ", \', \\, ;, `, <, > enthalten.';
+      registerError.username = 'Der Benutzername muss mind. 2 Zeichen enthalten.';
       isValid = false;
     }
 
@@ -73,7 +73,7 @@
       registerError.password = 'Passwort ist erforderlich.';
       isValid = false;
     } else if (!validatePassword(password)) {
-      registerError.password = 'Das Passwort muss mind. 2 Zeichen enthalten';
+      registerError.password = 'Das Passwort muss mind. 2 Zeichen enthalten. Und darf nicht: ", \', \\, ;, `, <, > enthalten.';
       isValid = false;
     }
 
