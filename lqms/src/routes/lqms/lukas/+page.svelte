@@ -139,7 +139,6 @@ const getmotivationEmoji = (value: number): string => {
               name="totalseconds"
               bind:value={totalSeconds}
             />
-            {console.log(totalSeconds)}
             <div class="slider-labels">
               <span>Niedrig</span>
               <span>Hoch</span>
