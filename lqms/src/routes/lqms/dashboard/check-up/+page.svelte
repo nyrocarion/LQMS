@@ -1,84 +1,125 @@
 <script lang="ts">
   import { onMount } from 'svelte';
 
-  type SessionData = {
-    date: string;
-    count: number;
-  };
-
-  let heatmapData: SessionData[] = [];
+  let tasks = [];
+  let heatmapData = [];
+  let streak = 0;
 
   onMount(async () => {
-    // Heatmap-Daten laden
+    const taskRes = await fetch('/api/tasks');
+    tasks = await taskRes.json();
+
     const heatmapRes = await fetch('/api/heatmap');
     heatmapData = await heatmapRes.json();
+
+    const streakRes = await fetch('/api/streak');
+    const streakData = await streakRes.json();
+    streak = streakData.streak;
   });
 
-  // Hilfsfunktion, um die Farbe basierend auf der Häufigkeit der Sessions zu berechnen
   function getHeatmapColor(count: number) {
-    // Je mehr Sessions, desto intensiver wird die Farbe
-    const intensity = Math.min(count * 50, 255); // Maximale Intensität von 255
-    return `rgb(${intensity}, ${255 - intensity}, 150)`; // Rot-Grün Farbskala
+    if (count >= 2) return '#006400';
+    if (count === 1) return '#32CD32';
+    return '#2f2f2f';
   }
 
-  // Hilfsfunktion, um das Datum in eine menschenlesbare Form zu bringen
   function formatDate(date: string) {
     const d = new Date(date);
-    return `${d.getDate()}/${d.getMonth() + 1}`;
+    return `${d.getDate()}.${d.getMonth() + 1}`;
   }
 </script>
 
-<div class="heatmap-container">
-  {#each heatmapData as { date, count }, index}
-    <div 
-      class="heatmap-day" 
-      style="background-color: {getHeatmapColor(count)}" 
-      title={`Sessions: ${count}\nDatum: ${formatDate(date)}`}>
-      {formatDate(date)}
+<div class="parent">
+  <div class="div1">
+    <nav>
+      <h2>Dashboard</h2>
+    </nav>
+  </div>
+
+  <div class="div2">
+    {#if tasks.length === 0}
+      <p>Du hast noch keine Aufgaben hinzugefügt. Beginne mit einer neuen Session, um Fortschritte zu sehen.</p>
+    {:else}
+      {#each Object.entries(groupTasks(tasks)) as [modul, items]}
+        <h3>{modul}</h3>
+        {#each ['Waiting', 'Doing', 'Done'] as statusLabel}
+          <div>
+            <h4>{statusLabel}</h4>
+            <ul>
+              {#each items.filter(task => getStatusLabel(task.status) === statusLabel) as task}
+                <li>{task.displayname}: {task.type}</li>
+              {/each}
+            </ul>
+          </div>
+        {/each}
+      {/each}
+    {/if}
+  </div>
+
+  <div class="div3">
+    <h3>Aktivitäten (30 Tage)</h3>
+    <div class="heatmap">
+      {#each heatmapData as { date, count }}
+        <div class="heatmap-day" style="background-color: {getHeatmapColor(count)}" title={`{formatDate(date)}: ${count} Sessions`}></div>
+      {/each}
     </div>
-  {/each}
+  </div>
+
+  <div class="div4">
+    <h3>Streak</h3>
+    <div class="streak-display">
+      <span class="flame">🔥</span> {streak} Tage in Folge aktiv
+    </div>
+  </div>
 </div>
 
 <style>
-  .heatmap-container {
+  .parent {
     display: grid;
-    grid-template-columns: repeat(7, 1fr); /* 7 Tage pro Reihe */
-    grid-template-rows: repeat(5, 1fr); /* 5 Reihen für 30 Tage */
-    gap: 10px;
-    max-width: 100%;
-    justify-content: center;
-    align-items: center;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-column-gap: 15px;
+    grid-row-gap: 0px;
   }
+  .div1 { grid-area: 1 / 1 / 2 / 3; }
+  .div2 { grid-area: 2 / 1 / 4 / 2; overflow-y: auto; padding: 1rem; }
+  .div3 { grid-area: 2 / 2 / 3 / 3; padding: 1rem; }
+  .div4 { grid-area: 3 / 2 / 4 / 3; padding: 1rem; }
 
+  .heatmap {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+  }
   .heatmap-day {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    transition: background-color 0.3s;
+  }
+
+  .streak-display {
     display: flex;
-    justify-content: center;
     align-items: center;
-    font-size: 10px;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: transform 0.2s, opacity 0.2s;
+    font-size: 1.2rem;
   }
-
-  .heatmap-day:hover {
-    transform: scale(1.2);
-    opacity: 0.8;
-  }
-
-  /* Zusätzliche Tooltip-Stile */
-  .heatmap-day[title]:hover::after {
-    content: attr(title);
-    position: absolute;
-    background-color: rgba(0, 0, 0, 0.7);
-    color: white;
-    padding: 5px;
-    border-radius: 4px;
-    top: -50px;
-    font-size: 12px;
-    white-space: nowrap;
+  .flame {
+    font-size: 2rem;
+    margin-right: 0.5rem;
   }
 </style>
+
+<script lang="ts">
+  function groupTasks(tasks) {
+    return tasks.reduce((acc, task) => {
+      const modul = task.module || 'Unbekannt';
+      if (!acc[modul]) acc[modul] = [];
+      acc[modul].push(task);
+      return acc;
+    }, {});
+  }
+
+  function getStatusLabel(status: number): string {
+    return ['Waiting', 'Doing', 'Done'][status] || 'Unknown';
+  }
+</script>
