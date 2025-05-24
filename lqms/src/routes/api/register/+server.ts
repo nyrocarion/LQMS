@@ -1,6 +1,6 @@
 import { json, type RequestHandler } from '@sveltejs/kit';
-import { createJWT } from '../../../lib/server/jwt';
-import { db } from '../../../lib/server/database';
+import { createJWT } from '$lib/server/jwt';
+import { db } from '$lib/server/database';
 import bcrypt from 'bcrypt';
 import { z } from 'zod';
 import { sendRegistrationMail } from '../../../lib/server/mailer';
