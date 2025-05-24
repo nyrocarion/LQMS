@@ -1,10 +1,26 @@
-// src/routes/api/tasks/+server.ts
+import { parse } from 'cookie';
 import { db } from '$lib/server/database';
+import { verifyJWT } from '$lib/server/jwt';
 import { json, type RequestHandler } from '@sveltejs/kit';
 
-export const GET: RequestHandler = async ({ locals }) => {
-  const userId = locals.user?.id;
-  if (!userId) return json({ error: 'Nicht eingeloggt' }, { status: 401 });
+export const GET: RequestHandler = async ({ request  }) => {
+
+  const cookieHeader = request.headers.get('cookie');
+  const cookies = parse(cookieHeader || '');
+  const token = cookies.authToken;
+
+  if (!token) {
+    return json({ error: 'Nicht eingeloggt' }, { status: 401 });
+  }
+
+  let payload;
+  try {
+    payload = verifyJWT(token);
+  } catch (err) {
+    return new Response(JSON.stringify({ error: 'Token ungültig' }), { status: 403 });
+  }
+
+  const userId = payload.id;
 
   const [courses] = await db.query(
     `SELECT id, module, displayname, presentationstatus, scriptstatus, notesstatus, exercisestatus, exercisesheet
