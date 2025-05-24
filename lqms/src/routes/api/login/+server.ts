@@ -68,6 +68,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
     return json({ message: 'Anmeldung erfolgreich', user: { id: user.id, username: user.username, email: user.email } }, { status: 200 });
 
   } catch (error) {
+    console.log(error)
     return json({ message: 'Serverfehler' }, { status: 500 });
   }
 };
