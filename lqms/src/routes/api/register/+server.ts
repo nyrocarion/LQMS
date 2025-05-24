@@ -12,7 +12,7 @@ const SALT_ROUNDS = 15;
 const registerSchema = z.object({
   username: z.string().min(2).max(16),
   email: z.string().email(),
-  password: z.string().min(10),
+  password: z.string().regex(/^[^"'\\;`<>]{10,}$/, 'Das Passwort ist nicht sicher genug.'),
 });
 
 /** Hier erfolgt die eigentliche Registrierung: */
@@ -54,6 +54,10 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 
       const token = createJWT(payload);
 
+      if(cookies.get('authToken')) {
+        cookies.delete('authToken', { path: '/' });
+      }
+
       cookies.set('authToken', token, {
         httpOnly: true,
         secure: true,
@@ -70,7 +74,6 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
       }
     }
   } catch (error) {
-    console.error('Fehler bei der Registrierung:', error);
     return json({ message: 'Serverfehler' }, { status: 500 });
   }
 };

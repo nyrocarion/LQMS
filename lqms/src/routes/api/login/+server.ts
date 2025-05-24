@@ -51,9 +51,12 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
       id: user.id,
       username: user.username,
     };
+
     const token = createJWT(payload);
   
-    if(!cookies.get('authToken')) {
+    if(cookies.get('authToken')) {
+      cookies.delete('authToken', { path: '/' });
+    }
 
       cookies.set('authToken', token, {
         httpOnly: true,
@@ -61,12 +64,10 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
         path: '/',
         maxAge: 60 * 60 * 8, // 8 Stunden Gültigkeiten für einen JWT
       });
-    }
 
     return json({ message: 'Anmeldung erfolgreich', user: { id: user.id, username: user.username, email: user.email } }, { status: 200 });
 
   } catch (error) {
-    console.error('Fehler bei der Anmeldung:', error);
     return json({ message: 'Serverfehler' }, { status: 500 });
   }
 };

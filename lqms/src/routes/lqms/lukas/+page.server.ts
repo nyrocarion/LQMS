@@ -25,7 +25,10 @@ export const actions: Actions = {
     try {
       // JWT wird vom Cookie abgegriffen und decoded um ID zu extrahieren
       const jwt = cookies.get('authToken');
-      const userId = verifyJWT(jwt)?.id ?? 0;
+      const userId = verifyJWT(jwt)?.id ?? null;
+
+      if(userId == null)
+        return { error: 'Du bist nicht angemeldet!'};
 
       // DB-Eintrag
       await db.query(
@@ -35,7 +38,6 @@ export const actions: Actions = {
 
       return { success: 'Feedback gespeichert!' };
     } catch (err) {
-      console.error(err);
       return fail(500, { error: 'Fehler beim Speichern' });
     }
   }

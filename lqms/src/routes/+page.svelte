@@ -41,6 +41,11 @@
     return emailRegex.test(email);
   }
 
+  function validatePassword(pw: string): boolean {
+    const pwRegex = /^[^"'\\;`<>]{10,}$/;
+    return pwRegex.test(pw);
+  }
+
   function validateRegisterForm(): boolean {
     let isValid = true;
     registerError = {};
@@ -52,7 +57,7 @@
       registerError.username = 'Der Benutzername darf max. 16 Zeichen enthalten.';
       isValid = false;
     } else if (username.length < 2) {
-      registerError.username = 'Der Benutzername muss mind. 2 Zeichen enthalten.';
+      registerError.username = 'Der Benutzername muss mind. 2 Zeichen enthalten. Und darf nicht: ", \', \\, ;, `, <, > enthalten.';
       isValid = false;
     }
 
@@ -67,8 +72,8 @@
     if (!password.trim()) {
       registerError.password = 'Passwort ist erforderlich.';
       isValid = false;
-    } else if (password.length < 10) {
-      registerError.password = 'Das Passwort muss mind. 10 Zeichen lang sein.';
+    } else if (!validatePassword(password)) {
+      registerError.password = 'Das Passwort muss mind. 2 Zeichen enthalten';
       isValid = false;
     }
 
