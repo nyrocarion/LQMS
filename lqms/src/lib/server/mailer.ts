@@ -1,5 +1,4 @@
 import  nodemailer  from 'nodemailer';
-import dotenv from 'dotenv';
 
 export async function sendRegistrationMail(to: string, username: string) {
   const transporter = nodemailer.createTransport({
