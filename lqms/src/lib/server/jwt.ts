@@ -6,6 +6,7 @@ interface UserPayload {
 }
 
 export function createJWT(payload: UserPayload): string {
+  console.log('JWT_SECRET_KEY:', process.env.JWT_SECRET);
   return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '8h' });
 }
 
