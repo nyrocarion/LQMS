@@ -5,6 +5,7 @@
   let heatmapData = [];
   let streak = 0;
 
+  /** Vorladen der Daten aus API-Endpunkten */
   onMount(async () => {
     const taskRes = await fetch('/api/tasks');
     tasks = await taskRes.json();
@@ -17,17 +18,20 @@
     streak = streakData.streak;
   });
 
+  /** Selektion der Farbe der Heatmap zu je einem Tag */
   function getHeatmapColor(count: number) {
     if (count >= 2) return '#006400';
     if (count === 1) return '#32CD32';
     return '#2f2f2f';
   }
 
+  /** Formatieren des Datums */
   function formatDate(date: string) {
     const d = new Date(date);
     return `${d.getDate()}.${d.getMonth() + 1}`;
   }
 
+  /** Gruppieren eines Moduls */
   function groupTasks(tasks) {
     return tasks.reduce((acc, task) => {
       const modul = task.module || 'Unbekannt';
@@ -37,6 +41,7 @@
     }, {});
   }
 
+  /** Holen des Status je Modul */
   function getStatusLabel(status: number): string {
     return ['Waiting', 'Doing', 'Done'][status] || 'Unknown';
   }

@@ -5,23 +5,24 @@ import { json, type RequestHandler } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async ({ request  }) => {
 
+  /** Laden des authTokens */
   const cookieHeader = request.headers.get('cookie');
   const cookies = parse(cookieHeader || '');
   const token = cookies.authToken;
 
-  if (!token) {
-    return json({ error: 'Nicht eingeloggt' }, { status: 401 });
-  }
-
   let payload;
+
+  /** Verrifizieren des Tokens */
   try {
     payload = verifyJWT(token);
   } catch (err) {
     return new Response(JSON.stringify({ error: 'Token ungültig' }), { status: 403 });
   }
 
+  /** Laden der User-ID */
   const userId = payload.id;
 
+  /** Modellierung eines Kurses */
   const [courses] = await db.query(
     `SELECT id, module, displayname, presentationstatus, scriptstatus, notesstatus, exercisestatus, exercisesheet
      FROM course

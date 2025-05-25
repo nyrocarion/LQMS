@@ -37,11 +37,13 @@
   }
 
   function validateEmail(email: string): boolean {
+    /** E-Mail Pattern */
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return emailRegex.test(email);
   }
 
   function validatePassword(pw: string): boolean {
+    /** Passwort Pattern */
     const pwRegex = /^[^"'\\;`<>]{10,}$/;
     return pwRegex.test(pw);
   }
@@ -80,6 +82,7 @@
     return isValid;
   }
 
+  /** Senden des Registrierungsformulars */
   async function submitRegisterForm() {
     if (validateRegisterForm()) {
       try {
@@ -95,10 +98,9 @@
 
         if (response.ok) {
           registrationSuccessMessage = 'Registrierung erfolgreich!';
-          // Optional: Nach kurzer Zeit die Nachricht wieder ausblenden
           setTimeout(() => {
             closeAuthModal();
-          }, 1000);
+          }, 1250);
         } else {
           registerError.general = data.message || 'Registrierung fehlgeschlagen.';
           if (data.errors) {
@@ -116,6 +118,7 @@
     }
   }
 
+  /** Senden des Loginformulars */
   async function submitLoginForm() {
     try {
       const response = await fetch('/api/login', {

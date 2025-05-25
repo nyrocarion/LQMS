@@ -52,8 +52,10 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
         username
       };
 
+      /** Erstellen eines JWTs */
       const token = createJWT(payload);
 
+      /** Re-Set eines Tokens */
       if(cookies.get('authToken')) {
         cookies.delete('authToken', { path: '/' });
       }
@@ -65,6 +67,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
         maxAge: 60 * 60 * 8, // 8 Stunden Gültigkeiten für einen JWT
       });
 
+      /** Senden der Registrierungsemail */
       sendRegistrationMail(email, username);
 
       if (result[0].affectedRows === 1) {
