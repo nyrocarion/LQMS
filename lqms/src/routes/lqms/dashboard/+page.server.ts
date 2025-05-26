@@ -8,12 +8,14 @@ async function fetchDateFact() {
   var day = String(today.getDate()).padStart(2, '0');
   var month = String(today.getMonth() + 1).padStart(2, '0'); 
   try {
+    const key = process.env.RAPID_API_KEY;
+    const host = process.env.RAPID_API_HOST;
     const response = await fetch("https://numbersapi.p.rapidapi.com/"+month+"/"+day+"/date?json=true",
       {
         method: 'GET',
         headers: {
-          'x-rapidapi-key': process.env.RAPID_API_KEY,
-          'x-rapidapi-host': process.env.RAPID_API_HOST,
+          'x-rapidapi-key': key,
+          'x-rapidapi-host': host,
         }
       }
     );
