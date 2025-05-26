@@ -60,10 +60,7 @@
     .panel {
       background: var(--panel-col);
       border-radius: 8px;
-      min-height: 80px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      padding: 5%;
       font-weight: 600;
       color: #655a55;
     }
@@ -71,16 +68,8 @@
       .row{
       display:flex;
       gap:var(--row-gap);
-      flex:1;           /* darf volle Höhe der Spalte belegen */
-      min-height:0;     /* lässt die Kinder bestimmen, wie hoch sie sein wollen */
-      }
-
-      /* halbe Breite pro Kasten */
-      .halfpanel{
-      flex:1;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      flex:1;           
+      min-height:0;    
       }
 
     /* individual sizes */
