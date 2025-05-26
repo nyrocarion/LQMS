@@ -1,7 +1,7 @@
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import { verifyJWT } from '../../../lib/server/jwt';
-import { db } from '../../../lib/server/database';
+import { verifyJWT } from '$lib/server/jwt';
+import { db } from '$lib/server/database';
 
 async function fetchDateFact() {
   var today = new Date();
@@ -18,7 +18,6 @@ async function fetchDateFact() {
       }
     );
     const data = await response.json(); 
-    console.log(data);
     if (data.found) {
       return data.text;
     } else {
