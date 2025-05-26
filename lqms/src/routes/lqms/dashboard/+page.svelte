@@ -104,35 +104,38 @@
 <section class="dashboard">
   <!-- L -->
   <div class="column">
-    <div class="panel medium beige_bg">Lernverhalten / Konzentrationskurve</div>
-    <div class="panel medium beige_bg">Arbeitszeiten Diagramm</div>
-    <div class="panel medium beige_bg">
-      <h2>Tipps+Tricks API</h2><br>
-      <span>{tip}</span>
-    </div>
-    <div class="panel beige_bg" style="flex:1">Heat Map</div>
+      <div class="panel medium beige_bg">Lernverhalten / Konzentrationskurve</div>
+      <div class="panel medium beige_bg">Arbeitszeiten Diagramm</div>
+      <div class="panel medium beige_bg">
+          <h2>Dein täglicher Lerntipp</h2>
+          <div>{tip}</div>
+      </div>
+      <div class="panel beige_bg" style="flex:1">Heat Map</div>
   </div>
 
   <!-- M -->
   <div class="column">
-    <div class="panel tall beige_bg" style="flex:1">VL Plan</div>
-    <div class="row">
-      <div class="halfpanel panel beige_bg">
-        <h2>Numbers API</h2><br>
-        <span>{dailyfact}</span>
+      <div class="panel tall beige_bg" style="flex:1">VL Plan</div>
+      <div class="row">
+          <div class="panel beige_bg">
+              <h2 >Ein Fakt üher den heutigen Tag</h2><br>
+              <span>{dailyfact}</span>
+          </div>
+          <div class="panel beige_bg">
+              <h2>Deine heutigen Vorlesungen</h2>
+          </div>
       </div>
-      <div class="halfpanel panel beige_bg">heutige Vorlesungen</div>
-    </div>
-    <div class="panel beige_bg" style="flex:1">
-      <img id="meme" src="" alt="Meme"/>
-    </div>
+      <div class="panel beige_bg">
+          <h2>Etwas zum Lachen</h2>
+          <img id="meme" src="" alt="Meme"/>
+      </div>
   </div>
 
   <!-- R -->
   <div class="column">
-    <div class="panel medium beige_bg">Profil Area</div>
-    <div class="panel beige_bg">Start Timer Knopf</div>
-    <div class="panel tall beige_bg">To Do Liste</div>
-    <div class="panel tall beige_bg">Progress Chart</div>
+      <div class="panel medium beige_bg">Profil Area</div>
+      <div class="panel beige_bg">Start Timer Knopf</div>
+      <div class="panel tall beige_bg">To Do Liste</div>
+      <div class="panel tall beige_bg">Progress Chart</div>
   </div>
 </section>
