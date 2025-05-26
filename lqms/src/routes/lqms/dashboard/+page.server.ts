@@ -10,7 +10,7 @@ async function fetchDateFact() {
   try {
     const key = process.env.RAPID_API_KEY;
     const host = process.env.RAPID_API_HOST;
-    console.log(host);
+    console.log("rapidapi host name from env file ",host);
     const response = await fetch("https://numbersapi.p.rapidapi.com/"+month+"/"+day+"/date?json=true",
       {
         method: 'GET',
