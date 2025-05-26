@@ -101,6 +101,13 @@
       gap: 1rem; /* Abstand zwischen den Cards */
       margin-top: 1rem;
     }
+
+    h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 0.5em 0;
+    color: #333;
+   } 
   </style>
 </svelte:head>
 <section class="dashboard">
