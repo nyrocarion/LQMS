@@ -31,6 +31,31 @@ async function fetchDateFact() {
   }
 }
 
+async function loadLecturesForToday(): Promise<
+  { name: string; startTime: string; endTime: string; room: string }[]
+> {
+  const today = new Date().toISOString().split('T')[0];
+
+  const res = await fetch(
+    'https://corsproxy.io/?url=https://api.dhbw.app/rapla/lectures/MA-TINF24CS1/events'
+  );
+
+  if (!res.ok) {
+    throw new Error('Fehler beim Laden der Vorlesungsdaten');
+  }
+
+  const allLectures = await res.json();
+
+  return allLectures
+    .filter((entry: any) => entry.date.split('T')[0] === today)
+    .map((lecture: any) => ({
+      name: lecture.name.trim(),
+      startTime: lecture.startTime,
+      endTime: lecture.endTime,
+      room: lecture.rooms?.[0] || 'Kein Raum angegeben'
+    }));
+}
+
 async function getMeme() {
   try {
     const user = process.env.IMGFLIP_USER;
@@ -79,6 +104,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
   // Aus Api geladen
   const dailyfact = await fetchDateFact();
   const dailymeme = await getMeme();
+  const lectures = await loadLecturesForToday();
 
   // Zusammen zurückgeben (wird in dashboard geladen)
   return {
@@ -86,5 +112,6 @@ export const load: PageServerLoad = async ({ cookies }) => {
     tip,
     dailyfact,
     dailymeme,
+    lectures,
   };
 };

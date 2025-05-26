@@ -3,9 +3,7 @@
 	import type { PageData } from './$types';
   import { onMount } from 'svelte';
 	export let data: PageData;
-	const { user, tip, dailyfact, dailymeme } = data;
-  console.log(dailyfact);
-  console.log(dailymeme);
+	const { user, tip, dailyfact, dailymeme, lectures } = data;
   onMount(() => {
     const memeElement = document.getElementById("meme") as HTMLImageElement;
     memeElement.src = dailymeme;
@@ -99,6 +97,14 @@
     .lightred_bg {
       background: var(--lightred);
     }
+
+    .lecture-card {
+      border: 1px solid #ccc;
+      padding: 1em;
+      margin-bottom: 1em;
+      border-radius: 6px;
+      background: #f9f9f9;
+    }
   </style>
 </svelte:head>
 <section class="dashboard">
@@ -123,6 +129,17 @@
           </div>
           <div class="panel beige_bg">
               <h2>Deine heutigen Vorlesungen</h2>
+              {#if lectures.length === 0}
+                <p>Keine Vorlesungen heute.</p>
+              {:else}
+                {#each lectures as lecture}
+                  <div class="lecture-card">
+                    <h3>{lecture.name}</h3>
+                    <p><strong>Raum:</strong> {lecture.room}</p>
+                    <p><strong>Uhrzeit:</strong> {lecture.startTime} – {lecture.endTime}</p>
+                  </div>
+                {/each}
+              {/if}
           </div>
       </div>
       <div class="panel beige_bg">
