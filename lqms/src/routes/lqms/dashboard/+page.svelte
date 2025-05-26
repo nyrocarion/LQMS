@@ -123,25 +123,25 @@
               <h2 >Ein Fakt üher den heutigen Tag</h2><br>
               <span>{dailyfact}</span>
           </div>
-          <div class="panel beige_bg lecture-container">
-              <h2>Deine heutigen Vorlesungen</h2>
-              {#if lectures.length === 0}
-                <p>Keine Vorlesungen heute.</p>
-              {:else}
-                {#each lectures as lecture}
-                  <div class="lecture-card">
-                    <h3>{lecture.name}</h3>
-                    <p><strong>Raum:</strong> {lecture.room}</p>
-                    <p><strong>Uhrzeit:</strong> {lecture.startTime} – {lecture.endTime}</p>
-                  </div>
-                {/each}
-              {/if}
+          <div class="panel beige_bg">
+          <h2>Etwas zum Lachen</h2>
+          <img style="height:100px;" id="meme" src="" alt="Meme"/>
           </div>
       </div>
-      <div class="panel beige_bg">
-          <h2>Etwas zum Lachen</h2>
-          <img id="meme" src="" alt="Meme"/>
-      </div>
+      <div class="panel beige_bg lecture-container">
+        <h2>Deine heutigen Vorlesungen</h2>
+        {#if lectures.length === 0}
+          <p>Keine Vorlesungen heute.</p>
+        {:else}
+          {#each lectures as lecture}
+            <div class="lecture-card">
+              <h3>{lecture.name}</h3>
+              <p><strong>Raum:</strong> {lecture.room}</p>
+              <p><strong>Uhrzeit:</strong> {lecture.startTime} – {lecture.endTime}</p>
+            </div>
+          {/each}
+        {/if}
+    </div>
   </div>
 
   <!-- R -->
