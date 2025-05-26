@@ -34,6 +34,8 @@ async function fetchDateFact() {
 
 async function getMeme() {
   try {
+    const user = process.env.IMGFLIP_USER;
+    const pw = process.env.IMGFLIP_PW;
     const response = await fetch("https://api.imgflip.com/caption_image", {
       method: "POST",
       headers: {
@@ -43,8 +45,8 @@ async function getMeme() {
           template_id: "114585149",
           text0: "Ich wenn die Meme API langsam lädt",
           text1: "",
-          username: process.env.IMGFLIP_USER,
-          password: process.env.IMGFLIP_PW,
+          username: user,
+          password: pw,
     })
     });
     const data = await response.json();
