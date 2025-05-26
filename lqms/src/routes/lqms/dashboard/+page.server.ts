@@ -12,8 +12,8 @@ async function fetchDateFact() {
       {
         method: 'GET',
         headers: {
-          'x-rapidapi-key': 'b829319507msh5e68efc7f9de9e3p18add8jsn6c2dcebab1be',
-          'x-rapidapi-host': 'numbersapi.p.rapidapi.com'
+          'x-rapidapi-key': process.env.RAPID_API_KEY,
+          'x-rapidapi-host': process.env.RAPID_API_HOST,
         }
       }
     );
@@ -41,8 +41,8 @@ async function getMeme() {
           template_id: "114585149",
           text0: "Ich wenn die Meme API langsam lädt",
           text1: "",
-          username: "webappproject",
-          password: "webappproject",
+          username: process.env.IMGFLIP_USER,
+          password: process.env.IMGFLIP_PW,
     })
     });
     const data = await response.json();
