@@ -31,6 +31,14 @@ async function fetchDateFact() {
   }
 }
 
+function formatTime(timeString: string): string {
+  const [hours, minutes] = new Date(timeString)
+    .toISOString()
+    .split('T')[1]
+    .split(':');
+  return `${hours}:${minutes}`;
+}
+
 async function loadLecturesForToday(): Promise<
   { name: string; startTime: string; endTime: string; room: string }[]
 > {
@@ -50,8 +58,8 @@ async function loadLecturesForToday(): Promise<
     .filter((entry: any) => entry.date.split('T')[0] === today)
     .map((lecture: any) => ({
       name: lecture.name.trim(),
-      startTime: lecture.startTime,
-      endTime: lecture.endTime,
+      startTime: formatTime(lecture.startTime),
+      endTime: formatTime(lecture.endTime),
       room: lecture.rooms?.[0] || 'Kein Raum angegeben'
     }));
 }

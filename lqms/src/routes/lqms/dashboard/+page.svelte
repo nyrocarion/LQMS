@@ -103,7 +103,14 @@
       padding: 1em;
       margin-bottom: 1em;
       border-radius: 6px;
-      background: #f9f9f9;
+      background: #EBC2C6;
+    }
+
+    .lecture-container {
+      display: flex;
+      flex-direction: column; /* Untereinander */
+      gap: 1rem; /* Abstand zwischen den Cards */
+      margin-top: 1rem;
     }
   </style>
 </svelte:head>
@@ -127,7 +134,7 @@
               <h2 >Ein Fakt üher den heutigen Tag</h2><br>
               <span>{dailyfact}</span>
           </div>
-          <div class="panel beige_bg">
+          <div class="panel beige_bg lecture-container">
               <h2>Deine heutigen Vorlesungen</h2>
               {#if lectures.length === 0}
                 <p>Keine Vorlesungen heute.</p>
