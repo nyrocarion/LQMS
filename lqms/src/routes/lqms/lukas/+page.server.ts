@@ -1,7 +1,7 @@
 import { fail, type Actions } from '@sveltejs/kit';
-import { db } from '../../../lib/server/database';
+import { db } from '$lib/server/database';
 import { z } from 'zod';
-import { verifyJWT } from '../../../lib/server/jwt';
+import { verifyJWT } from '$lib/server/jwt';
 
 const feedbackSchema = z.object({
   efficiency: z.coerce.number().int(),
