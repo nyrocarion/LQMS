@@ -164,20 +164,25 @@
     </div>
 
     <div class="content-box">
-      <h3>Was ist das LQMS?</h3>
-      <div class="section">
-        <div class="text">
-          <b>Optimiere dein Studium mit dem Lernqualitätsmanagementsystem</b>
-          <p>Verbessere deinen Lernprozess, behalte den Überblick und arbeite effizient mit deinen Kommilitonen.</p>
-          <button class="cta" on:click={() => goto('/lqms/lukas')}>Hier gehts zum Button</button>
-          <button class="cta" on:click={() => goto('/lqms')}>Hier gehts zur Zwischenseite</button>
+      <div class="content-box">
+        <div>
+          <h3>Was ist das LQMS?</h3>
+          <div class="section">
+            <div class="text">
+              <b>Optimiere dein Studium mit dem Lernqualitätsmanagementsystem</b>
+              <p>Verbessere deinen Lernprozess, behalte den Überblick und arbeite effizient mit deinen Kommilitonen.</p>
+              <button class="cta" on:click={() => goto('/lqms/lukas')}>Hier gehts zum Button</button>
+              <button class="cta" on:click={() => goto('/lqms')}>Hier gehts zur Zwischenseite</button>
+            </div>
+          </div>
         </div>
-      </div>
-
-      <h3>Womit hilft es dir?</h3>
-      <div class="section">
-        <div class="text">
-          <p>Lorem ipsum dolor sit amet, consectetur sadipscing elitr, sed diam nonumy eirmod tempor...</p>
+        <div>
+          <h3>Womit hilft es dir?</h3>
+          <div class="section">
+            <div class="text">
+              <p>Lorem ipsum dolor sit amet, consectetur sadipscing elitr, sed diam nonumy eirmod tempor...</p>
+            </div>
+          </div>
         </div>
       </div>
 
