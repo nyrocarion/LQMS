@@ -418,12 +418,12 @@
   }
 
   .content-box {
-    background: rgba(255, 255, 255, 0.2);
+    background: #CA74A0;
     border-radius: 1rem;
     padding: 2rem;
     margin-top: 2rem;
-    backdrop-filter: blur(10px);
   }
+
 
   .section {
     display: flex;
