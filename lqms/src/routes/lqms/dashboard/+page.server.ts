@@ -42,7 +42,10 @@ function formatTime(timeString: string): string {
 async function loadLecturesForToday(): Promise<
   { name: string; startTime: string; endTime: string; room: string }[]
 > {
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date()
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+  const date = yesterday.getDate();
 
   const res = await fetch(
     'https://corsproxy.io/?url=https://api.dhbw.app/rapla/lectures/MA-TINF24CS1/events'
@@ -55,7 +58,7 @@ async function loadLecturesForToday(): Promise<
   const allLectures = await res.json();
 
   return allLectures
-    .filter((entry: any) => entry.date.split('T')[0] === today)
+    .filter((entry: any) => entry.date.split('T')[0] === date)
     .map((lecture: any) => ({
       name: lecture.name.trim(),
       startTime: formatTime(lecture.startTime),
