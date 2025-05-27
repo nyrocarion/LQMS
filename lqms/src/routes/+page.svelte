@@ -142,25 +142,60 @@
 </script>
 
 <div class="hero">
-  <h1>Optimiere dein Studium mit dem Lernqualitätsmanagementsystem</h1>
-  <p>Verbessere deinen Lernprozess, behalte den Überblick und arbeite effizient mit deinen Kommilitonen.</p>
-  <img id = "meme" style="width: 200px" src=""/>
-  <button class="cta">Mehr erfahren</button>
-  <a href="/lqms/dashboard">Hier geht es zum Dasboard (temporary route)</a>
-  <a href="/lqms"> Another link </a>
-  <a href="/lqms/lukas"> Hier gehts zum Button</a>
-  <span><b>Daily Facts</b></span>
-  <span id="dateFact">...</span>
-  <div class="auth-links">
-    <button class="register-button" on:click={() => openAuthModal('register')}>
-      Registrieren
-    </button>
-    oder
-    <button class="login-button" on:click={() => openAuthModal('login')}>
-      Anmelden
-    </button>
+  <div class="app-container">
+    <div class="top-left-box">
+      <div class="auth-links">
+        <button class="register-button" on:click={() => openAuthModal('register')}>
+          Registrieren
+        </button>
+        oder
+        <button class="login-button" on:click={() => openAuthModal('login')}>
+          Anmelden
+        </button>
+      </div>
+    </div>
+
+    <button class="top-right-button">Zum Start!</button>
+
+    <div class="headline">
+      <h1>LQMS</h1>
+      <h2>Lernqualitätsmanagementsystem</h2>
+    </div>
+
+    <div class="content-box">
+      <h3>Was ist das LQMS?</h3>
+      <div class="section">
+        <div class="text">
+          <b>Optimiere dein Studium mit dem Lernqualitätsmanagementsystem</b>
+          <p>Verbessere deinen Lernprozess, behalte den Überblick und arbeite effizient mit deinen Kommilitonen.</p>
+        </div>
+      </div>
+
+      <h3>Womit hilft es dir?</h3>
+      <div class="section">
+        <div class="text">
+          Lorem ipsum dolor sit amet, consectetur sadipscing elitr, sed diam nonumy eirmod tempor...
+          <button class="cta">Mehr erfahren</button>
+          <a href="/lqms/dashboard">Hier geht es zum Dasboard (temporary route)</a>
+          <a href="/lqms"> Another link </a>
+          <a href="/lqms/lukas"> Hier gehts zum Button</a>
+        </div>
+        <div class="image">
+          <img src="https://via.placeholder.com/300x200" alt="Example image" />
+        </div>
+      </div>
+
+      <h3>Über uns</h3>
+      <div class="avatar-grid">
+        <div class="avatar"></div>
+        <div class="avatar"></div>
+        <div class="avatar"></div>
+        <div class="avatar"></div>
+      </div>
+    </div>
   </div>
 </div>
+
 
 {#if showAuthModal}
   <div class="modal-overlay" on:click={closeAuthModal}>
