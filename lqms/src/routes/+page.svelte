@@ -371,4 +371,121 @@
     margin-bottom: 10px;
     font-weight: bold;
   }
+
+    :global(body) {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+  }
+
+  .app-container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: auto;
+    position: relative;
+  }
+
+  .top-left-box {
+    background: white;
+    color: #444;
+    padding: 1rem;
+    border-radius: 1rem;
+    width: 220px;
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .top-right-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #d65ba9;
+    border: none;
+    border-radius: 999px;
+    padding: 1rem 2rem;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .headline {
+    text-align: center;
+    margin-top: 6rem;
+  }
+
+  .headline h1 {
+    font-size: 4rem;
+    margin: 0;
+  }
+
+  .headline h2 {
+    font-size: 1.2rem;
+    font-weight: 300;
+    margin-top: 0.5rem;
+  }
+
+  .content-box {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-top: 2rem;
+    backdrop-filter: blur(10px);
+  }
+
+  h3 {
+    margin-top: 1.5rem;
+    color: #fff;
+  }
+
+  .section {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .text {
+    flex: 1;
+    min-width: 250px;
+  }
+
+  .image {
+    flex: 1;
+    min-width: 250px;
+  }
+
+  .image img {
+    width: 100%;
+    border-radius: 0.5rem;
+  }
+
+  .avatar-grid {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 1rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .avatar {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .avatar::before {
+    content: "👤";
+    font-size: 2rem;
+    color: #555;
+  }
 </style>
