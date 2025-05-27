@@ -156,7 +156,7 @@
       </div>
     </div>
 
-    <button class="top-right-button" on:click={() => goto('/lqms/dashboard')}>Zum Start!</button>
+    <button class="cta" on:click={() => goto('/lqms/dashboard')}>Zum Start!</button>
 
     <div class="headline">
       <h1>LQMS</h1>
@@ -273,7 +273,7 @@
 
   .cta {
     padding: 10px 20px;
-    background-color: #007bff;
+    background-color: #d65ba9;
     color: white;
     border: none;
     border-radius: 5px;
@@ -402,19 +402,6 @@
     left: 1rem;
     font-weight: bold;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  }
-
-  .top-right-button {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background: #d65ba9;
-    border: none;
-    border-radius: 999px;
-    padding: 1rem 2rem;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
   }
 
   .headline {
