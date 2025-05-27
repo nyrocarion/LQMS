@@ -1,1 +1,36 @@
 @import 'tailwindcss';
+
+@tailwind utilities;
+
+/* allgemeine Schriftart für die Anwendung */
+body{
+.poppins-regular {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+    }
+}
+
+h1{
+.poppins-semibold {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+    }
+}
+
+h2{
+.poppins-medium {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+    }
+}
+
+p{
+.poppins-regular {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+    }
+}
