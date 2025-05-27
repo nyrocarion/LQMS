@@ -6,5 +6,5 @@
 
 {@render children()}
 
-/* die Datei wird für die gesamte Anwendung genutzt */
-/* +page.svelte ist für die spezifischen Seiten */
+// die Datei wird für die gesamte Anwendung genutzt 
+// +page.svelte ist für die spezifischen Seiten
