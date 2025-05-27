@@ -1,3 +1,4 @@
+<script lang="ts">
 let totalSeconds = 0;
 let clock = 0;
 let isRunning = false;
