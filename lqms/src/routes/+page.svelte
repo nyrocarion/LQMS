@@ -261,16 +261,6 @@
     position: relative; /* Wichtig für die absolute Positionierung des Overlays */
   }
 
-  h1 {
-    font-size: 2.5em;
-    margin-bottom: 10px;
-  }
-
-  p {
-    font-size: 1.1em;
-    margin-bottom: 20px;
-  }
-
   .cta {
     padding: 10px 20px;
     background-color: #d65ba9;
@@ -433,11 +423,6 @@
     padding: 2rem;
     margin-top: 2rem;
     backdrop-filter: blur(10px);
-  }
-
-  h3 {
-    margin-top: 1.5rem;
-    color: #fff;
   }
 
   .section {
