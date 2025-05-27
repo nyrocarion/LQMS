@@ -156,7 +156,7 @@
       </div>
     </div>
 
-    <button class="cta" on:click={() => goto('/lqms/dashboard')}>Zum Start!</button>
+    <button class="cta top-right-button" on:click={() => goto('/lqms/dashboard')}>Zum Start!</button>
 
     <div class="headline">
       <h1>LQMS</h1>
@@ -282,6 +282,12 @@
     margin-bottom: 20px;
   }
 
+  .cta.top-right-button{
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
+
   .auth-links {
     display: flex;
     gap: 20px;
@@ -386,7 +392,8 @@
 
   .app-container {
     padding: 2rem;
-    max-width: 1200px;
+    max-width: 1920px;
+    min-width: 1200px;
     margin: auto;
     position: relative;
     background: linear-gradient(90deg, #FEC996,#E37C95,#B894DC,#EAC4F4);
