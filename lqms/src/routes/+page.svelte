@@ -183,13 +183,26 @@
 
       <h3>Über uns</h3>
       <div class="avatar-grid">
-        <div class="avatar">
-          <img src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png"/>
-          <p>Some sort of subtitle</p>
+        <div class="avatar-card">
+          <h4>El Don </h4>
+          <img src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png" alt="Avatar 1" />
+          <p>Backend-Profi</p>
         </div>
-        <div class="avatar"><img src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png"/></div>
-        <div class="avatar"><img src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png"/></div>
-        <div class="avatar"><img src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png"/></div>
+        <div class="avatar-card">
+          <h4>Luk</h4>
+          <img src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png" alt="Avatar 2" />
+          <p>Zeitmanipulator</p>
+        </div>
+        <div class="avatar-card">
+          <h4>Nastii</h4>
+          <img src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png" alt="Avatar 3" />
+          <p>Farbspezialist</p>
+        </div>
+        <div class="avatar-card">
+          <h4>Nik</h4>
+          <img src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png" alt="Avatar 4" />
+          <p>Spaghetticodemonster</p>
+        </div>
       </div>
     </div>
   </div>
@@ -371,18 +384,12 @@
     font-weight: bold;
   }
 
-    :global(body) {
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    color: white;
-  }
-
   .app-container {
     padding: 2rem;
     max-width: 1200px;
     margin: auto;
     position: relative;
+    background: linear-gradient(90deg, "#FEC996","#E37C95","#B894DC","#EAC4F4");
   }
 
   .top-left-box {
@@ -463,22 +470,42 @@
   }
 
   .avatar-grid {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 1rem;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
 
-  .avatar {
-    background: #fff;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    width: 80px;
-    height: 80px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+.avatar-card {
+  background: white;
+  color: #333;
+  padding: 1rem;
+  border-radius: 1rem;
+  text-align: center;
+  width: 150px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.avatar-card img {
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  margin: 0.5rem 0;
+}
+
+.avatar-card h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.avatar-card p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #666;
+}
 
 </style>
