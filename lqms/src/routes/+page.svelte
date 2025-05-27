@@ -184,12 +184,12 @@
       <h3>Über uns</h3>
       <div class="avatar-grid">
         <div class="avatar-card">
-          <h4>El Don </h4>
-          <img src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png" alt="Avatar 1" />
+          <h4>Marco </h4>
+          <img src="https://avatars.githubusercontent.com/u/42667267?s=400&u=13540984947564df7cadf4831d28dbd3e62ce53c&v=4" alt="Avatar von El Don" />
           <p>Backend-Profi</p>
         </div>
         <div class="avatar-card">
-          <h4>Luk</h4>
+          <h4>Lukas</h4>
           <img src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png" alt="Avatar 2" />
           <p>Zeitmanipulator</p>
         </div>
