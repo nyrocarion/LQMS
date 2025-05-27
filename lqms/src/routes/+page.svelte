@@ -256,20 +256,17 @@
 {/if}
 
 <style>
-.info-columns {
-  display: flex;
-  gap: 2rem;
-  flex-wrap: wrap;
-  margin-top: 2rem;
-}
+  .info-columns {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
 
-.info-box {
-  flex: 1 1 50%;
-  background: #fff;
-  padding: 1rem;
-  border-radius: 1rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
+  .info-box {
+    flex: 1 1 50%;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
 
   .hero {
     display: flex;
