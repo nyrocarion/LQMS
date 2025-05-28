@@ -49,18 +49,24 @@
 
 <div class="parent app-container">
   <div class="div1">
-    <nav>
-      <h2>Dashboard</h2>
-    </nav>
-  </div>
-
-  <div class="div2">
-    {#if tasks.length === 0}
-      <p>Du hast noch keine Aufgaben hinzugefügt. Beginne mit einer neuen Session, um Fortschritte zu sehen.</p>
-    {:else}
-      {#each Object.entries(groupTasks(tasks)) as [modul, items]}
-        <h3>{modul}</h3>
-        {#each ['Waiting', 'Doing', 'Done'] as statusLabel}
+    <header class="nav">
+    <ul>
+      <li id="sessions"><a href="../sessions/+page.svelte">Sessions</a></li>
+      <li id="checkup"><a href="./+page.svelte">Check-Up</a></li>
+      <li id="dashboard"><a href="../+page.svelte">Dashboard</a></li>
+      <li id="lectures"><a href="../lectures/+page.svelte">Vorlesungen</a></li>
+    </ul>
+  </header>
+    <main>
+      <article>
+        <h2 class="bold">Check-Up</h2>
+        <div class="div2">
+          {#if tasks.length === 0}
+            <p>Du hast noch keine Aufgaben hinzugefügt. <br>Beginne mit einer neuen Session, um Fortschritte zu sehen.</p>
+          {:else}
+            {#each Object.entries(groupTasks(tasks)) as [modul, items]}
+          <h3>{modul}</h3>
+          {#each ['Waiting', 'Doing', 'Done'] as statusLabel}
           <div>
             <h4>{statusLabel}</h4>
             <ul>
@@ -69,9 +75,12 @@
               {/each}
             </ul>
           </div>
-        {/each}
-      {/each}
-    {/if}
+          {/each}
+            {/each}
+          {/if}
+        </div>
+      </article>
+    </main>
   </div>
 
   <div class="div3">
@@ -92,37 +101,82 @@
 </div>
 
 <style>
-  .parent {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    grid-column-gap: 15px;
-    grid-row-gap: 0px;
-  }
-  .div1 { grid-area: 1 / 1 / 2 / 3; }
-  .div2 { grid-area: 2 / 1 / 4 / 2; overflow-y: auto; padding: 1rem; }
-  .div3 { grid-area: 2 / 2 / 3 / 3; padding: 1rem; }
-  .div4 { grid-area: 3 / 2 / 4 / 3; padding: 1rem; }
+main {
+  background-color: white;
+  padding: 10px 25px 10px 25px; /* Top - Right - Bottom - Left */
+  border-radius: 15px;
+  max-width: 500px;
+}
 
-  .heatmap {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 4px;
-  }
-  .heatmap-day {
-    width: 20px;
-    height: 20px;
-    border-radius: 3px;
-    transition: background-color 0.3s;
-  }
+.parent {
+  display: grid;
+  grid-template-areas:
+    "nav nav"
+    "div1 div1"
+    "div2 div3"
+    "div2 div4";
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto auto 1fr auto;
+  gap: 15px 0;
+}
 
-  .streak-display {
-    display: flex;
-    align-items: center;
-    font-size: 1.2rem;
-  }
-  .flame {
-    font-size: 2rem;
-    margin-right: 0.5rem;
-  }
+.nav {
+  grid-area: nav;
+  padding: 1rem;
+}
+
+.div1 { grid-area: div1; }
+.div2 { grid-area: div2; }
+.div3 { grid-area: div3; }
+.div4 { grid-area: div4; }
+
+.heatmap {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.heatmap-day {
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  transition: background-color 0.3s;
+}
+
+.streak-display {
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+.flame {
+  font-size: 2rem;
+  margin-right: 0.5rem;
+}
+
+.nav {
+  grid-area: nav;
+}
+
+#sessions, #checkup, #dashboard, #lectures {
+  padding: 15px 55px 15px 55px; /* Top - Right - Bottom - Left */
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+#sessions {
+  background-color: #479496;
+}
+
+#checkup {
+  background-color: #3C68A3;
+}
+
+#dashboard {
+  background-color: #B96C96;
+}
+
+#lectures {
+  background-color: #EC7B6A;
+}
 </style>
