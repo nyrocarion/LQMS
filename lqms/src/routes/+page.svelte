@@ -397,15 +397,6 @@
     font-weight: bold;
   }
 
-  .app-container {
-    padding: 2rem;
-    max-width: 1920px;
-    min-width: 1200px;
-    margin: auto;
-    position: relative;
-    background: linear-gradient(90deg, #FEC996,#E37C95,#B894DC,#EAC4F4);
-  }
-
   .top-left-box {
     background: white;
     color: #444;
