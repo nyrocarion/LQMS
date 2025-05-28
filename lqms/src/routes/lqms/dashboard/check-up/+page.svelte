@@ -51,10 +51,10 @@
   <div class="div1">
     <header class="nav">
     <ul>
-      <li id="sessions"><a href="../sessions/+page.svelte">Sessions</a></li>
-      <li id="checkup"><a href="./+page.svelte">Check-Up</a></li>
-      <li id="dashboard"><a href="../+page.svelte">Dashboard</a></li>
-      <li id="lectures"><a href="../lectures/+page.svelte">Vorlesungen</a></li>
+      <li id="sessions"><a href="../dashboard/sessions/">Sessions</a></li>
+      <li id="checkup"><a href="./check-up">Check-Up</a></li>
+      <li id="dashboard"><a href="../dashboard/">Dashboard</a></li>
+      <li id="lectures"><a href="../dashboard/lectures/">Vorlesungen</a></li>
     </ul>
   </header>
     <main>
