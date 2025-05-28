@@ -47,7 +47,7 @@
   }
 </script>
 
-<div class="parent .app-container">
+<div class="parent app-container">
   <div class="div1">
     <nav>
       <h2>Dashboard</h2>
