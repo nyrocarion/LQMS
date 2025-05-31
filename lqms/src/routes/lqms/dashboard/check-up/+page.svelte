@@ -174,7 +174,7 @@
 .div2 {
   grid-area: div2;
   background-color: white;
-  min-width: 200px;
+  color: #000;
 }
 
 .div3 {
@@ -186,7 +186,6 @@
   grid-area: div4;
   background-color: white;
   padding-bottom: 25px;
-  max-width: 500px;
 }
 
 .heatmap {
