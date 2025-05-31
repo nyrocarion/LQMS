@@ -71,7 +71,7 @@ async function getMeme() {
   try {
     const user = process.env.IMGFLIP_USER;
     const pw = process.env.IMGFLIP_PW;
-    const response = fetch("https://api.imgflip.com/caption_image", {
+    const response = await fetch("https://api.imgflip.com/caption_image", {
       method: "POST",
       headers: {
       "Content-Type": "application/x-www-form-urlencoded"
@@ -85,11 +85,15 @@ async function getMeme() {
     })
     });
     const data = response.json();
+
+    /* Diese Aufrufe existieren in TS nicht für die Konstante data nicht.
+       Hier wurde noch das await hinzugefügt s. Z. 74 an dieser Stelle ist es notwendig.
+
     if (data.success) {
         return data.data.url;
     } else {
         console.error("Meme API Error: ", data.error_message);
-    }
+    }*/
   } 
   catch (error) {
       console.error("Error getting the meme:", error);

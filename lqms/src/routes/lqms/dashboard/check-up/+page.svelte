@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount } from "svelte";
 
   let tasks = [];
   let heatmapData = [];
@@ -7,22 +7,22 @@
 
   /** Vorladen der Daten aus API-Endpunkten */
   onMount(async () => {
-    const taskRes = await fetch('/api/tasks');
+    const taskRes = await fetch("/api/tasks");
     tasks = await taskRes.json();
 
-    const heatmapRes = await fetch('/api/heatmap');
+    const heatmapRes = await fetch("/api/heatmap");
     heatmapData = await heatmapRes.json();
 
-    const streakRes = await fetch('/api/streak');
+    const streakRes = await fetch("/api/streak");
     const streakData = await streakRes.json();
     streak = streakData.streak;
   });
 
   /** Selektion der Farbe der Heatmap zu je einem Tag */
   function getHeatmapColor(count: number) {
-    if (count >= 2) return '#006400';
-    if (count === 1) return '#32CD32';
-    return '#2f2f2f';
+    if (count >= 2) return "#006400";
+    if (count === 1) return "#32CD32";
+    return "#2f2f2f";
   }
 
   /** Formatieren des Datums */
@@ -34,7 +34,7 @@
   /** Gruppieren eines Moduls */
   function groupTasks(tasks) {
     return tasks.reduce((acc, task) => {
-      const modul = task.module || 'Unbekannt';
+      const modul = task.module || "Unbekannt";
       if (!acc[modul]) acc[modul] = [];
       acc[modul].push(task);
       return acc;
@@ -43,92 +43,148 @@
 
   /** Holen des Status je Modul */
   function getStatusLabel(status: number): string {
-    return ['Waiting', 'Doing', 'Done'][status] || 'Unknown';
+    return ["Waiting", "Doing", "Done"][status] || "Unknown";
   }
 </script>
 
-<div class="parent app-container">
-  <div class="div1">
+<div class="app-container">
+  <div class="parent">
     <header class="nav">
-    <ul>
-      <li id="sessions"><a href="../dashboard/sessions/">Sessions</a></li>
-      <li id="checkup"><a href="./check-up">Check-Up</a></li>
-      <li id="dashboard"><a href="../dashboard/">Dashboard</a></li>
-      <li id="lectures"><a href="../dashboard/lectures/">Vorlesungen</a></li>
-    </ul>
-  </header>
-    <main>
-      <article>
-        <h2 class="bold">Check-Up</h2>
-        <div class="div2">
-          {#if tasks.length === 0}
-            <p>Du hast noch keine Aufgaben hinzugefügt. <br>Beginne mit einer neuen Session, um Fortschritte zu sehen.</p>
-          {:else}
-            {#each Object.entries(groupTasks(tasks)) as [modul, items]}
+      <ul>
+        <li id="sessions"><a href="../dashboard/sessions/">Sessions</a></li>
+        <li id="checkup"><a href="./check-up">Check-Up</a></li>
+        <li id="dashboard"><a href="../dashboard/">Dashboard</a></li>
+        <li id="lectures"><a href="../dashboard/lectures/">Vorlesungen</a></li>
+      </ul>
+    </header>
+
+    <div class="div1">
+      <h2>Check-Up -  Übersicht</h2>
+    </div>
+
+  <main class="div2">
+    <article>
+      <h2>Aufgaben</h2>
+      {#if tasks.length === 0}
+        <p>Du hast noch keine Aufgaben hinzugefügt. <br>Beginne mit einer neuen Session, um Fortschritte zu sehen.</p>
+      {:else}
+        {#each Object.entries(groupTasks(tasks)) as [modul, items]}
           <h3>{modul}</h3>
           {#each ['Waiting', 'Doing', 'Done'] as statusLabel}
-          <div>
-            <h4>{statusLabel}</h4>
-            <ul>
-              {#each items.filter(task => getStatusLabel(task.status) === statusLabel) as task}
-                <li>{task.displayname}: {task.type}</li>
-              {/each}
-            </ul>
-          </div>
+            <div>
+              <h4>{statusLabel}</h4>
+              <ul>
+                {#each items.filter(task => getStatusLabel(task.status) === statusLabel) as task}
+                  <li>{task.displayname}: {task.type}</li>
+                {/each}
+              </ul>
+            </div>
           {/each}
-            {/each}
-          {/if}
-        </div>
-      </article>
-    </main>
-  </div>
+        {/each}
+      {/if}
+    </article>
+  </main>
 
-  <div class="div3">
-    <h3>Aktivitäten (30 Tage)</h3>
-    <div class="heatmap">
-      {#each heatmapData as { date, count }}
-        <div class="heatmap-day" style="background-color: {getHeatmapColor(count)}" title={`${formatDate(date)}: ${count} Sessions`}></div>
-      {/each}
-    </div>
-  </div>
+    <aside class="div3">
+      <h3>Aktivitäten (letzte 30 Tage)</h3>
+      <div class="heatmap">
+        {#each heatmapData as { date, count }}
+          <div
+            class="heatmap-day"
+            style="background-color: {getHeatmapColor(count)}"
+            title={`${formatDate(date)}: ${count} Sessions`}
+          ></div>
+        {/each}
+      </div>
+    </aside>
 
-  <div class="div4">
-    <h3>Streak</h3>
-    <div class="streak-display">
-      <span class="flame">🔥</span> {streak} Tage in Folge aktiv
-    </div>
+    <aside class="div4">
+      <h3>Streak</h3>
+      <div class="streak-display" style="">
+        <span class="flame">🔥</span>
+        {streak} Tage in Folge aktiv
+      </div>
+    </aside>
   </div>
 </div>
 
 <style>
-main {
-  background-color: white;
-  padding: 10px 25px 10px 25px; /* Top - Right - Bottom - Left */
-  border-radius: 15px;
-  max-width: 500px;
-}
-
 .parent {
   display: grid;
   grid-template-areas:
     "nav nav"
-    "div1 div1"
-    "div2 div3"
+    "div1 div3"
     "div2 div4";
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: auto auto 1fr auto;
+  grid-template-rows: auto auto 1fr;
   gap: 15px 0;
 }
 
 .nav {
   grid-area: nav;
-  padding: 1rem;
+  padding: 0;
+  margin-bottom: 50px;
 }
 
-.div1 { grid-area: div1; }
-.div2 { grid-area: div2; }
-.div3 { grid-area: div3; }
-.div4 { grid-area: div4; }
+.nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+}
+
+.nav ul li a {
+  display: inline-block;
+  margin: 0 5px;
+  font-weight: 600;
+  color: white;
+  text-decoration: none;
+}
+
+#sessions  { background-color: #479496; }
+#checkup   { background-color: #3c68a3; }
+#dashboard { background-color: #b96c96; }
+#lectures  { background-color: #ec7b6a; }
+
+#sessions, #checkup, #dashboard, #lectures {
+  padding: 15px 55px; /* Top - Right - Bottom - Left */
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+.div2, .div3, .div4 {
+  padding: 10px 25px;
+  border-radius: 15px;
+}
+
+.div1 {
+  grid-area: div1;
+  color: #3c68a3;
+  background-color: white;
+  font-weight: bold;
+  max-width: max-content;
+  padding: 0 25px;
+  border-radius: 15px;
+}
+
+.div2 {
+  grid-area: div2;
+  background-color: white;
+  max-width: 425px;
+}
+
+.div3 {
+  grid-area: div3;
+  background-color: white;
+  max-width: 350px;
+}
+
+.div4 {
+  grid-area: div4;
+  background-color: white;
+  max-width: 350px;
+}
 
 .heatmap {
   display: grid;
@@ -145,6 +201,7 @@ main {
 
 .streak-display {
   display: flex;
+  text-align: center;
   align-items: center;
   font-size: 1.2rem;
 }
@@ -152,31 +209,5 @@ main {
 .flame {
   font-size: 2rem;
   margin-right: 0.5rem;
-}
-
-.nav {
-  grid-area: nav;
-}
-
-#sessions, #checkup, #dashboard, #lectures {
-  padding: 15px 55px 15px 55px; /* Top - Right - Bottom - Left */
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
-}
-
-#sessions {
-  background-color: #479496;
-}
-
-#checkup {
-  background-color: #3C68A3;
-}
-
-#dashboard {
-  background-color: #B96C96;
-}
-
-#lectures {
-  background-color: #EC7B6A;
 }
 </style>
