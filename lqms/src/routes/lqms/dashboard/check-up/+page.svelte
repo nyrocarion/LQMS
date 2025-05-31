@@ -97,7 +97,7 @@
     <div class="div4">
       <h3>Streak</h3>
       <div class="streak-display">
-        <span class="flame">🔥</span><strong>{streak}</strong> Tage in Folge aktiv
+        <span class="flame"><strong>{streak}</strong> 🔥</span>Tage in Folge aktiv
       </div>
     </div>
   </div>
@@ -167,7 +167,6 @@
   color: #3c68a3;
   background-color: white;
   font-weight: bold;
-  max-width: max-content;
   padding: 0 25px;
   border-radius: 15px;
 }
@@ -215,5 +214,7 @@
 .flame {
   font-size: 4rem;
   padding-bottom: 10px;
+  display: inline;
+  vertical-align: middle;
 }
 </style>
