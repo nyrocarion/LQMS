@@ -46,82 +46,87 @@
   }
 </script>
 
-<div class="app-container">
-  <div class="parent">
-    <header class="nav">
-      <ul>
-        <li id="sessions"><a href="../dashboard/sessions/">Sessions</a></li>
-        <li id="checkup"><a href="./check-up">Check-Up</a></li>
-        <li id="dashboard"><a href="../dashboard/">Dashboard</a></li>
-        <li id="lectures"><a href="../dashboard/lectures/">Vorlesungen</a></li>
-      </ul>
-    </header>
+<div class="parent app-container">
+  <header class="nav">
+    <ul>
+      <li id="sessions"><a href="../dashboard/sessions/">Sessions</a></li>
+      <li id="checkup"><a href="./check-up">Check-Up</a></li>
+      <li id="dashboard"><a href="../dashboard/">Dashboard</a></li>
+      <li id="lectures"><a href="../dashboard/lectures/">Vorlesungen</a></li>
+    </ul>
+  </header>
 
+  <!-- neuer Wrapper -->
+  <div class="content-wrapper">
     <div class="div1">
-      <h2>Check-Up -  Übersicht</h2>
+      <main>
+        <article>
+          <h2>Check-Up</h2>
+          <div class="div2">
+            {#if tasks.length === 0}
+              <p>Du hast noch keine Aufgaben hinzugefügt.<br>Beginne mit einer neuen Session, um Fortschritte zu sehen.</p>
+            {:else}
+              {#each Object.entries(groupTasks(tasks)) as [modul, items]}
+                <h3>{modul}</h3>
+                {#each ['Waiting', 'Doing', 'Done'] as statusLabel}
+                  <div>
+                    <h4>{statusLabel}</h4>
+                    <ul>
+                      {#each items.filter(task => getStatusLabel(task.status) === statusLabel) as task}
+                        <li>{task.displayname}: {task.type}</li>
+                      {/each}
+                    </ul>
+                  </div>
+                {/each}
+              {/each}
+            {/if}
+          </div>
+        </article>
+      </main>
     </div>
 
-  <main class="div2">
-    <article>
-      <h2>Aufgaben</h2>
-      {#if tasks.length === 0}
-        <p>Du hast noch keine Aufgaben hinzugefügt. <br>Beginne mit einer neuen Session, um Fortschritte zu sehen.</p>
-      {:else}
-        {#each Object.entries(groupTasks(tasks)) as [modul, items]}
-          <h3>{modul}</h3>
-          {#each ['Waiting', 'Doing', 'Done'] as statusLabel}
-            <div>
-              <h4>{statusLabel}</h4>
-              <ul>
-                {#each items.filter(task => getStatusLabel(task.status) === statusLabel) as task}
-                  <li>{task.displayname}: {task.type}</li>
-                {/each}
-              </ul>
-            </div>
-          {/each}
-        {/each}
-      {/if}
-    </article>
-  </main>
-
-    <aside class="div3">
-      <h3>Aktivitäten (letzte 30 Tage)</h3>
+    <div class="div3">
+      <h3>Aktivitäten (30 Tage)</h3>
       <div class="heatmap">
         {#each heatmapData as { date, count }}
-          <div
-            class="heatmap-day"
-            style="background-color: {getHeatmapColor(count)}"
-            title={`${formatDate(date)}: ${count} Sessions`}
-          ></div>
+          <div class="heatmap-day" style="background-color: {getHeatmapColor(count)}" title={`${formatDate(date)}: ${count} Sessions`}></div>
         {/each}
       </div>
-    </aside>
+    </div>
 
-    <aside class="div4">
+    <div class="div4">
       <h3>Streak</h3>
-      <div class="streak-display" style="">
-        <span class="flame">🔥</span>
-        {streak} Tage in Folge aktiv
+      <div class="streak-display">
+        <span class="flame">🔥</span><strong>{streak}</strong> Tage in Folge aktiv
       </div>
-    </aside>
+    </div>
   </div>
 </div>
 
 <style>
 .parent {
-  display: grid;
-  grid-template-areas:
-    "nav nav"
-    "div1 div3"
-    "div2 div4";
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: auto auto 1fr;
-  gap: 15px 0;
+  display: flex;
+  flex-direction: column;
 }
 
+.content-wrapper {
+  display: grid;
+  grid-template-areas:
+    "div1 div3"
+    "div1 div4";
+  grid-template-columns: 4fr 3fr;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.div1 { grid-area: div1; }
+.div2 { grid-area: div2; }
+.div3 { grid-area: div3; }
+.div4 { grid-area: div4; }
+
 .nav {
-  grid-area: nav;
-  padding: 0;
   margin-bottom: 50px;
 }
 
@@ -170,19 +175,19 @@
 .div2 {
   grid-area: div2;
   background-color: white;
-  max-width: 425px;
+  min-width: 200px;
 }
 
 .div3 {
   grid-area: div3;
   background-color: white;
-  max-width: 350px;
 }
 
 .div4 {
   grid-area: div4;
   background-color: white;
-  max-width: 350px;
+  padding-bottom: 25px;
+  max-width: 500px;
 }
 
 .heatmap {
@@ -200,13 +205,15 @@
 
 .streak-display {
   display: flex;
-  text-align: center;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
   font-size: 1.2rem;
+  text-align: center;
 }
 
 .flame {
-  font-size: 2rem;
-  margin-right: 0.5rem;
+  font-size: 4rem;
+  padding-bottom: 10px;
 }
 </style>
