@@ -1,8 +1,4 @@
-@import 'tailwindcss';
-
-@tailwind utilities;
-
-/* allgemeine Schriftart für die Anwendung */
+/* Schriftart für die Anwendung */
 html {
   margin: 0;
   padding: 0;

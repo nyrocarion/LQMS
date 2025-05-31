@@ -4,7 +4,6 @@
   let tasks = [];
   let heatmapData = [];
   let streak = 0;
-
   /** Vorladen der Daten aus API-Endpunkten */
   onMount(async () => {
     const taskRes = await fetch("/api/tasks");
