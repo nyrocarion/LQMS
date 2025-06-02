@@ -10,7 +10,6 @@ export const GET: RequestHandler = async ({ locals }) => {
   const thirtyDaysAgo = new Date(today);
   thirtyDaysAgo.setDate(today.getDate() - 29);
 
-  // Konvertiere das Datum zu einem ISO-String
   const thirtyDaysAgoStr = thirtyDaysAgo.toISOString().split('T')[0];
 
   try {
@@ -24,23 +23,28 @@ export const GET: RequestHandler = async ({ locals }) => {
       [userId, thirtyDaysAgoStr]
     );
 
-    // Prüfe, ob die Antwort leer ist
     if (!sessions || sessions.length === 0) {
       console.log('Keine Sessions gefunden');
       return json([], { status: 200 });
     }
 
-    // Ausgabe der Abfrageergebnisse zur Überprüfung
     console.log('Abfrageergebnisse:', sessions);
 
     // Verarbeite das Ergebnis und stelle sicher, dass es das richtige Format hat
-    const heatmapData = sessions.map(session => ({
-      // Konvertiere das sessionDate zu einem ISO-String (nur Datum)
-      date: new Date(session.sessionDate).toISOString().split('T')[0],  
-      count: session.sessionCount,
-    }));
+    const heatmapData = sessions.map(session => {
+      // Prüfe, ob die sessionDate ein gültiges Datum ist
+      const validDate = new Date(session.sessionDate);
+      if (isNaN(validDate.getTime())) {
+        console.error(`Ungültiges Datum: ${session.sessionDate}`);
+        return null; // Ungültige Daten überspringen
+      }
 
-    // Überprüfe die verarbeiteten Daten
+      return {
+        date: validDate.toISOString().split('T')[0],  // Nur das Datum ohne Zeit
+        count: session.sessionCount,
+      };
+    }).filter(data => data !== null); // Filtere ungültige Daten raus
+
     console.log('Verarbeitete Heatmap-Daten:', heatmapData);
 
     return json(heatmapData);
