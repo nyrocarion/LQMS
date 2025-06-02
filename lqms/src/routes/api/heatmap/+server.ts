@@ -17,20 +17,32 @@ export const GET: RequestHandler = async ({ locals }) => {
       WHERE completedby = ? AND date >= ?
       GROUP BY sessionDate
       ORDER BY sessionDate ASC`,
-      [userId, daysAgo.toISOString().split('T')[0]]
+      [userId, daysAgo[0]]
     );
 
+    // Logge die SQL-Abfrage-Ergebnisse zur Untersuchung
     console.log("Sessions:", sessions);
 
-    // Konvertiere sessionDate in das Format 'YYYY-MM-DD'
-    const heatmapData = sessions.map(session => ({
-      date: session.sessionDate.split('T')[0], // Nur Datum (ohne Zeit)
-      count: session.sessionCount,
-    }));
+    const heatmapData = sessions.map(session => {
+      if (session.sessionDate) {  // Prüfe, ob sessionDate vorhanden ist
+        console.log("sessionDate:", session.sessionDate);  // Logge sessionDate
 
-    console.log("Data:", heatmapData);
+        // Falls das Datum im falschen Format vorliegt, versuche es manuell zu formatieren
+        const dateObj = new Date(session.sessionDate);
+        if (dateObj.getTime()) {
+          return {
+            date: dateObj[0],  // Nur das Datum (ohne Zeit)
+            count: session.sessionCount,
+          };
+        }
+
+        console.log(dateObj)
+      }
+      return null;  // Rückgabe null, wenn sessionDate undefined ist
+    }).filter(Boolean);  // Filtere null-Werte heraus
 
     return json(heatmapData);
+
   } catch (error) {
     console.error('Fehler bei der SQL-Abfrage:', error);
     return json({ error: 'Fehler beim Laden der Heatmap-Daten' }, { status: 500 });
