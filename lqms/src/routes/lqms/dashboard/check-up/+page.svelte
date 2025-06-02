@@ -11,7 +11,7 @@
     const taskRes = await fetch("/api/tasks");
     tasks = await taskRes.json();
 
-    const heatmapRes = await fetch("/api/heatmap");
+    const heatmapRes = await fetch("/api/heatmap", {credentials: "include"});
     if (!heatmapRes.ok) {
       console.error("Fehler beim Laden der Heatmap:", await heatmapRes.json());
       return;

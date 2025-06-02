@@ -14,16 +14,13 @@ export const handle: Handle = async ({ event, resolve }) => {
       return Response.redirect(new URL('/', event.url), 303);
     }
 
-    try {
-      /** Verfizieren der Gültigkeit des Cookies */
-      const payload = verifyJWT(token);
-      event.locals.userId = payload.id;
-    } catch (err) {
-      /** Löschen des Cookies nach Überschreiten der Gültigkeit */
+    const payload = verifyJWT(token);
+    if (!payload) {
       event.cookies.delete('authToken', { path: '/' });
-      /** Redirect zur Landingpage */
       return Response.redirect(new URL('/', event.url), 303);
     }
+
+    event.locals.userId = payload.id;
   }
 
   return resolve(event);
