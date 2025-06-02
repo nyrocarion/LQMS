@@ -16,7 +16,8 @@ export const handle: Handle = async ({ event, resolve }) => {
 
     try {
       /** Verfizieren der Gültigkeit des Cookies */
-      verifyJWT(token);
+      const payload = verifyJWT(token);
+      event.locals.userId = payload.id;
     } catch (err) {
       /** Löschen des Cookies nach Überschreiten der Gültigkeit */
       event.cookies.delete('authToken', { path: '/' });
