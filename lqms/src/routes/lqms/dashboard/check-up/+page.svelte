@@ -12,11 +12,9 @@
     tasks = await taskRes.json();
 
     const heatmapRes = await fetch("/api/heatmap", {credentials: "include"});
-    if (!heatmapRes.ok) {
-      console.error("Fehler beim Laden der Heatmap:", await heatmapRes.json());
-      return;
-    }
     heatmapData = await heatmapRes.json();
+    // Debugging: Überprüfen, was in heatmapData enthalten ist
+    console.log("Geladene Heatmap-Daten:", heatmapData);
     heatmapCalendar = generateCalendarData(heatmapData);
 
     const streakRes = await fetch("/api/streak", {credentials: "include"});
@@ -115,7 +113,7 @@
     </div>
 
     <div class="div3">
-      <h3>Aktivitäten (30 Tage)</h3>
+      <h3>Aktivitäten (35 Tage)</h3>
       <div class="heatmap-wrapper">
         <div class="heatmap-header">
           {#each weekdays as label}
@@ -250,8 +248,9 @@
 .weekday-label {
   width: 30px;
   text-align: center;
-  font-size: 0.75rem;
-  color: #999;
+  font-size: 0.8rem;
+  color: #2b40ff;
+  font-weight: bold;
 }
 
 .heatmap-grid {
