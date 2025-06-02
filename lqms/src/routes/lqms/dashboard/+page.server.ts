@@ -119,7 +119,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
   // Aus Api geladen
   const dailyfact =  fetchDateFact();
   const dailymeme =  getMeme();
-  const lectures =  loadLecturesForToday();
+  const lectures =  "Not loading atm because I need to fix it"; // loadLecturesForToday()
 
   // Zusammen zurückgeben (wird in dashboard geladen)
   return {
