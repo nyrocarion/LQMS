@@ -130,6 +130,7 @@
           {/each}
         </div>
       </div>
+    </div>
 
     <div class="div4">
       <h3>Streak</h3>
