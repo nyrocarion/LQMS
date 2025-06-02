@@ -28,6 +28,8 @@ export const GET: RequestHandler = async ({ locals }) => {
       count: session.sessionCount,
     }));
 
+    console.log("Data:", sessions);
+
     return json(heatmapData);
   } catch (error) {
     console.error('Fehler bei der SQL-Abfrage:', error);
