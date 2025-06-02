@@ -8,6 +8,10 @@
 
   /** Vorladen der Daten aus API-Endpunkten */
   onMount(async () => {
+    //Teeest
+    const res = await fetch("/api/heatmap", { credentials: "include" });
+    console.log("🔄 API /heatmap Response:", await res.text());
+
     const taskRes = await fetch("/api/tasks", {credentials: "include"});
     tasks = await taskRes.json();
 
