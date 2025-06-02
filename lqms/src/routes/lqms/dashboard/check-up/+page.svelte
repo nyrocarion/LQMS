@@ -8,10 +8,6 @@
 
   /** Vorladen der Daten aus API-Endpunkten */
   onMount(async () => {
-    //Teeest
-    const res = await fetch("/api/heatmap", { credentials: "include" });
-    console.log("🔄 API /heatmap Response:", await res.text());
-
     const taskRes = await fetch("/api/tasks", {credentials: "include"});
     tasks = await taskRes.json();
 
@@ -42,29 +38,34 @@
   }
 
   function generateCalendarData(data: { date: string; count: number }[]) {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
-    const start = new Date(today);
-    start.setDate(today.getDate() - 29);
+  const start = new Date(today);
+  start.setDate(today.getDate() - 29);
 
-    const calendarMap = new Map(data.map(d => [d.date, d.count]));
-    const days: { date: string; count: number; weekday: number }[] = [];
+  const calendarMap = new Map(data.map(d => [d.date, d.count]));
+  const calendar: { date: string; count: number }[][] = [];
 
-    for (let d = new Date(start); d <= today; d.setDate(d.getDate() + 1)) {
-      const dateStr = d.toISOString().split("T")[0];
-      days.push({
-        date: dateStr,
-        count: calendarMap.get(dateStr) || 0,
-        weekday: d.getDay(), // 0 = Sonntag
-      });
+  for (let d = new Date(start); d <= today; d.setDate(d.getDate() + 1)) {
+    const iso = d.toISOString().split("T")[0];
+    const count = calendarMap.get(iso) || 0;
+    const weekday = (d.getDay() + 6) % 7; // Montag = 0
+
+    // Neue Woche beginnen, wenn Montag (oder erster Tag)
+    if (calendar.length === 0 || weekday === 0) {
+      calendar.push(Array(7).fill(null));
     }
 
-    return days;
+    // In die richtige Position innerhalb der Woche schreiben
+    calendar[calendar.length - 1][weekday] = { date: iso, count };
   }
 
+  return calendar;
+}
+
   /** Reihenfolge der Wochentage in deutscher Kurzform */
-  const weekdays = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"];
+  const weekdays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
 
   /** Holen des Status je Modul */
   function getStatusLabel(status: number): string {
@@ -113,27 +114,22 @@
     <div class="div3">
       <h3>Aktivitäten (30 Tage)</h3>
       <div class="heatmap-wrapper">
-    <div class="heatmap-header">
-      {#each Array(7) as _, i}
-        <div class="weekday-label">{weekdays[i]}</div>
-      {/each}
-    </div>
-
-    <div class="heatmap-grid">
-      {#each Array(7) as _, weekday}
-        <div class="week-column">
-          {#each heatmapCalendar.filter(d => d.weekday === weekday) as day}
-            <div
-              class="heatmap-day"
-              style="background-color: {getHeatmapColor(day.count)}"
-              title={`${formatDate(day.date)}: ${day.count} Sessions`}
-            ></div>
+        <div class="heatmap-header">
+          {#each weekdays as label}
+            <div class="weekday-label">{label}</div>
           {/each}
         </div>
-      {/each}
-    </div>
-  </div>
-    </div>
+
+        <div class="heatmap-grid">
+          {#each heatmapCalendar as week}
+            <div class="week-column">
+              {#each week as day, i}
+                <div class="heatmap-day" style="background-color: {day ? getHeatmapColor(day.count) : '#1e1e1e'}" title={day ? `${formatDate(day.date)}: ${day.count} Sessions` : ''}></div>
+              {/each}
+            </div>
+          {/each}
+        </div>
+      </div>
 
     <div class="div4">
       <h3>Streak</h3>

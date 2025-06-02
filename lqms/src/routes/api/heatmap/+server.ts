@@ -3,7 +3,6 @@ import { json, type RequestHandler } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async ({ locals }) => {
   const userId = locals.userId;
-  console.log("📦 userId im Heatmap-Endpunkt:", locals.userId);
   if (!userId) return json({ error: 'Nicht eingeloggt' }, { status: 401 });
 
   const today = new Date();
