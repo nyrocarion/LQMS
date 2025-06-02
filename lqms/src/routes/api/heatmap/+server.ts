@@ -20,6 +20,8 @@ export const GET: RequestHandler = async ({ locals }) => {
       [userId, daysAgo.toISOString().split('T')[0]]
     );
 
+    console.log("Sessions:", sessions);
+
     // Konvertiere sessionDate in das Format 'YYYY-MM-DD'
     const heatmapData = sessions.map(session => ({
       date: session.sessionDate.toISOString().split('T')[0], // Nur Datum (ohne Zeit)

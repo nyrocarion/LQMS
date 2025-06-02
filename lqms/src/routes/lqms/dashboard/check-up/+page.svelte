@@ -40,21 +40,28 @@
     today.setHours(0, 0, 0, 0);
 
     const start = new Date(today);
-    start.setDate(today.getDate() - 29);
+    start.setDate(today.getDate() - 34);
 
     const calendarMap = new Map(data.map(d => [d.date, d.count]));
-    const days: { date: string; count: number; weekday: number }[] = [];
+    const calendar: { date: string; count: number }[][] = [];
 
+    // Die Daten in Wochen aufteilen
     for (let d = new Date(start); d <= today; d.setDate(d.getDate() + 1)) {
-      const dateStr = d.toISOString().split("T")[0];  // YYYY-MM-DD format
-      days.push({
-        date: dateStr,
-        count: calendarMap.get(dateStr) || 0,
-        weekday: d.getDay(), // 0 = Sonntag
-      });
+      const iso = d.toISOString().split("T")[0];
+      const count = calendarMap.get(iso) || 0;
+      const weekday = (d.getDay() + 6) % 7; // Montag = 0, Sonntag = 6
+
+      // Neue Woche beginnen, wenn Montag
+      if (calendar.length === 0 || weekday === 0) {
+        calendar.push(Array(7).fill(null)); // Neue Woche als neue Reihe
+      }
+
+      // Tag in der entsprechenden Woche und Spalte einfügen
+      calendar[calendar.length - 1][weekday] = { date: iso, count };
     }
 
-    return days;
+    // Sicherstellen, dass die Matrix genau 5 Wochen (5 Reihen) umfasst
+    return calendar.slice(0, 5); // Nur die ersten 5 Wochen
   }
 
 
