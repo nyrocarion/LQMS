@@ -3,7 +3,9 @@
 
   let tasks = [];
   let heatmapData = [];
+  let heatmapCalendar = [];
   let streak = 0;
+
   /** Vorladen der Daten aus API-Endpunkten */
   onMount(async () => {
     const taskRes = await fetch("/api/tasks");
@@ -30,15 +32,30 @@
     return `${d.getDate()}.${d.getMonth() + 1}`;
   }
 
-  /** Gruppieren eines Moduls */
-  function groupTasks(tasks) {
-    return tasks.reduce((acc, task) => {
-      const modul = task.module || "Unbekannt";
-      if (!acc[modul]) acc[modul] = [];
-      acc[modul].push(task);
-      return acc;
-    }, {});
+  function generateCalendarData(data: { date: string; count: number }[]) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const start = new Date(today);
+    start.setDate(today.getDate() - 29);
+
+    const calendarMap = new Map(data.map(d => [d.date, d.count]));
+    const days: { date: string; count: number; weekday: number }[] = [];
+
+    for (let d = new Date(start); d <= today; d.setDate(d.getDate() + 1)) {
+      const dateStr = d.toISOString().split("T")[0];
+      days.push({
+        date: dateStr,
+        count: calendarMap.get(dateStr) || 0,
+        weekday: d.getDay(), // 0 = Sonntag
+      });
+    }
+
+    return days;
   }
+
+  /** Reihenfolge der Wochentage in deutscher Kurzform */
+  const weekdays = ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"];
 
   /** Holen des Status je Modul */
   function getStatusLabel(status: number): string {
@@ -87,11 +104,27 @@
 
     <div class="div3">
       <h3>Aktivitäten (30 Tage)</h3>
-      <div class="heatmap">
-        {#each heatmapData as { date, count }}
-          <div class="heatmap-day" style="background-color: {getHeatmapColor(count)}" title={`${formatDate(date)}: ${count} Sessions`}></div>
-        {/each}
-      </div>
+      <div class="heatmap-wrapper">
+    <div class="heatmap-header">
+      {#each Array(7) as _, i}
+        <div class="weekday-label">{weekdays[i]}</div>
+      {/each}
+    </div>
+
+    <div class="heatmap-grid">
+      {#each Array(7) as _, weekday}
+        <div class="week-column">
+          {#each heatmapCalendar.filter(d => d.weekday === weekday) as day}
+            <div
+              class="heatmap-day"
+              style="background-color: {getHeatmapColor(day.count)}"
+              title={`${formatDate(day.date)}: ${day.count} Sessions`}
+            ></div>
+          {/each}
+        </div>
+      {/each}
+    </div>
+  </div>
     </div>
 
     <div class="div4">
@@ -188,9 +221,36 @@
   padding-bottom: 25px;
 }
 
-.heatmap {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
+.heatmap-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 6px;
+  padding-top: 10px;
+}
+
+.heatmap-header {
+  display: flex;
+  gap: 4px;
+  margin-left: 26px; /* Abstand zur linken Flamme */
+}
+
+.weekday-label {
+  width: 20px;
+  text-align: center;
+  font-size: 0.75rem;
+  color: #999;
+}
+
+.heatmap-grid {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+}
+
+.week-column {
+  display: flex;
+  flex-direction: column;
   gap: 4px;
 }
 
@@ -198,6 +258,7 @@
   width: 20px;
   height: 20px;
   border-radius: 3px;
+  background-color: #2f2f2f;
   transition: background-color 0.3s;
 }
 
