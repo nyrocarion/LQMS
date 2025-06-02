@@ -42,28 +42,30 @@
     today.setHours(0, 0, 0, 0);
 
     const start = new Date(today);
-    start.setDate(today.getDate() - 29);
+    start.setDate(today.getDate() - 29); // Vor 30 Tagen starten
 
     const calendarMap = new Map(data.map(d => [d.date, d.count]));
     const calendar: { date: string; count: number }[][] = [];
 
+    // Die Daten in Wochen aufteilen
     for (let d = new Date(start); d <= today; d.setDate(d.getDate() + 1)) {
       const iso = d.toISOString().split("T")[0];
       const count = calendarMap.get(iso) || 0;
-      const weekday = (d.getDay() + 6) % 7; // Montag = 0
+      const weekday = (d.getDay() + 6) % 7; // Montag = 0, Sonntag = 6
 
       // Neue Woche beginnen, wenn Montag
       if (calendar.length === 0 || weekday === 0) {
-        calendar.push(Array(7).fill(null));
+        calendar.push(Array(7).fill(null)); // Neue Woche als neue Reihe
       }
 
-      // In die richtige Position innerhalb der Woche schreiben
+      // Tag in der entsprechenden Woche und Spalte einfügen
       calendar[calendar.length - 1][weekday] = { date: iso, count };
     }
 
-    // Sicherstellen, dass die Matrix genau 5 Wochen umfasst
-    return calendar.slice(0, 5);
+    // Sicherstellen, dass die Matrix genau 5 Wochen (5 Reihen) umfasst
+    return calendar.slice(0, 5); // Nur die ersten 5 Wochen
   }
+
 
   /** Reihenfolge der Wochentage in deutscher Kurzform */
   const weekdays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
@@ -117,7 +119,7 @@
       <div class="heatmap-wrapper">
         <div class="heatmap-header">
           {#each weekdays as label}
-           <div class="weekday-label">{label}</div>
+            <div class="weekday-label">{label}</div>
           {/each}
         </div>
 
@@ -243,11 +245,10 @@
 .heatmap-header {
   display: flex;
   gap: 4px;
-  margin-left: 26px; /* Abstand zur linken Flamme */
 }
 
 .weekday-label {
-  width: 20px;
+  width: 30px;
   text-align: center;
   font-size: 0.75rem;
   color: #999;
@@ -255,19 +256,18 @@
 
 .heatmap-grid {
   display: flex;
-  flex-direction: row;
-  gap: 4px;
-}
-
-.week-column {
-  display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
+.week-row {
+  display: flex;
+  gap: 4px;
+}
+
 .heatmap-day {
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
   border-radius: 3px;
   background-color: #2f2f2f;
   transition: background-color 0.3s;
