@@ -10,28 +10,43 @@ export const GET: RequestHandler = async ({ locals }) => {
   const thirtyDaysAgo = new Date(today);
   thirtyDaysAgo.setDate(today.getDate() - 29);
 
-  // Führe die SQL-Abfrage aus
-  const sessions = await db.query(
-    `SELECT DATE(date) AS sessionDate, COUNT(*) AS sessionCount
-     FROM session
-     WHERE completedby = ? AND date >= ?
-     GROUP BY sessionDate
-     ORDER BY sessionDate ASC`,
-    [userId, thirtyDaysAgo.toISOString().split('T')[0]]
-  );
+  // Konvertiere das Datum zu einem ISO-String
+  const thirtyDaysAgoStr = thirtyDaysAgo.toISOString().split('T')[0];
 
-  // Ausgabe der Abfrageergebnisse zur Überprüfung
-  console.log('Abfrageergebnisse:', sessions);
+  try {
+    // Führe die SQL-Abfrage aus
+    const sessions = await db.query(
+      `SELECT DATE(date) AS sessionDate, COUNT(*) AS sessionCount
+       FROM session
+       WHERE completedby = ? AND date >= ?
+       GROUP BY sessionDate
+       ORDER BY sessionDate ASC`,
+      [userId, thirtyDaysAgoStr]
+    );
 
-  // Verarbeite das Ergebnis und stelle sicher, dass es das richtige Format hat
-  const heatmapData = sessions.map(session => ({
-    // Konvertiere das sessionDate zu einem ISO-String (nur Datum)
-    date: new Date(session.sessionDate).toISOString().split('T')[0],  
-    count: session.sessionCount,
-  }));
+    // Prüfe, ob die Antwort leer ist
+    if (!sessions || sessions.length === 0) {
+      console.log('Keine Sessions gefunden');
+      return json([], { status: 200 });
+    }
 
-  // Überprüfe die verarbeiteten Daten
-  console.log('Verarbeitete Heatmap-Daten:', heatmapData);
+    // Ausgabe der Abfrageergebnisse zur Überprüfung
+    console.log('Abfrageergebnisse:', sessions);
 
-  return json(heatmapData);
+    // Verarbeite das Ergebnis und stelle sicher, dass es das richtige Format hat
+    const heatmapData = sessions.map(session => ({
+      // Konvertiere das sessionDate zu einem ISO-String (nur Datum)
+      date: new Date(session.sessionDate).toISOString().split('T')[0],  
+      count: session.sessionCount,
+    }));
+
+    // Überprüfe die verarbeiteten Daten
+    console.log('Verarbeitete Heatmap-Daten:', heatmapData);
+
+    return json(heatmapData);
+
+  } catch (error) {
+    console.error('Fehler bei der SQL-Abfrage:', error);
+    return json({ error: 'Fehler beim Laden der Heatmap-Daten' }, { status: 500 });
+  }
 };
