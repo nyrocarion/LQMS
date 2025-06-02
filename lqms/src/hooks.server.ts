@@ -21,6 +21,7 @@ export const handle: Handle = async ({ event, resolve }) => {
     }
 
     event.locals.userId = payload.id;
+    console.log("userId gesetzt:", event.locals.userId);
   }
 
   return resolve(event);
