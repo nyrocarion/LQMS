@@ -8,7 +8,7 @@
 
   /** Vorladen der Daten aus API-Endpunkten */
   onMount(async () => {
-    const taskRes = await fetch("/api/tasks");
+    const taskRes = await fetch("/api/tasks", {credentials: "include"});
     tasks = await taskRes.json();
 
     const heatmapRes = await fetch("/api/heatmap", {credentials: "include"});
@@ -19,7 +19,7 @@
     heatmapData = await heatmapRes.json();
     heatmapCalendar = generateCalendarData(heatmapData);
 
-    const streakRes = await fetch("/api/streak");
+    const streakRes = await fetch("/api/streak", {credentials: "include"});
     const streakData = await streakRes.json();
     streak = streakData.streak;
   });
