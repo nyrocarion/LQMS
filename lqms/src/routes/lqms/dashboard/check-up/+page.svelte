@@ -40,7 +40,7 @@
     today.setHours(0, 0, 0, 0);
 
     const start = new Date(today);
-    start.setDate(today.getDate() - 29); // Vor 30 Tagen starten
+    start.setDate(today.getDate() - 34); // Vor 30 Tagen starten
 
     const calendarMap = new Map(data.map(d => [d.date, d.count]));
     const calendar: { date: string; count: number }[][] = [];
