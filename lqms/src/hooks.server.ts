@@ -22,4 +22,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 if (event.url.pathname.startsWith('/lqms') && !event.locals.userId) {
   return Response.redirect(new URL('/', event.url), 303);
 }
+
+return resolve(event);
 };
