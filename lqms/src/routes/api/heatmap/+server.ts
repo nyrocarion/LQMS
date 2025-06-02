@@ -28,7 +28,7 @@ export const GET: RequestHandler = async ({ locals }) => {
       count: session.sessionCount,
     }));
 
-    console.log("Data:", sessions);
+    console.log("Data:", heatmapData);
 
     return json(heatmapData);
   } catch (error) {
