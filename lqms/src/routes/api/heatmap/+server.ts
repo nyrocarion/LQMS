@@ -8,43 +8,41 @@ export const GET: RequestHandler = async ({ locals }) => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const daysAgo = new Date(today);
-  daysAgo.setDate(today.getDate() - 34);
+  daysAgo.setDate(today.getDate() - 29);
 
-  try {
-    const sessions = await db.query(
-      `SELECT date AS sessionDate, COUNT(*) AS sessionCount
-      FROM session
-      WHERE completedby = ? AND date >= ?
-      GROUP BY sessionDate
-      ORDER BY sessionDate ASC`,
-      [userId, daysAgo[0]]
-    );
-
-    // Logge die SQL-Abfrage-Ergebnisse zur Untersuchung
-    console.log("Sessions:", sessions);
-
-    const heatmapData = sessions.map(session => {
-      if (session.sessionDate) {  // Prüfe, ob sessionDate vorhanden ist
-        console.log("sessionDate:", session.sessionDate);  // Logge sessionDate
-
-        // Falls das Datum im falschen Format vorliegt, versuche es manuell zu formatieren
-        const dateObj = new Date(session.sessionDate);
-        if (dateObj.getTime()) {
-          return {
-            date: dateObj[0],  // Nur das Datum (ohne Zeit)
-            count: session.sessionCount,
-          };
-        }
-
-        console.log(dateObj)
-      }
-      return null;  // Rückgabe null, wenn sessionDate undefined ist
-    }).filter(Boolean);  // Filtere null-Werte heraus
-
-    return json(heatmapData);
-
-  } catch (error) {
-    console.error('Fehler bei der SQL-Abfrage:', error);
-    return json({ error: 'Fehler beim Laden der Heatmap-Daten' }, { status: 500 });
+  // Generiere ein Array mit den letzten 35 Tagen
+  const days: string[] = [];
+  for (let i = 0; i < 35; i++) {
+    const day = new Date(daysAgo);
+    day.setDate(daysAgo.getDate() + i);
+    days.push(day.toISOString().split('T')[0]); // Format: "YYYY-MM-DD"
   }
+
+  // Abfrage der Sessions aus der DB
+  const sessions = await db.query(
+    `SELECT DATE(date) AS sessionDate, COUNT(*) AS sessionCount
+     FROM session
+     WHERE completedby = ? AND date >= ?
+     GROUP BY sessionDate
+     ORDER BY sessionDate ASC`,
+    [userId, daysAgo.toISOString().split('T')[0]]
+  );
+
+  // Logge die SQL-Abfrage-Ergebnisse zur Untersuchung
+  console.log("Sessions:", sessions);
+
+  // Erstelle eine Map für schnelleren Zugriff auf die Sessions
+  const sessionMap = new Map(
+    sessions.map(session => [session.sessionDate, session.sessionCount])
+  );
+
+  // Fülle die Heatmap-Daten für alle 35 Tage
+  const heatmapData = days.map(day => {
+    return {
+      date: day,
+      count: sessionMap.get(day) || 0,  // Wenn keine Session, setze count auf 0
+    };
+  });
+
+  return json(heatmapData);
 };
