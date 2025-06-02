@@ -3,8 +3,6 @@ import { verifyJWT } from '$lib/server/jwt';
 
 /** Das Routen von Anfragen */
 export const handle: Handle = async ({ event, resolve }) => {
-  //TEEEEST
-  console.log("🔥 HOOK aktiv für:", event.url.pathname);
 
   /** JWT als Prüfkonstante */
   const token = event.cookies.get('authToken');

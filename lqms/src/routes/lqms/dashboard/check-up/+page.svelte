@@ -38,31 +38,32 @@
   }
 
   function generateCalendarData(data: { date: string; count: number }[]) {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-  const start = new Date(today);
-  start.setDate(today.getDate() - 29);
+    const start = new Date(today);
+    start.setDate(today.getDate() - 29);
 
-  const calendarMap = new Map(data.map(d => [d.date, d.count]));
-  const calendar: { date: string; count: number }[][] = [];
+    const calendarMap = new Map(data.map(d => [d.date, d.count]));
+    const calendar: { date: string; count: number }[][] = [];
 
-  for (let d = new Date(start); d <= today; d.setDate(d.getDate() + 1)) {
-    const iso = d.toISOString().split("T")[0];
-    const count = calendarMap.get(iso) || 0;
-    const weekday = (d.getDay() + 6) % 7; // Montag = 0
+    for (let d = new Date(start); d <= today; d.setDate(d.getDate() + 1)) {
+      const iso = d.toISOString().split("T")[0];
+      const count = calendarMap.get(iso) || 0;
+      const weekday = (d.getDay() + 6) % 7; // Montag = 0
 
-    // Neue Woche beginnen, wenn Montag (oder erster Tag)
-    if (calendar.length === 0 || weekday === 0) {
-      calendar.push(Array(7).fill(null));
+      // Neue Woche beginnen, wenn Montag
+      if (calendar.length === 0 || weekday === 0) {
+        calendar.push(Array(7).fill(null));
+      }
+
+      // In die richtige Position innerhalb der Woche schreiben
+      calendar[calendar.length - 1][weekday] = { date: iso, count };
     }
 
-    // In die richtige Position innerhalb der Woche schreiben
-    calendar[calendar.length - 1][weekday] = { date: iso, count };
+    // Sicherstellen, dass die Matrix genau 5 Wochen umfasst
+    return calendar.slice(0, 5);
   }
-
-  return calendar;
-}
 
   /** Reihenfolge der Wochentage in deutscher Kurzform */
   const weekdays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
@@ -116,15 +117,20 @@
       <div class="heatmap-wrapper">
         <div class="heatmap-header">
           {#each weekdays as label}
-            <div class="weekday-label">{label}</div>
+           <div class="weekday-label">{label}</div>
           {/each}
         </div>
 
+        <!-- Grid für 5 Wochen x 7 Tage -->
         <div class="heatmap-grid">
           {#each heatmapCalendar as week}
-            <div class="week-column">
-              {#each week as day, i}
-                <div class="heatmap-day" style="background-color: {day ? getHeatmapColor(day.count) : '#1e1e1e'}" title={day ? `${formatDate(day.date)}: ${day.count} Sessions` : ''}></div>
+            <div class="week-row">
+              {#each week as day}
+                <div
+                  class="heatmap-day"
+                  style="background-color: {day ? getHeatmapColor(day.count) : '#1e1e1e'}"
+                  title={day ? `${formatDate(day.date)}: ${day.count} Sessions` : ''}
+                ></div>
               {/each}
             </div>
           {/each}
