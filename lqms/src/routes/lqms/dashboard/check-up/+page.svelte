@@ -13,6 +13,7 @@
 
     const heatmapRes = await fetch("/api/heatmap");
     heatmapData = await heatmapRes.json();
+    heatmapCalendar = generateCalendarData(heatmapData);
 
     const streakRes = await fetch("/api/streak");
     const streakData = await streakRes.json();
@@ -73,7 +74,6 @@
     </ul>
   </header>
 
-  <!-- neuer Wrapper -->
   <div class="content-wrapper">
     <div class="div1">
       <main>
