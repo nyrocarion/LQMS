@@ -21,8 +21,6 @@ export const GET: RequestHandler = async ({ locals }) => {
     [userId, daysAgo.toISOString().split('T')[0]]
   );
 
-  console.log(userId)
-
   // Datenbankergebnisse als Map speichern: { '2025-05-25': 2, ... }
   const sessionMap = new Map<string, number>();
   for (const session of sessions) {
@@ -34,7 +32,7 @@ export const GET: RequestHandler = async ({ locals }) => {
   const days: string[] = [];
   for (let i = 0; i < 35; i++) {
     const d = new Date(daysAgo);
-    d.setDate(daysAgo.getDate() + i);
+    d.setDate(daysAgo.getDate() - 34 + i);
     days.push(d.toISOString().split('T')[0]);
   }
 
