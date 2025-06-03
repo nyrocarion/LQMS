@@ -25,19 +25,26 @@ export const GET: RequestHandler = async ({ locals }) => {
 
   const sessionMap = new Map<string, number>();
   for (const row of sessions) {
-    // row.date ist jetzt ein String 'YYYY-MM-DD'
-    console.log('Verarbeite Row:', row);
-    sessionMap.set(row.date, Number(row.count));
+    let rawDate: string;
+    if (typeof row.date === 'string') {
+      rawDate = row.date;
+    } else if (row.date instanceof Date) {
+      rawDate = row.date.toISOString();
+    } else {
+      rawDate = String(row.date);
+    }
+    const isoDate = rawDate.split('T')[0];
+    console.log('Insert Map:', isoDate, Number(row.count));
+    sessionMap.set(isoDate, Number(row.count));
   }
 
   const result = [];
   for (let i = 0; i < 35; i++) {
-    const d = new Date(startDate);
+    const d = new Date(startDate.getTime());
     d.setDate(startDate.getDate() + i);
     const iso = d.toISOString().split('T')[0];
-    const count = sessionMap.get(iso) || 0;
-    console.log(`Tag: ${iso}, Count: ${count}`);
-    result.push({ date: iso, count });
+    console.log('Lookup Map mit Key:', iso, 'Value:', sessionMap.get(iso));
+    result.push({ date: iso, count: sessionMap.get(iso) || 0 });
   }
 
   return json(result);
