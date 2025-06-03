@@ -37,30 +37,29 @@
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
+    // 35 Tage zurück, dann auf Montag dieser Woche zurücksetzen
     const start = new Date(today);
     start.setDate(today.getDate() - 34);
+    const dayOfWeek = (start.getDay() + 6) % 7; // Montag = 0
+    start.setDate(start.getDate() - dayOfWeek); // auf Wochenanfang zurückgehen
 
     const calendarMap = new Map(data.map(d => [d.date, d.count]));
     const calendar: { date: string; count: number }[][] = [];
 
-    // Die Daten in Wochen aufteilen
     for (let d = new Date(start); d <= today; d.setDate(d.getDate() + 1)) {
       const iso = d.toISOString().split("T")[0];
       const count = calendarMap.get(iso) || 0;
-      const weekday = (d.getDay() + 6) % 7; // Montag = 0, Sonntag = 6
+      const weekday = (d.getDay() + 6) % 7;
 
-      // Neue Woche beginnen, wenn Montag
       if (calendar.length === 0 || weekday === 0) {
-        calendar.push(Array(7).fill(null)); // Neue Woche als neue Reihe
+        calendar.push(Array(7).fill(null));
       }
 
-      // Tag in der entsprechenden Woche und Spalte einfügen
       calendar[calendar.length - 1][weekday] = { date: iso, count };
     }
 
-    // Sicherstellen, dass die Matrix genau 5 Wochen (5 Reihen) umfasst
-    return calendar.slice(0, 5); // Nur die ersten 5 Wochen
-  }
+    return calendar;
+}
 
 
   /** Reihenfolge der Wochentage in deutscher Kurzform */
@@ -247,7 +246,7 @@
   width: 30px;
   text-align: center;
   font-size: 0.8rem;
-  color: #2b40ff;
+  color: #642bff;
   font-weight: bold;
 }
 
