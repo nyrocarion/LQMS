@@ -3,56 +3,60 @@ import { json, type RequestHandler } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async ({ locals }) => {
   const userId = locals.userId;
-  if (!userId) {
-    console.log('Nicht eingeloggt');
-    return json({ error: 'Nicht eingeloggt' }, { status: 401 });
-  }
+  if (!userId) return json({ error: 'Nicht eingeloggt' }, { status: 401 });
 
   const today = new Date();
-  today.setHours(0, 0, 0, 0); // Setze Zeit auf Mitternacht
-  const daysAgo = new Date(today);
-  daysAgo.setDate(today.getDate() - 34); // Berechne 34 Tage zurück von heute
-  console.log('Heute:', today.toISOString());
-  console.log('Startdatum für die Abfrage (34 Tage zurück):', daysAgo.toISOString());
+  today.setHours(0, 0, 0, 0);
 
-  // Generiere ein Array mit den letzten 35 Tagen (im ISO-Format ohne Uhrzeit)
+  // Position heute im Wochengitter (0 = So, 6 = Sa)
+  const todayIndex = today.getDay();
+
+  // Wieviele Tage zurück müssen wir gehen, damit heute z.B. an Index 2 landet (Dienstag)
+  const startDate = new Date(today);
+  startDate.setDate(today.getDate() - 34); // 35 Tage total
+
+  // Generiere 35 Tage von startDate bis heute
   const days: string[] = [];
   for (let i = 0; i < 35; i++) {
-    const day = new Date(daysAgo);
-    day.setDate(daysAgo.getDate() + i);
-    days.push(day.toISOString().split('T')[0]); // Format: "YYYY-MM-DD"
+    const d = new Date(startDate);
+    d.setDate(startDate.getDate() + i);
+    days.push(d.toISOString().split('T')[0]);
   }
-  console.log('Generierte Tage:', days);
 
-  // Abfrage der Sessions aus der DB
+  // Sessions aus der DB laden (ab Startdatum)
+  const sqlStart = startDate.toISOString().split('T')[0];
   const sessions = await db.query(
     `SELECT DATE(date) AS sessionDate, COUNT(*) AS sessionCount
      FROM session
      WHERE completedby = ? AND date >= ?
      GROUP BY sessionDate
      ORDER BY sessionDate ASC`,
-    [userId, daysAgo.toISOString().split('T')[0]] // Hier ist die Abfrage korrekt mit Datum von 34 Tagen zurück
+    [userId, sqlStart]
   );
 
   console.log('Daten aus der DB:', sessions);
 
-  // Erstelle eine Map für schnelleren Zugriff auf die Sessions
+  // Map mit normalisierten Datumsschlüsseln (YYYY-MM-DD)
   const sessionMap = new Map(
-    sessions.map(session => [session.sessionDate, session.sessionCount])
+    sessions.map((s: any) => {
+      const key = new Date(s.sessionDate).toISOString().split('T')[0];
+      return [key, s.sessionCount];
+    })
   );
+
   console.log('Session Map:', Array.from(sessionMap.entries()));
 
-  // Fülle die Heatmap-Daten für alle 35 Tage
+  // Fülle Heatmapdaten
   const heatmapData = days.map(day => {
     const count = sessionMap.get(day) || 0;
     console.log(`Tag: ${day}, Session Count: ${count}`);
+    const isFuture = new Date(day) > today;
     return {
       date: day,
-      count: count,  // Wenn keine Session, setze count auf 0
+      count,
+      isFuture
     };
   });
-
-  console.log('Heatmap-Daten:', heatmapData);
 
   return json(heatmapData);
 };
