@@ -10,7 +10,7 @@ async function fetchDateFact() {
   try {
     const key = process.env.RAPID_API_KEY;
     const host = process.env.RAPID_API_HOST;
-    const response = await fetch("https://numbersapi.p.rapidapi.com/"+month+"/"+day+"/date?json=true",
+    const response = fetch("https://numbersapi.p.rapidapi.com/"+month+"/"+day+"/date?json=true",
       {
         method: 'GET',
         headers: {
@@ -19,7 +19,7 @@ async function fetchDateFact() {
         }
       }
     );
-    const data = await response.json(); 
+    const data = response.json(); 
     if (data.found) {
       return data.text;
     } else {
@@ -47,7 +47,7 @@ async function loadLecturesForToday(): Promise<
   yesterday.setDate(yesterday.getDate() - 1);
   const date = yesterday.getDate();
 
-  const res = await fetch(
+  const res = fetch(
     'https://corsproxy.io/?url=https://api.dhbw.app/rapla/lectures/MA-TINF24CS1/events'
   );
 
@@ -55,7 +55,7 @@ async function loadLecturesForToday(): Promise<
     throw new Error('Fehler beim Laden der Vorlesungsdaten');
   }
 
-  const allLectures = await res.json();
+  const allLectures = res.json();
 
   return allLectures
     .filter((entry: any) => entry.date.split('T')[0] === date)
@@ -84,12 +84,16 @@ async function getMeme() {
           password: pw,
     })
     });
-    const data = await response.json();
+    const data = response.json();
+
+    /* Diese Aufrufe existieren in TS nicht für die Konstante data nicht.
+       Hier wurde noch das await hinzugefügt s. Z. 74 an dieser Stelle ist es notwendig.
+
     if (data.success) {
         return data.data.url;
     } else {
         console.error("Meme API Error: ", data.error_message);
-    }
+    }*/
   } 
   catch (error) {
       console.error("Error getting the meme:", error);
@@ -108,14 +112,14 @@ export const load: PageServerLoad = async ({ cookies }) => {
   // }
 
   // Tip aus Datenbank holen
-  const result = await db.query('SELECT `tipps` FROM `content` WHERE `id`=1;');
+  const result = db.query('SELECT `tipps` FROM `content` WHERE `id`=1;');
   // Gibt eine Ausgabe egal welcher Fall auftritt
   const tip = (result[0] && result[0][0]?.tipps) ?? 'Kein Tipp gefunden';
 
   // Aus Api geladen
-  const dailyfact = await fetchDateFact();
-  const dailymeme = await getMeme();
-  const lectures = await loadLecturesForToday();
+  const dailyfact =  fetchDateFact();
+  const dailymeme =  getMeme();
+  const lectures =  "Not loading atm because I need to fix it"; // loadLecturesForToday()
 
   // Zusammen zurückgeben (wird in dashboard geladen)
   return {

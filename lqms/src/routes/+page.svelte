@@ -164,20 +164,25 @@
     </div>
 
     <div class="content-box">
-      <h3>Was ist das LQMS?</h3>
-      <div class="section">
-        <div class="text">
-          <b>Optimiere dein Studium mit dem Lernqualitätsmanagementsystem</b>
-          <p>Verbessere deinen Lernprozess, behalte den Überblick und arbeite effizient mit deinen Kommilitonen.</p>
-          <button class="cta" on:click={() => goto('/lqms/lukas')}>Hier gehts zum Button</button>
-          <button class="cta" on:click={() => goto('/lqms')}>Hier gehts zur Zwischenseite</button>
+      <div class="info-columns"> <!--50 50 box-->
+        <div class="info-box">
+          <h3>Was ist das LQMS?</h3>
+          <div class="section">
+            <div class="text">
+              <b>Optimiere dein Studium mit dem Lernqualitätsmanagementsystem</b>
+              <p>Verbessere deinen Lernprozess, behalte den Überblick und arbeite effizient mit deinen Kommilitonen.</p>
+              <button class="cta" on:click={() => goto('/lqms/lukas')}>Hier gehts zum Button</button>
+              <button class="cta" on:click={() => goto('/lqms')}>Hier gehts zur Zwischenseite</button>
+            </div>
+          </div>
         </div>
-      </div>
-
-      <h3>Womit hilft es dir?</h3>
-      <div class="section">
-        <div class="text">
-          <p>Lorem ipsum dolor sit amet, consectetur sadipscing elitr, sed diam nonumy eirmod tempor...</p>
+        <div class="info-box">
+          <h3>Womit hilft es dir?</h3>
+          <div class="section">
+            <div class="text">
+              <p>Lorem ipsum dolor sit amet, consectetur sadipscing elitr, sed diam nonumy eirmod tempor...</p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -251,6 +256,18 @@
 {/if}
 
 <style>
+  .info-columns {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .info-box {
+    flex: 1 1 50%;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
   .hero {
     display: flex;
     flex-direction: column;
@@ -380,15 +397,6 @@
     font-weight: bold;
   }
 
-  .app-container {
-    padding: 2rem;
-    max-width: 1920px;
-    min-width: 1200px;
-    margin: auto;
-    position: relative;
-    background: linear-gradient(90deg, #FEC996,#E37C95,#B894DC,#EAC4F4);
-  }
-
   .top-left-box {
     background: white;
     color: #444;
@@ -418,12 +426,12 @@
   }
 
   .content-box {
-    background: rgba(255, 255, 255, 0.2);
+    background: #CA74A0;
     border-radius: 1rem;
     padding: 2rem;
     margin-top: 2rem;
-    backdrop-filter: blur(10px);
   }
+
 
   .section {
     display: flex;

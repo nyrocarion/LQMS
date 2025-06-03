@@ -59,7 +59,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
       cookies.delete('authToken', { path: '/' });
     }
 
-    cookies.set('authToken', token, {
+    cookies.set('authToken', token, {  
       httpOnly: true,
       secure: true,
       path: '/',
