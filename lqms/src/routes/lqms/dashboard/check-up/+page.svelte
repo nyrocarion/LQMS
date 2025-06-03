@@ -13,8 +13,6 @@
 
     const heatmapRes = await fetch("/api/heatmap", {credentials: "include"});
     heatmapData = await heatmapRes.json();
-    // Debugging: Überprüfen, was in heatmapData enthalten ist
-    console.log("Geladene Heatmap-Daten:", heatmapData);
     heatmapCalendar = generateCalendarData(heatmapData);
 
     const streakRes = await fetch("/api/streak", {credentials: "include"});
