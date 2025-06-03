@@ -8,7 +8,7 @@ export const GET: RequestHandler = async ({ locals }) => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const daysAgo = new Date(today);
-  daysAgo.setDate(today.getDate() - 30); // Damit heute mit reinfällt
+  daysAgo.setDate(today.getDate() - 34); // Damit heute mit reinfällt
 
   // SQL-Abfrage: Sessions der letzten 35 Tage
   const sessions = await db.query(
