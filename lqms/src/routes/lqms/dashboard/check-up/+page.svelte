@@ -12,10 +12,7 @@
     tasks = await taskRes.json();
 
     const heatmapRes = await fetch("/api/heatmap", {credentials: "include"});
-    heatmapData = (await heatmapRes.json()).map(entry => ({
-      date: entry.sessionDate.split('T')[0],  // nur YYYY-MM-DD behalten
-      count: entry.sessionCount
-    }));
+    heatmapData = await heatmapRes.json();
     heatmapCalendar = generateCalendarData(heatmapData);
 
     const streakRes = await fetch("/api/streak", {credentials: "include"});
