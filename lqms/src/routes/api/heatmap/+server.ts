@@ -6,10 +6,6 @@ export const GET: RequestHandler = async ({ locals }) => {
   if (!userId) return json({ error: 'Nicht eingeloggt' }, { status: 401 });
 
   const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  // Position heute im Wochengitter (0 = So, 6 = Sa)
-  const todayIndex = today.getDay();
 
   // Wieviele Tage zurück müssen wir gehen, damit heute z.B. an Index 2 landet (Dienstag)
   const startDate = new Date(today);
@@ -39,9 +35,20 @@ export const GET: RequestHandler = async ({ locals }) => {
   // Map mit normalisierten Datumsschlüsseln (YYYY-MM-DD)
   const sessionMap = new Map(
     sessions.map((s: any) => {
-      const key = new Date(s.sessionDate).toISOString().split('T')[0];
-      return [key, s.sessionCount];
-    })
+      try {
+        const date = new Date(s.sessionDate);
+        if (isNaN(date.getTime())) {
+          console.error('Ungültiges Datum:', s.sessionDate);
+          return [null, 0]; // Fallback
+        }
+        console.log('sessionDate type:', typeof s.sessionDate, s.sessionDate);
+        const key = date.toISOString().split('T')[0];
+        return [key, s.sessionCount];
+      } catch (e) {
+        console.error('Fehler beim Parsen des Datums:', s.sessionDate);
+        return [null, 0];
+      }
+    }).filter(([key]) => key !== null)
   );
 
   console.log('Session Map:', Array.from(sessionMap.entries()));
