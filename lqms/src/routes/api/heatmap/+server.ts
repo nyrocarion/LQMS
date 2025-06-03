@@ -8,17 +8,9 @@ export const GET: RequestHandler = async ({ locals }) => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const daysAgo = new Date(today);
-  daysAgo.setDate(today.getDate() - 29);
+  daysAgo.setDate(today.getDate() - 30); // Damit heute mit reinfällt
 
-  // Generiere ein Array mit den letzten 35 Tagen
-  const days: string[] = [];
-  for (let i = 0; i < 35; i++) {
-    const day = new Date(daysAgo);
-    day.setDate(daysAgo.getDate() + i);
-    days.push(day.toISOString().split('T')[0]); // Format: "YYYY-MM-DD"
-  }
-
-  // Abfrage der Sessions aus der DB
+  // SQL-Abfrage: Sessions der letzten 35 Tage
   const sessions = await db.query(
     `SELECT DATE(date) AS sessionDate, COUNT(*) AS sessionCount
      FROM session
@@ -28,21 +20,26 @@ export const GET: RequestHandler = async ({ locals }) => {
     [userId, daysAgo.toISOString().split('T')[0]]
   );
 
-  // Logge die SQL-Abfrage-Ergebnisse zur Untersuchung
-  console.log("Sessions:", sessions);
+  // Datenbankergebnisse als Map speichern: { '2025-05-25': 2, ... }
+  const sessionMap = new Map<string, number>();
+  for (const session of sessions) {
+    const date = new Date(session.sessionDate).toISOString().split('T')[0];
+    sessionMap.set(date, session.sessionCount);
+  }
 
-  // Erstelle eine Map für schnelleren Zugriff auf die Sessions
-  const sessionMap = new Map(
-    sessions.map(session => [session.sessionDate, session.sessionCount])
-  );
+  // Alle 35 Tage generieren
+  const days: string[] = [];
+  for (let i = 0; i < 35; i++) {
+    const d = new Date(daysAgo);
+    d.setDate(daysAgo.getDate() + i);
+    days.push(d.toISOString().split('T')[0]);
+  }
 
-  // Fülle die Heatmap-Daten für alle 35 Tage
-  const heatmapData = days.map(day => {
-    return {
-      date: day,
-      count: sessionMap.get(day) || 0,  // Wenn keine Session, setze count auf 0
-    };
-  });
+  // Ergebnis strukturieren für die Heatmap
+  const heatmapData = days.map(date => ({
+    date,
+    count: sessionMap.get(date) || 0,
+  }));
 
   return json(heatmapData);
 };
