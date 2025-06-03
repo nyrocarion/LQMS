@@ -28,9 +28,6 @@ export const GET: RequestHandler = async ({ locals }) => {
     [userId, daysAgo.toISOString().split('T')[0]]
   );
 
-  // Logge die SQL-Abfrage-Ergebnisse zur Untersuchung
-  console.log("Sessions:", sessions);
-
   // Erstelle eine Map für schnelleren Zugriff auf die Sessions
   const sessionMap = new Map(
     sessions.map(session => [session.sessionDate, session.sessionCount])
