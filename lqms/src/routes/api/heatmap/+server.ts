@@ -16,6 +16,7 @@ export const GET: RequestHandler = async ({ locals }) => {
     const day = new Date(daysAgo);
     day.setDate(daysAgo.getDate() + i);
     days.push(day.toISOString().split('T')[0]); // Format: "YYYY-MM-DD"
+    console.log(day.toISOString().split('T')[0])
   }
 
   // Abfrage der Sessions aus der DB
