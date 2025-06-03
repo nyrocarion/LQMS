@@ -2,6 +2,7 @@ import { db } from '$lib/server/database';
 import { json, type RequestHandler } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async ({ locals }) => {
+
   const userId = locals.userId;
   if (!userId) return json({ error: 'Nicht eingeloggt' }, { status: 401 });
 
@@ -19,6 +20,8 @@ export const GET: RequestHandler = async ({ locals }) => {
      ORDER BY sessionDate ASC`,
     [userId, daysAgo.toISOString().split('T')[0]]
   );
+
+  console.log(userId)
 
   // Datenbankergebnisse als Map speichern: { '2025-05-25': 2, ... }
   const sessionMap = new Map<string, number>();
