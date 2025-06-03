@@ -24,7 +24,7 @@
   function getHeatmapColor(count: number) {
     if (count >= 2) return "#006400";
     if (count === 1) return "#32CD32";
-    return "#2f2f2f";
+    return "#7a7a7a";
   }
 
   /** Formatieren des Datums */
