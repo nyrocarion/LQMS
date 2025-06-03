@@ -6,64 +6,55 @@ export const GET: RequestHandler = async ({ locals }) => {
   if (!userId) return json({ error: 'Nicht eingeloggt' }, { status: 401 });
 
   const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
-  // Wieviele Tage zurück müssen wir gehen, damit heute z.B. an Index 2 landet (Dienstag)
+  const daysToLoad = 35;
+
+  // Startdatum 35 Tage zurück
   const startDate = new Date(today);
-  startDate.setDate(today.getDate() - 34); // 35 Tage total
+  startDate.setDate(today.getDate() - (daysToLoad - 1)); // inkl. heute
 
-  // Generiere 35 Tage von startDate bis heute
-  const days: string[] = [];
-  for (let i = 0; i < 35; i++) {
-    const d = new Date(startDate);
-    d.setDate(startDate.getDate() + i);
-    days.push(d.toISOString().split('T')[0]);
-  }
-
-  // Sessions aus der DB laden (ab Startdatum)
-  const sqlStart = startDate.toISOString().split('T')[0];
+  // SQL: Sessions seit Startdatum abrufen
   const sessions = await db.query(
-    `SELECT DATE(date) AS sessionDate, COUNT(*) AS sessionCount
+    `SELECT DATE(date) AS date, COUNT(*) AS count
      FROM session
      WHERE completedby = ? AND date >= ?
-     GROUP BY sessionDate
-     ORDER BY sessionDate ASC`,
-    [userId, sqlStart]
+     GROUP BY DATE(date)
+     ORDER BY DATE(date) ASC`,
+    [userId, startDate.toISOString().split('T')[0]]
   );
 
-  console.log('Daten aus der DB:', sessions);
+  // Debug: Zeige Ergebnisstruktur
+  console.log("Sessions aus DB:", sessions);
 
-  // Map mit normalisierten Datumsschlüsseln (YYYY-MM-DD)
-  const sessionMap = new Map(
-    sessions.map((s: any) => {
-      try {
-        const date = new Date(s.sessionDate);
-        if (isNaN(date.getTime())) {
-          console.error('Ungültiges Datum:', s.sessionDate);
-          return [null, 0]; // Fallback
-        }
-        console.log('sessionDate type:', typeof s.sessionDate, s.sessionDate);
-        const key = date.toISOString().split('T')[0];
-        return [key, s.sessionCount];
-      } catch (e) {
-        console.error('Fehler beim Parsen des Datums:', s.sessionDate);
-        return [null, 0];
-      }
-    }).filter(([key]) => key !== null)
-  );
+  // Map mit YYYY-MM-DD → count
+  const sessionMap = new Map<string, number>();
+  for (const row of sessions as { date: Date | string; count: number }[]) {
+    const d = new Date(row.date);
+    if (!isNaN(d.getTime())) {
+      const key = d.toISOString().split('T')[0];
+      sessionMap.set(key, Number(row.count));
+    } else {
+      console.warn("Ungültiges Datum in DB-Row:", row);
+    }
+  }
 
-  console.log('Session Map:', Array.from(sessionMap.entries()));
+    // Heatmap-Daten aufbauen
+  const heatmapData: { date: string; count: number }[] = [];
 
-  // Fülle Heatmapdaten
-  const heatmapData = days.map(day => {
-    const count = sessionMap.get(day) || 0;
-    console.log(`Tag: ${day}, Session Count: ${count}`);
-    const isFuture = new Date(day) > today;
-    return {
-      date: day,
-      count,
-      isFuture
-    };
-  });
+  for (let i = 0; i < daysToLoad; i++) {
+    const currentDate = new Date(startDate);
+    currentDate.setDate(startDate.getDate() + i);
+
+    const iso = currentDate.toISOString().split('T')[0];
+    const count = sessionMap.get(iso) || 0;
+    const isFuture = currentDate > today;
+
+    heatmapData.push({
+      date: iso,
+      count: isFuture ? -1 : count
+    });
+  }
 
   return json(heatmapData);
 };
