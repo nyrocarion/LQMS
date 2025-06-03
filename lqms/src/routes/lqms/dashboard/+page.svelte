@@ -154,7 +154,6 @@
   <!-- R -->
   <div class="column">
       <div class="panel medium beige_bg">Profil Area</div>
-      <div class="panel beige_bg">Start Timer Knopf</div>
       <div class="panel tall beige_bg">To Do Liste</div>
       <div class="panel tall beige_bg">Progress Chart</div>
   </div>
