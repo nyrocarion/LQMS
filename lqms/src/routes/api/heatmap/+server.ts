@@ -26,12 +26,22 @@ export const GET: RequestHandler = async ({ locals }) => {
   const sessionMap = new Map<string, number>();
 
   for (const row of sessions) {
-    const raw = typeof row.date === 'string' ? row.date : String(row.date);
-    const isoDate = raw.split('T')[0];
+    let isoDate: string;
+
+    if (typeof row.date === 'string') {
+      isoDate = row.date.split('T')[0];
+    } else if (row.date instanceof Date) {
+      isoDate = row.date.toISOString().split('T')[0];
+    } else {
+      console.warn('Ungültiges Datum in DB-Row:', row);
+      continue;
+    }
+
     if (!isoDate.match(/^\d{4}-\d{2}-\d{2}$/)) {
       console.warn('Ungültiges Datum in DB-Row:', row);
       continue;
     }
+
     sessionMap.set(isoDate, Number(row.count));
   }
 
