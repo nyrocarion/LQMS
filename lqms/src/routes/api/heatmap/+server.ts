@@ -9,10 +9,12 @@ export const GET: RequestHandler = async ({ locals }) => {
   today.setHours(0, 0, 0, 0);
 
   const startDate = new Date(today);
-  startDate.setDate(today.getDate() - 34);
-  const sqlStart = startDate.toISOString().split('T')[0]; // YYYY-MM-DD
+  startDate.setDate(today.getDate() - 34); // 35 Tage inkl. heute
 
-  const sessions = await db.query(
+  const sqlStart = startDate.toISOString().split('T')[0];
+
+  // Hole nur rows aus dem Query
+  const [sessions] = await db.query(
     `SELECT DATE(date) as date, COUNT(*) as count
      FROM session
      WHERE completedby = ? AND date >= ?
@@ -24,27 +26,20 @@ export const GET: RequestHandler = async ({ locals }) => {
   console.log('Rohdaten aus DB:', sessions);
 
   const sessionMap = new Map<string, number>();
-  for (const row of sessions) {
-    let rawDate: string;
-    if (typeof row.date === 'string') {
-      rawDate = row.date;
-    } else if (row.date instanceof Date) {
-      rawDate = row.date.toISOString();
-    } else {
-      rawDate = String(row.date);
-    }
-    const isoDate = rawDate.split('T')[0];
-    console.log('Insert Map:', isoDate, Number(row.count));
-    sessionMap.set(isoDate, Number(row.count));
+  for (const row of sessions as { date: Date; count: number }[]) {
+    const iso = row.date.toISOString().split('T')[0];
+    console.log(`Insert Map: ${iso} ${row.count}`);
+    sessionMap.set(iso, row.count);
   }
 
-  const result = [];
+  const result: { date: string; count: number }[] = [];
   for (let i = 0; i < 35; i++) {
-    const d = new Date(startDate.getTime());
+    const d = new Date(startDate);
     d.setDate(startDate.getDate() + i);
     const iso = d.toISOString().split('T')[0];
-    console.log('Lookup Map mit Key:', iso, 'Value:', sessionMap.get(iso));
-    result.push({ date: iso, count: sessionMap.get(iso) || 0 });
+    const count = sessionMap.get(iso) || 0;
+    console.log(`Tag: ${iso}, Count: ${count}`);
+    result.push({ date: iso, count });
   }
 
   return json(result);
