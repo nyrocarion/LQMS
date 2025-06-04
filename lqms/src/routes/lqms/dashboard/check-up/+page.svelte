@@ -22,11 +22,11 @@
 
   /** Selektion der Farbe der Heatmap zu je einem Tag */
   function getHeatmapColor(count) {
-    if (count === -1) return '#3a3a3a';  // zukünftiger Tag
-    if (count === 0) return '#2c2c2c';   // keine Aktivität
-    if (count === 1) return '#285430';
-    if (count === 2) return '#4E944F';
-    if (count >= 3) return '#70AF85';
+    if (count === -1) return '#c9c9c9';  // zukünftiger Tag
+    if (count === 0) return '#a3a3a3';   // keine Aktivität
+    if (count === 1) return '#64e85d';
+    if (count === 2) return '#37c230';
+    if (count >= 3) return '#229c1c';
   }
 
   /** Formatieren des Datums */
