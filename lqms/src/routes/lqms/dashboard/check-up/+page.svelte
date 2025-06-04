@@ -43,7 +43,7 @@
     const end = new Date(today);
     const weekday = (today.getDay() + 6) % 7; // Montag = 0
     const start = new Date(end);
-    start.setDate(end.getDate() - weekday - 34); // 35 Tage + Offset zu Mo
+    start.setDate(end.getDate() - 34); // 35 Tage + Offset zu Mo
 
     const calendarMap = new Map(data.map(d => [d.date, d.count]));
     const calendar: { date: string; count: number }[][] = [];
@@ -247,6 +247,7 @@
 .heatmap-header {
   display: flex;
   gap: 4px;
+  align-self: center;
 }
 
 .weekday-label {
@@ -261,6 +262,7 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+  align-self: center;
 }
 
 .week-row {
