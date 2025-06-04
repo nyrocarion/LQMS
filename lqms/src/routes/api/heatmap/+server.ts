@@ -23,12 +23,9 @@ export const GET: RequestHandler = async ({ locals }) => {
     [userId, sqlStart]
   );
 
-  console.log('Rohdaten aus DB:', sessions);
-
   const sessionMap = new Map<string, number>();
   for (const row of sessions as { date: Date; count: number }[]) {
     const iso = row.date.toISOString().split('T')[0];
-    console.log(`Insert Map: ${iso} ${row.count}`);
     sessionMap.set(iso, row.count);
   }
 
@@ -38,7 +35,6 @@ export const GET: RequestHandler = async ({ locals }) => {
     d.setDate(startDate.getDate() + i);
     const iso = d.toISOString().split('T')[0];
     const count = sessionMap.get(iso) || 0;
-    console.log(`Tag: ${iso}, Count: ${count}`);
     result.push({ date: iso, count });
   }
 
