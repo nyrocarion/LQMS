@@ -11,15 +11,15 @@
 
     <div class="timer-block">
       <h1>
+        <div>
+        Sessiondauer:
+        </div>
         <div class="timer-blank"> 
           <span class ="timer-number">{number_padding(hours)}</span>
           <span class="timer-dot">:</span>
           <span class="timer-number">{number_padding(minutes)}</span>
           <span class="timer-dot">:</span>
           <span class="timer-number">{number_padding(seconds)}</span>
-        </div>
-        <div>
-        Sessiondauer:
         </div>
       </h1>
       <div class="button-grid">
@@ -129,6 +129,7 @@
 }
 
 .button-grid {
+  position: relative;
   display: flex;
   gap: 10px;
   margin-bottom: 100px;
