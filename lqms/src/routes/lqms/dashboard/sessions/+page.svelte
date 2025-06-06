@@ -112,7 +112,8 @@
 .timer-dot{
   font-size: 50px;
   padding: 0 0.2em;
-  padding-bottom: 100px;
+  position: relative;
+  bottom: 20;
 }
 
 .timer-number{
