@@ -52,7 +52,7 @@ async function loadLecturesForToday(): Promise<
   const date = today.getDate();
 
   const res = fetch(
-    'https://corsproxy.io/?url=https://api.dhbw.app/rapla/lectures/MA-TINF24CS1/events'
+    'https://api.dhbw.app/rapla/lectures/MA-TINF24CS1/events'
   );
 
   console.log(res);
