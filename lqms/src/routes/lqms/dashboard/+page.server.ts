@@ -52,8 +52,12 @@ async function loadLecturesForToday(): Promise<
   const date = today.getDate();
 
   const res = fetch(
-    'https://corsproxy.io/?url=https://api.dhbw.app/rapla/lectures/MA-TINF24CS1/events'
+    'https://api.dhbw.app/rapla/lectures/MA-TINF24CS1/events',
+    {
+      method: 'GET',
+    }
   );
+  console.log(res);
 
   if (!res.ok) {
     throw new Error('Fehler beim Laden der Vorlesungsdaten');
@@ -92,6 +96,7 @@ async function getMeme() {
     })
     });
     const data = response.json();
+    return data.data.url;
 
     /* Diese Aufrufe existieren in TS nicht für die Konstante data nicht.
        Hier wurde noch das await hinzugefügt s. Z. 74 an dieser Stelle ist es notwendig.
