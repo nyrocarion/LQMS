@@ -71,8 +71,8 @@ p {
 
 #sessions, #checkup, #dashboard, #lectures {
   padding: 15px 55px 15px 55px; /* Top - Right - Bottom - Left */
-  border-bottom-left-radius: 15px;
+  border-bottom-left-radius: 15px; /*Runde Ecken*/
   border-bottom-right-radius: 15px;
-  min-width: 300px;
+  min-width: 200px;
   text-align: center;
 }

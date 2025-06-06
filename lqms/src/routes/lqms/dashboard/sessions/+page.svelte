@@ -11,7 +11,6 @@
 
     <div class="timer-block">
       <h1>
-        Sessiondauer:
         <div> 
           <span class ="timer-number">{number_padding(hours)}</span>
           <span class="timer-dot">:</span>
@@ -19,6 +18,7 @@
           <span class="timer-dot">:</span>
           <span class="timer-number">{number_padding(seconds)}</span>
         </div>
+        Sessiondauer:
       </h1>
       <div class="button-grid">
         <button class="clock" on:click={toggle_timer}>
@@ -105,6 +105,7 @@
 }
 
 .timer-number{
+  font-size: 130px;
   padding: 0 0.2em;
 }
 
