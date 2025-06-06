@@ -118,17 +118,14 @@ export const load: PageServerLoad = async ({ cookies }) => {
   const token = cookies.get('authToken');
   const user = token && verifyJWT(token);
 
-  // Redirect zur Startseite
-  // if (!user) {
-  //   throw redirect(302, '/');
-  // }
-
-  // Tip aus Datenbank holen
-  const result = db.query('SELECT `tipps` FROM `content` WHERE `id`=1;');
+  // get tip from db
+  // random value between 0 and 1, transform it so we get range(1,11)
+  const id = Math.floor(Math.random() * 11) + 1;
+  const result = db.query('SELECT `tipps` FROM `content` WHERE `id` = ?', [id]);
   // Gibt eine Ausgabe egal welcher Fall auftritt
   const tip = (result[0] && result[0][0]?.tipps) ?? 'Kein Tipp gefunden';
 
-  // Aus Api geladen
+  // loaded from external api
   const dailyfact =  fetchDateFact();
   const dailymeme =  getMeme();
   const lectures =  "loadLecturesForToday()";
