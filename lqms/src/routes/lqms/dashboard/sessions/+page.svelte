@@ -106,8 +106,7 @@
 <style>
 .timer-blank{
   position: relative;
-  top: 200px;
-  bottom: 15px;
+  top: 75px;
 }
 .timer-dot{
   font-size: 50px;
@@ -132,15 +131,16 @@
   text-align: center;
   padding: 0 25px;
   border-radius: 15px;
-  height: 700px;
+  height: 500px;
+  top: 100px;
 }
 
 .button-grid {
   position: relative;
   display: flex;
   gap: 10px;
-  margin-bottom: 100px;
-  
+  margin-bottom: 50px;
+  margin-top: 10px;
 }
 
 .clock {
