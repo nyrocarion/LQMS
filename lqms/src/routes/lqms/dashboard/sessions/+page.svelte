@@ -129,6 +129,7 @@
   text-align: center;
   padding: 0 25px;
   border-radius: 15px;
+  height: 300px;
 }
 
 .button-grid {
