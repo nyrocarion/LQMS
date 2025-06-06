@@ -116,6 +116,7 @@
 .timer-number{
   font-size: 130px;
   padding: 0 0.2em;
+  font-family: 'Courier New', Courier, monospace;
 }
 
 .timer-block {
