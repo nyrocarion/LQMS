@@ -169,8 +169,8 @@
           <h3>Was ist das LQMS?</h3>
           <div class="section">
             <div class="text">
-              <b>Optimiere dein Studium mit dem Lernqualitätsmanagementsystem</b>
-              <p>Verbessere deinen Lernprozess, behalte den Überblick und arbeite effizient mit deinen Kommilitonen.</p><br>
+              <b style="text-align:center">Optimiere dein Studium mit dem Lernqualitätsmanagementsystem</b>
+              <p >Verbessere deinen Lernprozess, behalte den Überblick und arbeite effizient mit deinen Kommilitonen.</p><br>
               Das LQMS ist deine <b>zentrale Plattform</b> für strukturiertes und transparentes Lernen.<br>
               Es verbindet klare Fortschrittsanalyse, interaktive <b>Lernsessions</b> und eine intuitive Benutzeroberfläche – alles in einer modernen Webanwendung. Mit deinem <b>persönlichen Dashboard</b>, aktuellen <b>Vorlesungsdaten</b> und visualisiertem Lernerfolg weißt du immer genau, wo du stehst.
             </div>
@@ -180,8 +180,9 @@
           <h3>Womit hilft es dir?</h3>
           <div class="section">
             <div class="text">
-              <b>LQMS unterstützt dich beim Lernen, Planen und Reflektieren.</b><br>
-              Es zeigt dir in Echtzeit deinen <b>Lernfortschritt</b>, hilft dir beim Organisieren deiner Sessions und liefert dir eine <b>visuelle Analyse</b> deines Lernverhaltens. So sparst du Zeit, erkennst Fortschritte schneller und bleibst motiviert – ganz ohne Zettelchaos. 
+              <b style="text-align:center">LQMS unterstützt dich beim Lernen, Planen und Reflektieren.</b>
+              <p>Es zeigt dir in Echtzeit deinen <b>Lernfortschritt</b>, hilft dir beim Organisieren deiner Sessions und liefert dir eine <b>visuelle Analyse</b> deines Lernverhaltens. 
+                So sparst du Zeit, erkennst Fortschritte schneller und bleibst motiviert – ganz ohne Zettelchaos. </p>
             </div>
           </div>
         </div>
@@ -444,6 +445,7 @@
   .text {
     flex: 1;
     min-width: 250px;
+    text-align: left;
   }
 
   .image {
