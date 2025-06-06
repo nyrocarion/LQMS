@@ -10,7 +10,7 @@ async function fetchDateFact() {
   try {
     const key = process.env.RAPID_API_KEY;
     const host = process.env.RAPID_API_HOST;
-    const response = fetch("https://numbersapi.p.rapidapi.com/"+month+"/"+day+"/date?json=true",
+    const response = await fetch("https://numbersapi.p.rapidapi.com/"+month+"/"+day+"/date?json=true",
       {
         method: 'GET',
         headers: {
@@ -19,7 +19,7 @@ async function fetchDateFact() {
         }
       }
     );
-    const data = response.json(); 
+    const data = await response.json(); 
     if (data.found) {
       return data.text;
     } else {
@@ -51,7 +51,7 @@ async function loadLecturesForToday(): Promise<
   const today = new Date()
   const date = today.getDate();
 
-  const res = fetch(
+  const res = await fetch(
     'https://api.dhbw.app/rapla/lectures/MA-TINF24CS1/events',
     {
       method: 'GET',
@@ -63,7 +63,7 @@ async function loadLecturesForToday(): Promise<
     throw new Error('Fehler beim Laden der Vorlesungsdaten');
   }
 
-  const allLectures = res.json();
+  const allLectures = await res.json();
 
   // use startTime to get matches as date is the date from the day before
   // add 2 hours as the datestrings dont match our timezone
@@ -95,17 +95,13 @@ async function getMeme() {
           password: pw,
     })
     });
-    const data = response.json();
-    return data.data.url;
-
-    /* Diese Aufrufe existieren in TS nicht für die Konstante data nicht.
-       Hier wurde noch das await hinzugefügt s. Z. 74 an dieser Stelle ist es notwendig.
+    const data = await response.json();
 
     if (data.success) {
         return data.data.url;
     } else {
         console.error("Meme API Error: ", data.error_message);
-    }*/
+    }
   } 
   catch (error) {
       console.error("Error getting the meme:", error);
