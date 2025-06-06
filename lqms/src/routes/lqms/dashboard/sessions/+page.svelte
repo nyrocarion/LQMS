@@ -110,7 +110,9 @@
   bottom: 15px;
 }
 .timer-dot{
-   padding: 0 0.2em;
+  font-size: 50px;
+  padding: 0 0.2em;
+  padding-bottom: 100px;
 }
 
 .timer-number{
@@ -129,7 +131,7 @@
   text-align: center;
   padding: 0 25px;
   border-radius: 15px;
-  height: 300px;
+  height: 700px;
 }
 
 .button-grid {
