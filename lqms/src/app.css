@@ -33,8 +33,10 @@ p {
 
 .app-container {
   padding: 0 2rem 2rem;
-  max-width: 1920px;
-  min-width: 1200px;
+  /*max-width: 1920px;
+  min-width: 1200px;*/
+  width: 100vw;
+  height: 100vh;
   margin: auto;
   position: relative;
   background: linear-gradient(90deg, #FEC996,#E37C95,#B894DC,#EAC4F4);
