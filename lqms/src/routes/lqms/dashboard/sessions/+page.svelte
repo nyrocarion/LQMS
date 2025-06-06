@@ -194,7 +194,7 @@ const getmotivationEmoji = (value: number): string => {
     padding: 0 0.2em;
   }
 
-  .timer-block {
+ /*  .timer-block {
     display: grid;
     gap: 1rem;
     max-width: 300px;
@@ -204,6 +204,14 @@ const getmotivationEmoji = (value: number): string => {
     border: 2px solid #007bff;
     border-radius: 10px;
     background-color: #f9f9f9;
+  } */
+  .timer-block {
+  grid-area: div1;
+  color: #3c68a3;
+  background-color: white;
+  font-weight: bold;
+  padding: 0 25px;
+  border-radius: 15px;
   }
 
   .button-grid {
