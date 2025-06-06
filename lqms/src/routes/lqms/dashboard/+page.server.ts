@@ -123,6 +123,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
   const id = Math.floor(Math.random() * 11) + 1;
   const result = db.query('SELECT `tipps` FROM `content` WHERE `id` = ?', [id]);
   // Gibt eine Ausgabe egal welcher Fall auftritt
+  console.log(result);
   const tip = (result[0] && result[0][0]?.tipps) ?? 'Kein Tipp gefunden';
 
   // loaded from external api
