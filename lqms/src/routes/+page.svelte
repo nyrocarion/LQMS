@@ -170,9 +170,9 @@
           <div class="section">
             <div class="text">
               <b>Optimiere dein Studium mit dem Lernqualitätsmanagementsystem</b>
-              <p>Verbessere deinen Lernprozess, behalte den Überblick und arbeite effizient mit deinen Kommilitonen.</p>
-              <button class="cta" on:click={() => goto('/lqms/lukas')}>Hier gehts zum Button</button>
-              <button class="cta" on:click={() => goto('/lqms')}>Hier gehts zur Zwischenseite</button>
+              <p>Verbessere deinen Lernprozess, behalte den Überblick und arbeite effizient mit deinen Kommilitonen.</p><br>
+              Das LQMS ist deine <b>zentrale Plattform</b> für strukturiertes und transparentes Lernen.<br>
+              Es verbindet klare Fortschrittsanalyse, interaktive <b>Lernsessions</b> und eine intuitive Benutzeroberfläche – alles in einer modernen Webanwendung. Mit deinem <b>persönlichen Dashboard</b>, aktuellen <b>Vorlesungsdaten</b> und visualisiertem Lernerfolg weißt du immer genau, wo du stehst.
             </div>
           </div>
         </div>
@@ -180,7 +180,8 @@
           <h3>Womit hilft es dir?</h3>
           <div class="section">
             <div class="text">
-              <p>Lorem ipsum dolor sit amet, consectetur sadipscing elitr, sed diam nonumy eirmod tempor...</p>
+              <b>LQMS unterstützt dich beim Lernen, Planen und Reflektieren.</b><br>
+              Es zeigt dir in Echtzeit deinen <b>Lernfortschritt</b>, hilft dir beim Organisieren deiner Sessions und liefert dir eine <b>visuelle Analyse</b> deines Lernverhaltens. So sparst du Zeit, erkennst Fortschritte schneller und bleibst motiviert – ganz ohne Zettelchaos. 
             </div>
           </div>
         </div>
@@ -199,7 +200,7 @@
           <p>Zeitmanipulator</p>
         </div>
         <div class="avatar-card">
-          <h4>Nastii</h4>
+          <h4>Nastja</h4>
           <img src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png" alt="Avatar 3" />
           <p>Farbspezialist</p>
         </div>
