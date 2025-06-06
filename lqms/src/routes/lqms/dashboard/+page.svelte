@@ -160,7 +160,7 @@
     <div class="column">
         <div class="panel medium beige_bg">
           <h3>Profile</h3>
-          <img src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png" alt="Avatar 2" />
+          <img style="width:50px;" src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png" alt="Avatar 2" />
           <b>Username</b><br>
         </div>
         <div class="panel tall beige_bg">To Do Liste</div>
