@@ -266,7 +266,6 @@
   .info-box {
     flex: 1 1 50%;
     padding: 1rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
   .hero {
