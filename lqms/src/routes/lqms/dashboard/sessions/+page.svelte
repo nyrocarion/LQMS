@@ -81,6 +81,18 @@ const getmotivationEmoji = (value: number): string => {
 </script>
 
 <!-- Timer Block -->
+
+<div class="parent app-container">
+  <header class="nav">
+    <ul>
+      <li id="sessions"><a href="../dashboard/sessions/">Sessions</a></li>
+      <li id="checkup"><a href="./check-up">Check-Up</a></li>
+      <li id="dashboard"><a href="../dashboard/">Dashboard</a></li>
+      <li id="lectures"><a href="../dashboard/lectures/">Vorlesungen</a></li>
+    </ul>
+  </header>
+</div>
+
 <div class="timer-block">
   <h1>
     Sessiondauer: 
@@ -340,4 +352,9 @@ const getmotivationEmoji = (value: number): string => {
     background-color: #cccccc;
     cursor: not-allowed;
   }
+
+  #sessions  { background-color: #479496; }
+  #checkup   { background-color: #3c68a3; }
+  #dashboard { background-color: #b96c96; }
+  #lectures  { background-color: #ec7b6a; }
 </style>
