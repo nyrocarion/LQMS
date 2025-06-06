@@ -111,7 +111,7 @@
   </style>
 </svelte:head>
 
-<div class="parent app-container">
+<div class="app-container">
   <header class="nav">
     <ul>
       <li id="sessions"><a href="./dashboard/sessions/">Sessions</a></li>
