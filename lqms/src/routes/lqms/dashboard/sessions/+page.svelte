@@ -14,36 +14,38 @@
         <div>
         Sessiondauer:
         </div>
-        <div class="timer-blank"> 
+      </h1>
+      <div class="timer-blank">
+        <div> 
           <span class ="timer-number">{number_padding(hours)}</span>
           <span class="timer-dot">:</span>
           <span class="timer-number">{number_padding(minutes)}</span>
           <span class="timer-dot">:</span>
           <span class="timer-number">{number_padding(seconds)}</span>
         </div>
-      </h1>
-      <div class="button-grid">
-        <button class="clock" on:click={toggle_timer}>
-          {#if isRunning}
-            <!-- Pause Icon -->
+        <div class="button-grid">
+          <button class="clock" on:click={toggle_timer}>
+            {#if isRunning}
+              <!-- Pause Icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+              </svg>
+            {:else}
+              <!-- Start Icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            {/if}
+          </button>
+          <button class="clock" on:click={session_end}  disabled={isSession == false}>
+            <!-- Stop Icon -->
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
-              <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+              <path d="M6 6h12v12H6z"/>
             </svg>
-          {:else}
-            <!-- Start Icon -->
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
-              <path d="M8 5v14l11-7z"/>
-            </svg>
-          {/if}
-        </button>
-        <button class="clock" on:click={session_end}  disabled={isSession == false}>
-          <!-- Stop Icon -->
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
-            <path d="M6 6h12v12H6z"/>
-          </svg>
-        </button>
+          </button>
+        </div>
       </div>
-    </div>
+    </div> 
 </div>
 
 
