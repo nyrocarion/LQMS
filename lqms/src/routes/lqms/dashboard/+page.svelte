@@ -123,7 +123,9 @@
   <section class="dashboard">
     <!-- L -->
     <div class="column">
-        <div class="panel medium beige_bg">Lernverhalten / Konzentrationskurve</div>
+        <div class="panel medium beige_bg">Lernverhalten / Konzentrationskurve
+        <h2>Etwas zum Lachen</h2>
+            <img style="height:100px;" id="meme" src="" alt="Meme"/></div>
         <div class="panel medium beige_bg">Arbeitszeiten Diagramm</div>
         <div class="panel medium beige_bg">
             <h2>Dein täglicher Lerntipp</h2>
@@ -135,15 +137,9 @@
     <!-- M -->
     <div class="column">
         <div class="panel tall beige_bg" style="flex:1">VL Plan</div>
-        <div class="row">
-            <div class="panel beige_bg">
-                <h2 >Ein Fakt üher den heutigen Tag</h2><br>
-                <span>{dailyfact}</span>
-            </div>
-            <div class="panel beige_bg">
-            <h2>Etwas zum Lachen</h2>
-            <img style="height:100px;" id="meme" src="" alt="Meme"/>
-            </div>
+        <div class="panel beige_bg">
+            <h2 >Ein Fakt üher den heutigen Tag</h2><br>
+            <span>{dailyfact}</span>
         </div>
         <div class="panel beige_bg lecture-container">
           <h2>Deine heutigen Vorlesungen</h2>
