@@ -207,7 +207,7 @@
         </div>
         <div class="avatar-card">
           <h4>Nik</h4>
-          <img src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png" alt="Avatar 4" />
+          <img src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/profile_pic_nik.jpg" alt="Avatar von Nik" />
           <p>Spaghetticodemonster</p>
         </div>
       </div>
