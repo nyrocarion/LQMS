@@ -39,17 +39,25 @@ function formatTime(timeString: string): string {
   return `${hours}:${minutes}`;
 }
 
+function addHours(date, hours) {
+  const hoursToAdd = hours * 60 * 60 * 1000;
+  date.setTime(date.getTime() + hoursToAdd);
+  return date;
+}
+
 async function loadLecturesForToday(): Promise<
   { name: string; startTime: string; endTime: string; room: string }[]
 > {
   const today = new Date()
-  const yesterday = new Date(today);
-  yesterday.setDate(yesterday.getDate() - 1);
-  const date = yesterday.getDate();
+  const date = today.getDate();
 
   const res = fetch(
-    'https://corsproxy.io/?url=https://api.dhbw.app/rapla/lectures/MA-TINF24CS1/events'
+    'https://api.dhbw.app/rapla/lectures/MA-TINF24CS1/events',
+    {
+      method: 'GET',
+    }
   );
+  console.log(res);
 
   if (!res.ok) {
     throw new Error('Fehler beim Laden der Vorlesungsdaten');
@@ -57,12 +65,15 @@ async function loadLecturesForToday(): Promise<
 
   const allLectures = res.json();
 
+  // use startTime to get matches as date is the date from the day before
+  // add 2 hours as the datestrings dont match our timezone
+
   return allLectures
-    .filter((entry: any) => entry.date.split('T')[0] === date)
+    .filter((entry: any) => entry.startTime.split('T')[0] === date)
     .map((lecture: any) => ({
       name: lecture.name.trim(),
-      startTime: formatTime(lecture.startTime),
-      endTime: formatTime(lecture.endTime),
+      startTime: formatTime(addHours(lecture.startTime, 2)),
+      endTime: formatTime(addHours(lecture.endTime, 2)),
       room: lecture.rooms?.[0] || 'Kein Raum angegeben'
     }));
 }
@@ -71,7 +82,7 @@ async function getMeme() {
   try {
     const user = process.env.IMGFLIP_USER;
     const pw = process.env.IMGFLIP_PW;
-    const response = fetch("https://api.imgflip.com/caption_image", {
+    const response = await fetch("https://api.imgflip.com/caption_image", {
       method: "POST",
       headers: {
       "Content-Type": "application/x-www-form-urlencoded"
@@ -85,11 +96,16 @@ async function getMeme() {
     })
     });
     const data = response.json();
+    return data.data.url;
+
+    /* Diese Aufrufe existieren in TS nicht für die Konstante data nicht.
+       Hier wurde noch das await hinzugefügt s. Z. 74 an dieser Stelle ist es notwendig.
+
     if (data.success) {
         return data.data.url;
     } else {
         console.error("Meme API Error: ", data.error_message);
-    }
+    }*/
   } 
   catch (error) {
       console.error("Error getting the meme:", error);
@@ -112,7 +128,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
   // loaded from external api
   const dailyfact =  fetchDateFact();
   const dailymeme =  getMeme();
-  const lectures =  loadLecturesForToday();
+  const lectures =  "loadLecturesForToday()";
 
   // Zusammen zurückgeben (wird in dashboard geladen)
   return {

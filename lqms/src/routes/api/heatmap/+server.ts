@@ -5,24 +5,38 @@ export const GET: RequestHandler = async ({ locals }) => {
   const userId = locals.userId;
   if (!userId) return json({ error: 'Nicht eingeloggt' }, { status: 401 });
 
-  const thirtyDaysAgo = new Date();
-  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
-  // Zählt die Sessions pro Tag für den aktuellen Benutzer
-  const sessions = await db.query(
-    `SELECT DATE(date) AS sessionDate, COUNT(*) AS sessionCount
+  const startDate = new Date(today);
+  startDate.setDate(today.getDate() - 34); // 35 Tage inkl. heute
+
+  const sqlStart = startDate.toISOString().split('T')[0];
+
+  // Hole nur rows aus dem Query
+  const [sessions] = await db.query(
+    `SELECT DATE(date) as date, COUNT(*) as count
      FROM session
      WHERE completedby = ? AND date >= ?
-     GROUP BY sessionDate
-     ORDER BY sessionDate DESC`,
-    [userId, thirtyDaysAgo.toISOString().split('T')[0]] // ISO-Format für den Vergleich
+     GROUP BY DATE(date)
+     ORDER BY DATE(date) ASC`,
+    [userId, sqlStart]
   );
 
-  // Formatiere die Daten für die Heatmap (sessionDate, sessionCount)
-  const heatmapData = sessions.map(session => ({
-    date: session.sessionDate,
-    count: session.sessionCount,
-  }));
+  const sessionMap = new Map<string, number>();
+  for (const row of sessions as { date: Date; count: number }[]) {
+    const iso = row.date.toISOString().split('T')[0];
+    sessionMap.set(iso, row.count);
+  }
 
-  return json(heatmapData);
+  const result: { date: string; count: number }[] = [];
+  for (let i = 0; i < 35; i++) {
+    const d = new Date(startDate);
+    d.setDate(startDate.getDate() + i);
+    const iso = d.toISOString().split('T')[0];
+    const count = sessionMap.get(iso) || 0;
+    result.push({ date: iso, count });
+  }
+
+  return json(result);
 };

@@ -110,52 +110,62 @@
    } 
   </style>
 </svelte:head>
-<section class="dashboard">
-  <!-- L -->
-  <div class="column">
-      <div class="panel medium beige_bg">Lernverhalten / Konzentrationskurve</div>
-      <div class="panel medium beige_bg">Arbeitszeiten Diagramm</div>
-      <div class="panel medium beige_bg">
-          <h2>Dein täglicher Lerntipp</h2>
-          <div>{tip}</div>
-      </div>
-      <div class="panel beige_bg" style="flex:1">Heat Map</div>
-  </div>
 
-  <!-- M -->
-  <div class="column">
-      <div class="panel tall beige_bg" style="flex:1">VL Plan</div>
-      <div class="row">
-          <div class="panel beige_bg">
-              <h2 >Ein Fakt üher den heutigen Tag</h2><br>
-              <span>{dailyfact}</span>
-          </div>
-          <div class="panel beige_bg">
-          <h2>Etwas zum Lachen</h2>
-          <img style="height:100px;" id="meme" src="" alt="Meme"/>
-          </div>
-      </div>
-      <div class="panel beige_bg lecture-container">
-        <h2>Deine heutigen Vorlesungen</h2>
-        {#if lectures.length === 0}
-          <p>Keine Vorlesungen heute.</p>
-        {:else}
-          {#each lectures as lecture}
-            <div class="lecture-card">
-              <h3>{lecture.name}</h3>
-              <p><strong>Raum:</strong> {lecture.room}</p>
-              <p><strong>Uhrzeit:</strong> {lecture.startTime} – {lecture.endTime}</p>
-            </div>
-          {/each}
-        {/if}
+<div class="app-container">
+  <header class="nav">
+    <ul>
+      <li id="sessions"><a href="./dashboard/sessions/">Sessions</a></li>
+      <li id="checkup"><a href="./dashboard/check-up">Check-Up</a></li>
+      <li id="dashboard"><a href="./dashboard/">Dashboard</a></li>
+      <li id="lectures"><a href="./dashboard/lectures/">Vorlesungen</a></li>
+    </ul>
+  </header>
+  <section class="dashboard">
+    <!-- L -->
+    <div class="column">
+        <div class="panel medium beige_bg">Lernverhalten / Konzentrationskurve</div>
+        <div class="panel medium beige_bg">Arbeitszeiten Diagramm</div>
+        <div class="panel medium beige_bg">
+            <h2>Dein täglicher Lerntipp</h2>
+            <div>{tip}</div>
+        </div>
+        <div class="panel beige_bg" style="flex:1">Heat Map</div>
     </div>
-  </div>
 
-  <!-- R -->
-  <div class="column">
-      <div class="panel medium beige_bg">Profil Area</div>
-      <div class="panel beige_bg">Start Timer Knopf</div>
-      <div class="panel tall beige_bg">To Do Liste</div>
-      <div class="panel tall beige_bg">Progress Chart</div>
-  </div>
-</section>
+    <!-- M -->
+    <div class="column">
+        <div class="panel tall beige_bg" style="flex:1">VL Plan</div>
+        <div class="row">
+            <div class="panel beige_bg">
+                <h2 >Ein Fakt üher den heutigen Tag</h2><br>
+                <span>{dailyfact}</span>
+            </div>
+            <div class="panel beige_bg">
+            <h2>Etwas zum Lachen</h2>
+            <img style="height:100px;" id="meme" src="" alt="Meme"/>
+            </div>
+        </div>
+        <div class="panel beige_bg lecture-container">
+          <h2>Deine heutigen Vorlesungen</h2>
+          {#if lectures.length === 0}
+            <p>Keine Vorlesungen heute.</p>
+          {:else}
+            {#each lectures as lecture}
+              <div class="lecture-card">
+                <h3>{lecture.name}</h3>
+                <p><strong>Raum:</strong> {lecture.room}</p>
+                <p><strong>Uhrzeit:</strong> {lecture.startTime} – {lecture.endTime}</p>
+              </div>
+            {/each}
+          {/if}
+      </div>
+    </div>
+
+    <!-- R -->
+    <div class="column">
+        <div class="panel medium beige_bg">Profil Area</div>
+        <div class="panel tall beige_bg">To Do Liste</div>
+        <div class="panel tall beige_bg">Progress Chart</div>
+    </div>
+  </section>
+</div>

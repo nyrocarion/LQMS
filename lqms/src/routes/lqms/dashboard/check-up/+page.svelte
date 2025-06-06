@@ -1,28 +1,32 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount } from "svelte";
 
   let tasks = [];
   let heatmapData = [];
+  let heatmapCalendar = [];
   let streak = 0;
 
   /** Vorladen der Daten aus API-Endpunkten */
   onMount(async () => {
-    const taskRes = await fetch('/api/tasks');
+    const taskRes = await fetch("/api/tasks", {credentials: "include"});
     tasks = await taskRes.json();
 
-    const heatmapRes = await fetch('/api/heatmap');
+    const heatmapRes = await fetch("/api/heatmap", {credentials: "include"});
     heatmapData = await heatmapRes.json();
+    heatmapCalendar = generateCalendarData(heatmapData);
 
-    const streakRes = await fetch('/api/streak');
+    const streakRes = await fetch("/api/streak", {credentials: "include"});
     const streakData = await streakRes.json();
     streak = streakData.streak;
   });
 
   /** Selektion der Farbe der Heatmap zu je einem Tag */
-  function getHeatmapColor(count: number) {
-    if (count >= 2) return '#006400';
-    if (count === 1) return '#32CD32';
-    return '#2f2f2f';
+  function getHeatmapColor(count) {
+    if (count === -1) return '#c9c9c9';  // zukünftiger Tag
+    if (count === 0) return '#a3a3a3';   // keine Aktivität
+    if (count === 1) return '#64e85d';
+    if (count === 2) return '#37c230';
+    if (count >= 3) return '#229c1c';
   }
 
   /** Formatieren des Datums */
@@ -31,98 +35,262 @@
     return `${d.getDate()}.${d.getMonth() + 1}`;
   }
 
-  /** Gruppieren eines Moduls */
-  function groupTasks(tasks) {
-    return tasks.reduce((acc, task) => {
-      const modul = task.module || 'Unbekannt';
-      if (!acc[modul]) acc[modul] = [];
-      acc[modul].push(task);
-      return acc;
-    }, {});
+  function generateCalendarData(data: { date: string; count: number }[]) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // Finde den Anfang der aktuellen Woche (Montag)
+    const end = new Date(today);
+    const weekday = (today.getDay() + 6) % 7; // Montag = 0
+    const start = new Date(end);
+    start.setDate(end.getDate() - 34); // 35 Tage + Offset zu Mo
+
+    const calendarMap = new Map(data.map(d => [d.date, d.count]));
+    const calendar: { date: string; count: number }[][] = [];
+
+    const current = new Date(start);
+    for (let i = 0; i < 35; i++) {
+      const iso = current.toISOString().split("T")[0];
+      const dateCopy = new Date(current); // damit nicht verändert
+      const isFuture = dateCopy.getTime() > today.getTime();
+
+      const count = isFuture ? 0 : (calendarMap.get(iso) || 0);
+      const weekday = (current.getDay() + 6) % 7;
+
+      if (calendar.length === 0 || weekday === 0) {
+        calendar.push(Array(7).fill(null));
+      }
+
+      calendar[calendar.length - 1][weekday] = { date: iso, count };
+
+      current.setDate(current.getDate() + 1);
+    }
+
+    return calendar;
   }
+
+  /** Reihenfolge der Wochentage in deutscher Kurzform */
+  const weekdays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
 
   /** Holen des Status je Modul */
   function getStatusLabel(status: number): string {
-    return ['Waiting', 'Doing', 'Done'][status] || 'Unknown';
+    return ["Waiting", "Doing", "Done"][status] || "Unknown";
   }
 </script>
 
-<div class="parent">
-  <div class="div1">
-    <nav>
-      <h2>Dashboard</h2>
-    </nav>
-  </div>
+<div class="parent app-container">
+  <header class="nav">
+    <ul>
+      <li id="sessions"><a href="../dashboard/sessions/">Sessions</a></li>
+      <li id="checkup"><a href="./check-up">Check-Up</a></li>
+      <li id="dashboard"><a href="../dashboard/">Dashboard</a></li>
+      <li id="lectures"><a href="../dashboard/lectures/">Vorlesungen</a></li>
+    </ul>
+  </header>
 
-  <div class="div2">
-    {#if tasks.length === 0}
-      <p>Du hast noch keine Aufgaben hinzugefügt. Beginne mit einer neuen Session, um Fortschritte zu sehen.</p>
-    {:else}
-      {#each Object.entries(groupTasks(tasks)) as [modul, items]}
-        <h3>{modul}</h3>
-        {#each ['Waiting', 'Doing', 'Done'] as statusLabel}
-          <div>
-            <h4>{statusLabel}</h4>
-            <ul>
-              {#each items.filter(task => getStatusLabel(task.status) === statusLabel) as task}
-                <li>{task.displayname}: {task.type}</li>
+  <div class="content-wrapper">
+    <div class="div1">
+      <main>
+        <article>
+          <h2>Check-Up</h2>
+          <div class="div2">
+            {#if tasks.length === 0}
+              <p>Du hast noch keine Aufgaben hinzugefügt.<br>Beginne mit einer neuen Session, um Fortschritte zu sehen.</p>
+            {:else}
+              {#each Object.entries(groupTasks(tasks)) as [modul, items]}
+                <h3>{modul}</h3>
+                {#each ['Waiting', 'Doing', 'Done'] as statusLabel}
+                  <div>
+                    <h4>{statusLabel}</h4>
+                    <ul>
+                      {#each items.filter(task => getStatusLabel(task.status) === statusLabel) as task}
+                        <li>{task.displayname}: {task.type}</li>
+                      {/each}
+                    </ul>
+                  </div>
+                {/each}
               {/each}
-            </ul>
+            {/if}
           </div>
-        {/each}
-      {/each}
-    {/if}
-  </div>
-
-  <div class="div3">
-    <h3>Aktivitäten (30 Tage)</h3>
-    <div class="heatmap">
-      {#each heatmapData as { date, count }}
-        <div class="heatmap-day" style="background-color: {getHeatmapColor(count)}" title={`${formatDate(date)}: ${count} Sessions`}></div>
-      {/each}
+        </article>
+      </main>
     </div>
-  </div>
 
-  <div class="div4">
-    <h3>Streak</h3>
-    <div class="streak-display">
-      <span class="flame">🔥</span> {streak} Tage in Folge aktiv
+    <div class="div3">
+      <h3>Aktivitäten (35 Tage)</h3>
+      <div class="heatmap-wrapper">
+        <div class="heatmap-header">
+          {#each weekdays as label}
+            <div class="weekday-label">{label}</div>
+          {/each}
+        </div>
+
+        <!-- Grid für 5 Wochen x 7 Tage -->
+        <div class="heatmap-grid">
+          {#each heatmapCalendar as week}
+            <div class="week-row">
+              {#each week as day}
+                <div
+                  class="heatmap-day"
+                  style="background-color: {day ? getHeatmapColor(day.count) : '#c9c9c9'}"
+                  title={day ? `${formatDate(day.date)}: ${day.count} Sessions` : ''}
+                ></div>
+              {/each}
+            </div>
+          {/each}
+        </div>
+      </div>
+    </div>
+
+    <div class="div4">
+      <h3>Streak</h3>
+      <div class="streak-display">
+        <span class="flame"><strong>{streak}</strong> 🔥</span>Tage in Folge aktiv
+      </div>
     </div>
   </div>
 </div>
 
 <style>
-  .parent {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    grid-column-gap: 15px;
-    grid-row-gap: 0px;
-  }
-  .div1 { grid-area: 1 / 1 / 2 / 3; }
-  .div2 { grid-area: 2 / 1 / 4 / 2; overflow-y: auto; padding: 1rem; }
-  .div3 { grid-area: 2 / 2 / 3 / 3; padding: 1rem; }
-  .div4 { grid-area: 3 / 2 / 4 / 3; padding: 1rem; }
+.parent {
+  display: flex;
+  flex-direction: column;
+}
 
-  .heatmap {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 4px;
-  }
-  .heatmap-day {
-    width: 20px;
-    height: 20px;
-    border-radius: 3px;
-    transition: background-color 0.3s;
-  }
+.content-wrapper {
+  display: grid;
+  grid-template-areas:
+    "div1 div3"
+    "div1 div4";
+  grid-template-columns: 4fr 3fr;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
 
-  .streak-display {
-    display: flex;
-    align-items: center;
-    font-size: 1.2rem;
-  }
-  .flame {
-    font-size: 2rem;
-    margin-right: 0.5rem;
-  }
+.div1 { grid-area: div1; }
+.div2 { grid-area: div2; }
+.div3 { grid-area: div3; }
+.div4 { grid-area: div4; }
+
+.nav {
+  margin-bottom: 50px;
+}
+
+.nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+}
+
+.nav ul li a {
+  display: inline-block;
+  margin: 0 5px;
+  font-weight: 600;
+  color: white;
+  text-decoration: none;
+}
+
+#sessions  { background-color: #479496; }
+#checkup   { background-color: #3c68a3; }
+#dashboard { background-color: #b96c96; }
+#lectures  { background-color: #ec7b6a; }
+
+#sessions, #checkup, #dashboard, #lectures {
+  padding: 15px 55px; /* Top - Right - Bottom - Left */
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+.div2, .div3, .div4 {
+  padding: 10px 25px;
+  border-radius: 15px;
+}
+
+.div1 {
+  grid-area: div1;
+  color: #3c68a3;
+  background-color: white;
+  font-weight: bold;
+  padding: 0 25px;
+  border-radius: 15px;
+}
+
+.div2 {
+  grid-area: div2;
+  background-color: white;
+  color: #000;
+}
+
+.div3 {
+  grid-area: div3;
+  background-color: white;
+}
+
+.div4 {
+  grid-area: div4;
+  background-color: white;
+  padding-bottom: 25px;
+}
+
+.heatmap-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 6px;
+  padding-top: 10px;
+}
+
+.heatmap-header {
+  display: flex;
+  gap: 4px;
+  align-self: center;
+}
+
+.weekday-label {
+  width: 30px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #642bff;
+  font-weight: bold;
+}
+
+.heatmap-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-self: center;
+}
+
+.week-row {
+  display: flex;
+  gap: 4px;
+}
+
+.heatmap-day {
+  width: 30px;
+  height: 30px;
+  border-radius: 3px;
+  background-color: #2f2f2f;
+  transition: background-color 0.3s;
+}
+
+.streak-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.flame {
+  font-size: 4rem;
+  padding-bottom: 10px;
+  display: inline;
+  vertical-align: middle;
+}
 </style>
