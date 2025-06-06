@@ -131,7 +131,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
   // Aus Api geladen
   const dailyfact =  fetchDateFact();
   const dailymeme =  getMeme();
-  const lectures =  loadLecturesForToday();
+  const lectures =  "loadLecturesForToday()";
 
   // Zusammen zurückgeben (wird in dashboard geladen)
   return {
