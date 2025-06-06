@@ -183,100 +183,33 @@ const getmotivationEmoji = (value: number): string => {
 {/if}
 
 <style>
-  /*body{
-    font-family: Verdana, Geneva, Tahoma, sans-serif
-  }
-
-  .timer-dot{
-    padding: 0 0.2em;
-  }
-
-  .timer-number{
-    padding: 0 0.2em;
-  }
-
-   .timer-block {
-    display: grid;
-    gap: 1rem;
-    max-width: 300px;
-    margin: 0 auto;
-    text-align: center;
-    padding: 2rem;
-    border: 2px solid #007bff;
-    border-radius: 10px;
-    background-color: #f9f9f9;
-  } */
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #f0f4fa;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+body{
+  font-family: Verdana, Geneva, Tahoma, sans-serif
 }
 
-.app-container {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem;
-  box-sizing: border-box;
+.timer-dot{
+   padding: 0 0.2em;
+}
+
+.timer-number{
+  padding: 0 0.2em;
 }
 
 .timer-block {
+  display: grid;
+  gap: 1rem;
+  max-width: 300px;
+  margin: 0 auto;
   text-align: center;
-  background-color: #ffffff;
-  padding: 2.5rem 3rem;
-  border-radius: 20px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  color: #3c68a3;
-  font-weight: bold;
-  max-width: 400px;
-  width: 100%;
+  padding: 2rem;
+  border: 2px solid #007bff;
+  border-radius: 10px;
+  background-color: #f9f9f9;
 }
 
 h1 {
   font-size: 2rem;
   margin-bottom: 2rem;
-}
-
-.timer-number {
-  font-size: 2.5rem;
-  padding: 0 0.25em;
-}
-
-.button-grid {
-  display: flex;
-  justify-content: space-around;
-  gap: 20px;
-  margin-top: 1.5rem;
-}
-
-.clock {
-  background-color: #007bff;
-  border: none;
-  border-radius: 12px;
-  padding: 14px 18px;
-  color: white;
-  font-size: 1.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transition: background-color 0.2s;
-}
-
-.clock:hover:not(:disabled) {
-  background-color: #0056b3;
-}
-
-.clock:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
 }
 
 .main-content {
@@ -285,7 +218,7 @@ h1 {
   justify-content: center;
   align-items: center;
 }
-/*  .timer-block {
+.timer-block {
   grid-area: div1;
   color: #3c68a3;
   background-color: white;
@@ -294,23 +227,23 @@ h1 {
   border-radius: 15px;
   }
 
-  .button-grid {
-    display: flex;
-    justify-content: space-around;
-    gap: 10px;
-  }
+.button-grid {
+  display: flex;
+  justify-content: space-around;
+  gap: 10px;
+}
 
-  .clock {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    flex: 1;
-  }
-  */
+.clock {
+ padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  flex: 1;
+}
+
   /* Wenn Button nicht gehen soll */
   .clock:disabled {
     background-color: #ccc;
