@@ -202,7 +202,7 @@
         </div>
         <div class="avatar-card">
           <h4>Nastja</h4>
-          <img src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png" alt="Avatar 3" />
+          <img src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/profile_pic_nastja.jpg" alt="Avatar von Nastja" />
           <p>Farbspezialist</p>
         </div>
         <div class="avatar-card">
