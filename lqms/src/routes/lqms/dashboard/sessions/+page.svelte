@@ -1,87 +1,4 @@
-<script lang="ts">
-let totalSeconds = 0;
-let clock = 0;
-let isRunning = false;
-let isSession = false;
-
-// Zeitberechnung
-$: hours = Math.floor(totalSeconds / 3600);
-$: minutes = Math.floor(totalSeconds / 60) % 3600;
-$: seconds = totalSeconds % 60;
-
-//Startet den Sessiontimer
-function session_start(){
-    totalSeconds = 0;
-    isSession = true
-    isRunning = true;
-    clock = setInterval(() => {totalSeconds +=1}, 1000);
-}
-
-function session_resume(){
-    isRunning = true;
-    clock = setInterval(() => {totalSeconds +=1}, 1000);
-}
-
-//Pausiert den Sessiontimer
-function session_pause(){
-  isRunning = false;
-  clearInterval(clock);
-}
-
-//Beendet den Sessiontimer
-function session_end(){
-  isRunning = false;
-  clearInterval(clock);
-  openFeedbackPopup();
-  isSession = false;
-}
-
-// Start/Pause Umschaltfunktion
-function toggle_timer() {
-  if (isRunning) {
-    session_pause();
-  } else{
-    if(isSession == false) {
-      session_start()
-    } else {
-      session_resume();
-    }
-  }
-}
-
-function number_padding(value){
-  if (value < 10){
-    return `0${value}`;
-  }
-  return value.toString();
-}
-	
-//Session Feedback Popup Logik
-let showFeedbackPopup: boolean = false;
-let efficiency: number = 5; //Default Wert
-let motivation: number = 5; //Default Wert
-  
-function openFeedbackPopup(): void {
-  //Beim Öfnnen der Popups wird der Wert auf den Default Wert zurückgesetzt
-  efficiency = 5;
-  motivation = 5;
-  showFeedbackPopup = true;
-}
-
-function closeFeedbackPopup(): void {
-  showFeedbackPopup = false;
-}
-
-// Funktion
-const getmotivationEmoji = (value: number): string => {
-  if (value <= 3) return '🙁'; // Traurig
-  if (value <= 7) return '😐'; // Neutral
-  return '🙂'; // Fröhlich
-};
-</script>
-
 <!-- Timer Block -->
-
 <div class="app-container">
   <header class="nav">
     <ul>
@@ -337,3 +254,85 @@ const getmotivationEmoji = (value: number): string => {
   }
 
 </style>
+
+<script lang="ts">
+let totalSeconds = 0;
+let clock = 0;
+let isRunning = false;
+let isSession = false;
+
+// Zeitberechnung
+$: hours = Math.floor(totalSeconds / 3600);
+$: minutes = Math.floor(totalSeconds / 60) % 3600;
+$: seconds = totalSeconds % 60;
+
+//Startet den Sessiontimer
+function session_start(){
+    totalSeconds = 0;
+    isSession = true
+    isRunning = true;
+    clock = setInterval(() => {totalSeconds +=1}, 1000);
+}
+
+function session_resume(){
+    isRunning = true;
+    clock = setInterval(() => {totalSeconds +=1}, 1000);
+}
+
+//Pausiert den Sessiontimer
+function session_pause(){
+  isRunning = false;
+  clearInterval(clock);
+}
+
+//Beendet den Sessiontimer
+function session_end(){
+  isRunning = false;
+  clearInterval(clock);
+  openFeedbackPopup();
+  isSession = false;
+}
+
+// Start/Pause Umschaltfunktion
+function toggle_timer() {
+  if (isRunning) {
+    session_pause();
+  } else{
+    if(isSession == false) {
+      session_start()
+    } else {
+      session_resume();
+    }
+  }
+}
+
+function number_padding(value){
+  if (value < 10){
+    return `0${value}`;
+  }
+  return value.toString();
+}
+	
+//Session Feedback Popup Logik
+let showFeedbackPopup: boolean = false;
+let efficiency: number = 5; //Default Wert
+let motivation: number = 5; //Default Wert
+  
+function openFeedbackPopup(): void {
+  //Beim Öfnnen der Popups wird der Wert auf den Default Wert zurückgesetzt
+  efficiency = 5;
+  motivation = 5;
+  showFeedbackPopup = true;
+}
+
+function closeFeedbackPopup(): void {
+  showFeedbackPopup = false;
+}
+
+// Funktion
+const getmotivationEmoji = (value: number): string => {
+  if (value <= 3) return '🙁'; // Traurig
+  if (value <= 7) return '😐'; // Neutral
+  return '🙂'; // Fröhlich
+};
+</script>

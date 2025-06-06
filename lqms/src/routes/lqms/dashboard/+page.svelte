@@ -22,13 +22,13 @@
       font-family: "Inter", sans-serif;
     }
 
-    /*body {
+    body {
       margin: 0;
       background: var(--bg-col);
       display: flex;
       justify-content: center;
       padding: 2rem;
-    }*/
+    }
 
     .dashboard {
       display: flex;
