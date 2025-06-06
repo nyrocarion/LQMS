@@ -136,7 +136,6 @@
 
     <!-- M -->
     <div class="column">
-        <div class="panel tall beige_bg" style="flex:1">VL Plan</div>
         <div class="panel beige_bg">
             <h2 >Ein Fakt üher den heutigen Tag</h2><br>
             <span>{dailyfact}</span>
