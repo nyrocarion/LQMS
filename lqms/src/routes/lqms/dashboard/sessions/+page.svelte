@@ -92,15 +92,16 @@ const getmotivationEmoji = (value: number): string => {
     </ul>
   </header>
 
-  <main class="main-content">
     <div class="timer-block">
       <h1>
-        Sessiondauer: 
-        <span class ="timer-number">{number_padding(hours)}</span>
-        <span class="timer-dot">:</span>
-        <span class="timer-number">{number_padding(minutes)}</span>
-        <span class="timer-dot">:</span>
-        <span class="timer-number">{number_padding(seconds)}</span>
+        Sessiondauer:
+        <div> 
+          <span class ="timer-number">{number_padding(hours)}</span>
+          <span class="timer-dot">:</span>
+          <span class="timer-number">{number_padding(minutes)}</span>
+          <span class="timer-dot">:</span>
+          <span class="timer-number">{number_padding(seconds)}</span>
+        </div>
       </h1>
       <div class="button-grid">
         <button class="clock" on:click={toggle_timer}>
@@ -124,7 +125,6 @@ const getmotivationEmoji = (value: number): string => {
         </button>
       </div>
     </div>
-  </main>
 </div>
 
 
@@ -183,10 +183,6 @@ const getmotivationEmoji = (value: number): string => {
 {/if}
 
 <style>
-body{
-  font-family: Verdana, Geneva, Tahoma, sans-serif
-}
-
 .timer-dot{
    padding: 0 0.2em;
 }
@@ -198,49 +194,28 @@ body{
 .timer-block {
   display: grid;
   gap: 1rem;
-  max-width: 300px;
-  margin: 0 auto;
-  text-align: center;
-  padding: 2rem;
-  border: 2px solid #007bff;
-  border-radius: 10px;
-  background-color: #f9f9f9;
-}
-
-h1 {
-  font-size: 2rem;
-  margin-bottom: 2rem;
-}
-
-.main-content {
-  flex-grow: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.timer-block {
-  grid-area: div1;
   color: #3c68a3;
   background-color: white;
-  font-weight: bold;
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
   padding: 0 25px;
   border-radius: 15px;
-  }
+}
 
 .button-grid {
   display: flex;
-  justify-content: space-around;
   gap: 10px;
+  margin-bottom: 100px;
+  
 }
 
 .clock {
- padding: 10px 20px;
+  padding: 20px 20px;
   background-color: #007bff;
-  color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 1em;
   flex: 1;
 }
 
@@ -248,21 +223,6 @@ h1 {
   .clock:disabled {
     background-color: #ccc;
     cursor: not-allowed;
-  }
-
-  /* Button */
-  .cta-button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.2s;
-  }
-  .cta-button:hover {
-    background-color: #0056b3;
   }
 
   /* Styles für das Feedback Popup */
@@ -301,6 +261,7 @@ h1 {
     cursor: pointer;
     color: #888;
   }
+
   .feedback-close-button:hover {
     color: #555;
   }
