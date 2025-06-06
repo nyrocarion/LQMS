@@ -70,8 +70,8 @@ p {
 #lectures  { background-color: #ec7b6a; }
 
 #sessions, #checkup, #dashboard, #lectures {
-  padding: 15px 55px; /* Top - Right - Bottom - Left */
+  padding: 15px 55px 15px 55px; /* Top - Right - Bottom - Left */
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
-  min-width: 15%;
+  min-width: 10%;
 }
