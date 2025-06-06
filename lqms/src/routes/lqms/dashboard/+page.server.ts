@@ -20,14 +20,17 @@ async function fetchDateFact() {
       }
     );
     const data = await response.json(); 
+    console.log(data);
     if (data.found) {
       return data.text;
     } else {
       console.error("fact API Error at API side");
+      return "API side error";
     }
   } 
   catch (error) {
     console.error("Error getting fact data: ", error);
+    return "Internal error gettign fact";
   }
 }
 
@@ -49,7 +52,7 @@ async function loadLecturesForToday(): Promise<
   { name: string; startTime: string; endTime: string; room: string }[]
 > {
   const today = new Date()
-  const date = today.getDate();
+  const todayStr = today.toISOString().split('T')[0]; // 'yyyy-nn-dd'
 
   const res = await fetch(
     'https://api.dhbw.app/rapla/lectures/MA-TINF24CS1/events',
@@ -57,7 +60,6 @@ async function loadLecturesForToday(): Promise<
       method: 'GET',
     }
   );
-  console.log(res);
 
   if (!res.ok) {
     throw new Error('Fehler beim Laden der Vorlesungsdaten');
@@ -69,7 +71,7 @@ async function loadLecturesForToday(): Promise<
   // add 2 hours as the datestrings dont match our timezone
 
   return allLectures
-    .filter((entry: any) => entry.startTime.split('T')[0] === date)
+    .filter((entry: any) => entry.startTime.split('T')[0] === todayStr)
     .map((lecture: any) => ({
       name: lecture.name.trim(),
       startTime: formatTime(addHours(lecture.startTime, 2)),

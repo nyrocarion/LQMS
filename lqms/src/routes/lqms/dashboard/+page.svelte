@@ -41,9 +41,9 @@
     }
 
     .dashboard img {
-      max-width: 100%;  /* Das Bild nimmt maximal 100% der Breite des Containers ein */
-      max-height: 100%; /* Das Bild nimmt maximal 100% der Höhe des Containers ein */
-      object-fit: contain;  /* Das Bild wird im Container skaliert, behält aber sein Seitenverhältnis */
+      max-width: 100%;  
+      max-height: 100%; /
+      object-fit: contain;  
     }
 
     .column {
