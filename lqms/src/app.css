@@ -73,4 +73,5 @@ p {
   padding: 15px 55px; /* Top - Right - Bottom - Left */
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
+  max-width: 20%;
 }
