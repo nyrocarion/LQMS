@@ -91,37 +91,38 @@ const getmotivationEmoji = (value: number): string => {
       <li id="lectures"><a href="../dashboard/lectures/">Vorlesungen</a></li>
     </ul>
   </header>
-</div>
 
-<div class="timer-block">
-  <h1>
-    Sessiondauer: 
-    <span class ="timer-number">{number_padding(hours)}</span>
-    <span class="timer-dot">:</span>
-    <span class="timer-number">{number_padding(minutes)}</span>
-    <span class="timer-dot">:</span>
-    <span class="timer-number">{number_padding(seconds)}</span>
-  </h1>
-  <div class="button-grid">
-    <button class="clock" on:click={toggle_timer}>
-			{#if isRunning}
-				<!-- Pause Icon -->
-				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
-					<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-				</svg>
-			{:else}
-				<!-- Start Icon -->
-				<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
-					<path d="M8 5v14l11-7z"/>
-				</svg>
-			{/if}
-		</button>
-    <button class="clock" on:click={session_end}  disabled={isSession == false}>
-      <!-- Stop Icon -->
-			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
-				<path d="M6 6h12v12H6z"/>
-			</svg>
-    </button>
+
+  <div class="timer-block">
+    <h1>
+      Sessiondauer: 
+      <span class ="timer-number">{number_padding(hours)}</span>
+      <span class="timer-dot">:</span>
+      <span class="timer-number">{number_padding(minutes)}</span>
+      <span class="timer-dot">:</span>
+      <span class="timer-number">{number_padding(seconds)}</span>
+    </h1>
+    <div class="button-grid">
+      <button class="clock" on:click={toggle_timer}>
+        {#if isRunning}
+          <!-- Pause Icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+          </svg>
+        {:else}
+          <!-- Start Icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+        {/if}
+      </button>
+      <button class="clock" on:click={session_end}  disabled={isSession == false}>
+        <!-- Stop Icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+          <path d="M6 6h12v12H6z"/>
+        </svg>
+      </button>
+    </div>
   </div>
 </div>
 
@@ -353,8 +354,4 @@ const getmotivationEmoji = (value: number): string => {
     cursor: not-allowed;
   }
 
-  #sessions  { background-color: #479496; }
-  #checkup   { background-color: #3c68a3; }
-  #dashboard { background-color: #b96c96; }
-  #lectures  { background-color: #ec7b6a; }
 </style>
