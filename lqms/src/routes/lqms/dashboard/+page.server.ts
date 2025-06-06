@@ -39,13 +39,17 @@ function formatTime(timeString: string): string {
   return `${hours}:${minutes}`;
 }
 
+function addHours(date, hours) {
+  const hoursToAdd = hours * 60 * 60 * 1000;
+  date.setTime(date.getTime() + hoursToAdd);
+  return date;
+}
+
 async function loadLecturesForToday(): Promise<
   { name: string; startTime: string; endTime: string; room: string }[]
 > {
   const today = new Date()
-  const yesterday = new Date(today);
-  yesterday.setDate(yesterday.getDate() - 1);
-  const date = yesterday.getDate();
+  const date = today.getDate();
 
   const res = fetch(
     'https://corsproxy.io/?url=https://api.dhbw.app/rapla/lectures/MA-TINF24CS1/events'
@@ -57,12 +61,15 @@ async function loadLecturesForToday(): Promise<
 
   const allLectures = res.json();
 
+  // use startTime to get matches as date is the date from the day before
+  // add 2 hours as the datestrings dont match our timezone
+
   return allLectures
-    .filter((entry: any) => entry.date.split('T')[0] === date)
+    .filter((entry: any) => entry.startTime.split('T')[0] === date)
     .map((lecture: any) => ({
       name: lecture.name.trim(),
-      startTime: formatTime(lecture.startTime),
-      endTime: formatTime(lecture.endTime),
+      startTime: formatTime(addHours(lecture.startTime, 2)),
+      endTime: formatTime(addHours(lecture.endTime, 2)),
       room: lecture.rooms?.[0] || 'Kein Raum angegeben'
     }));
 }
@@ -119,7 +126,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
   // Aus Api geladen
   const dailyfact =  fetchDateFact();
   const dailymeme =  getMeme();
-  const lectures =  "Not loading atm because I need to fix it"; // loadLecturesForToday()
+  const lectures =  loadLecturesForToday();
 
   // Zusammen zurückgeben (wird in dashboard geladen)
   return {
