@@ -82,7 +82,7 @@ const getmotivationEmoji = (value: number): string => {
 
 <!-- Timer Block -->
 
-<div class="parent app-container">
+<div class="app-container">
   <header class="nav">
     <ul>
       <li id="sessions"><a href="../dashboard/sessions/">Sessions</a></li>
@@ -92,38 +92,39 @@ const getmotivationEmoji = (value: number): string => {
     </ul>
   </header>
 
-
-  <div class="timer-block">
-    <h1>
-      Sessiondauer: 
-      <span class ="timer-number">{number_padding(hours)}</span>
-      <span class="timer-dot">:</span>
-      <span class="timer-number">{number_padding(minutes)}</span>
-      <span class="timer-dot">:</span>
-      <span class="timer-number">{number_padding(seconds)}</span>
-    </h1>
-    <div class="button-grid">
-      <button class="clock" on:click={toggle_timer}>
-        {#if isRunning}
-          <!-- Pause Icon -->
+  <main class="main-content">
+    <div class="timer-block">
+      <h1>
+        Sessiondauer: 
+        <span class ="timer-number">{number_padding(hours)}</span>
+        <span class="timer-dot">:</span>
+        <span class="timer-number">{number_padding(minutes)}</span>
+        <span class="timer-dot">:</span>
+        <span class="timer-number">{number_padding(seconds)}</span>
+      </h1>
+      <div class="button-grid">
+        <button class="clock" on:click={toggle_timer}>
+          {#if isRunning}
+            <!-- Pause Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+              <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+            </svg>
+          {:else}
+            <!-- Start Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+          {/if}
+        </button>
+        <button class="clock" on:click={session_end}  disabled={isSession == false}>
+          <!-- Stop Icon -->
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
-            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+            <path d="M6 6h12v12H6z"/>
           </svg>
-        {:else}
-          <!-- Start Icon -->
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
-            <path d="M8 5v14l11-7z"/>
-          </svg>
-        {/if}
-      </button>
-      <button class="clock" on:click={session_end}  disabled={isSession == false}>
-        <!-- Stop Icon -->
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
-          <path d="M6 6h12v12H6z"/>
-        </svg>
-      </button>
+        </button>
+      </div>
     </div>
-  </div>
+  </main>
 </div>
 
 
@@ -206,7 +207,7 @@ const getmotivationEmoji = (value: number): string => {
     background-color: #f9f9f9;
   } */
 
-  body {
+body {
   margin: 0;
   min-height: 100vh;
   display: flex;
@@ -216,7 +217,7 @@ const getmotivationEmoji = (value: number): string => {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-.parent.app-container {
+.app-container {
   width: 100%;
   display: flex;
   justify-content: center;
@@ -276,6 +277,13 @@ h1 {
 .clock:disabled {
   background-color: #ccc;
   cursor: not-allowed;
+}
+
+.main-content {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 /*  .timer-block {
   grid-area: div1;
