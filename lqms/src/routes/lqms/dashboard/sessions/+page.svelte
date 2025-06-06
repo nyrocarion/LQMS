@@ -182,7 +182,7 @@ const getmotivationEmoji = (value: number): string => {
 {/if}
 
 <style>
-  body{
+  /*body{
     font-family: Verdana, Geneva, Tahoma, sans-serif
   }
 
@@ -194,7 +194,7 @@ const getmotivationEmoji = (value: number): string => {
     padding: 0 0.2em;
   }
 
- /*  .timer-block {
+   .timer-block {
     display: grid;
     gap: 1rem;
     max-width: 300px;
@@ -205,7 +205,79 @@ const getmotivationEmoji = (value: number): string => {
     border-radius: 10px;
     background-color: #f9f9f9;
   } */
-  .timer-block {
+
+  body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f0f4fa;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.parent.app-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.timer-block {
+  text-align: center;
+  background-color: #ffffff;
+  padding: 2.5rem 3rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  color: #3c68a3;
+  font-weight: bold;
+  max-width: 400px;
+  width: 100%;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+}
+
+.timer-number {
+  font-size: 2.5rem;
+  padding: 0 0.25em;
+}
+
+.button-grid {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+  margin-top: 1.5rem;
+}
+
+.clock {
+  background-color: #007bff;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 18px;
+  color: white;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: background-color 0.2s;
+}
+
+.clock:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.clock:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+/*  .timer-block {
   grid-area: div1;
   color: #3c68a3;
   background-color: white;
@@ -230,7 +302,7 @@ const getmotivationEmoji = (value: number): string => {
     font-size: 1em;
     flex: 1;
   }
-
+  */
   /* Wenn Button nicht gehen soll */
   .clock:disabled {
     background-color: #ccc;
