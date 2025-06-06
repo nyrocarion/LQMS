@@ -52,9 +52,11 @@ async function loadLecturesForToday(): Promise<
   const date = today.getDate();
 
   const res = fetch(
-    'https://api.dhbw.app/rapla/lectures/MA-TINF24CS1/events'
+    'https://api.dhbw.app/rapla/lectures/MA-TINF24CS1/events',
+    {
+      method: 'GET',
+    }
   );
-
   console.log(res);
 
   if (!res.ok) {
