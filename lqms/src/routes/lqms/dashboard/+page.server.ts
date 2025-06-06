@@ -56,9 +56,7 @@ async function loadLecturesForToday(): Promise<
 
   const res = await fetch(
     'https://api.dhbw.app/rapla/lectures/MA-TINF24CS1/events',
-    {
-      method: 'GET',
-    }
+    { method: 'GET' }
   );
 
   if (!res.ok) {
@@ -67,17 +65,23 @@ async function loadLecturesForToday(): Promise<
 
   const allLectures = await res.json();
 
-  // use startTime to get matches as date is the date from the day before
-  // add 2 hours as the datestrings dont match our timezone
-
   return allLectures
-    .filter((entry: any) => entry.startTime.split('T')[0] === todayStr)
-    .map((lecture: any) => ({
-      name: lecture.name.trim(),
-      startTime: formatTime(addHours(lecture.startTime, 2)),
-      endTime: formatTime(addHours(lecture.endTime, 2)),
-      room: lecture.rooms?.[0] || 'Kein Raum angegeben'
-    }));
+    .filter((lecture: any) => {
+      const startDate = new Date(lecture.startTime);
+      const adjustedDate = addHours(startDate, 2).toISOString().split('T')[0];
+      return adjustedDate === todayStr;
+    })
+    .map((lecture: any) => {
+      const start = addHours(new Date(lecture.startTime), 2);
+      const end = addHours(new Date(lecture.endTime), 2);
+
+      return {
+        name: lecture.name.trim(),
+        startTime: formatTime(start.toISOString()),
+        endTime: formatTime(end.toISOString()),
+        room: lecture.rooms?.[0] || 'Kein Raum angegeben',
+      };
+    });
 }
 
 async function getMeme() {
