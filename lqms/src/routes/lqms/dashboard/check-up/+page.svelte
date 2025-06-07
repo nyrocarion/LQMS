@@ -39,11 +39,12 @@
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
+    // Heute ist der letzte Tag im Grid
     const end = new Date(today);
-    const weekdayToday = today.getDay(); // So=0, Mo=1, ..., Sa=6
-    const offsetToMonday = (weekdayToday + 6) % 7; // Mo=0
+
+    // Der erste Tag ist also 34 Tage vor heute
     const start = new Date(end);
-    start.setDate(end.getDate() - 34 - offsetToMonday); // Start bei Montag vor 5 Wochen
+    start.setDate(end.getDate() - 34);
 
     const calendarMap = new Map(data.map(d => [d.date, d.count]));
     const calendar: { date: string; count: number }[][] = [];
