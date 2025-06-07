@@ -37,8 +37,8 @@
       <li id="lectures"><a href="../dashboard/lectures/">Vorlesungen</a></li>
     </ul>
   </header>
-</div>
-<div class="week-layout">
+
+  <div class="week-layout">
   {#each Object.entries(groupedLectures) as [day, lectures]}
     <div class="day-column">
       <h2>{day}</h2>
@@ -55,8 +55,8 @@
       {/if}
     </div>
   {/each}
+  </div>
 </div>
-
 
 <svelte:head>
 <style>

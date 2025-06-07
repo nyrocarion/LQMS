@@ -51,9 +51,8 @@
 
 <!-- Session Feedback Popup -->
 {#if showFeedbackPopup}
-  <div class="feedback-modal-overlay" on:click={closeFeedbackPopup}>
+  <div class="feedback-modal-overlay">
     <div class="feedback-modal-content" on:click|stopPropagation>
-      <button class="feedback-close-button" on:click={closeFeedbackPopup}>&times;</button>
       <h2>Session Feedback</h2>
         <form method="POST">
           <div class="form-group">
@@ -179,8 +178,10 @@
     padding: 25px 30px;
     border-radius: 8px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    width: 400px;
+    width: 1px;
     max-width: 90%;
+    min-width: 50vb;
+    min-height: 50vh;
     position: relative;
     text-align: left;
   }
