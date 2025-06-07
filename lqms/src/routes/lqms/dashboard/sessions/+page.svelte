@@ -153,124 +153,106 @@
   flex: 1;
 }
 
-  /* Wenn Button nicht gehen soll */
-  .clock:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
+/* Wenn Button nicht gehen soll */
+.clock:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
 
-  /* Styles für das Feedback Popup */
-  .feedback-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1050;
-  }
+/* Styles für das Feedback Popup */
+.feedback-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
 
-  .feedback-modal-content {
-    background-color: white;
-    padding: 25px 30px;
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    width: 1px;
-    max-width: 90%;
-    min-width: 50vb;
-    min-height: 50vh;
-    position: relative;
-    text-align: left;
-  }
+.feedback-modal-content {
+  background-color: white;
+  /*padding: 25px 30px;*/
+  padding: 200px 200px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  width: 1px;
+  max-width: 90%;
+  position: relative;
+  text-align: left;
+}
 
-  .feedback-close-button {
-    position: absolute;
-    top: 12px;
-    right: 15px;
-    background: none;
-    border: none;
-    font-size: 1.75em;
-    line-height: 1;
-    cursor: pointer;
-    color: #888;
-  }
+.feedback-modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 1.4em;
+  color: #333;
+  font-weight: 500;
+}
 
-  .feedback-close-button:hover {
-    color: #555;
-  }
+.form-group {
+  margin-bottom: 20px;
+}
 
-  .feedback-modal-content h2 {
-    margin-top: 0;
-    margin-bottom: 20px;
-    text-align: center;
-    font-size: 1.4em;
-    color: #333;
-    font-weight: 500;
-  }
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #555;
+  font-size: 0.95em;
+}
 
-  .form-group {
-    margin-bottom: 20px;
-  }
+.slider {
+  width: 100%;
+  cursor: pointer;
+  accent-color: #007bff;
+}
+.motivation-slider {
+  accent-color: #e83e8c;
+}
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75em;
+  color: #777;
+  margin-top: 4px;
+}
 
-  .form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 500;
-    color: #555;
-    font-size: 0.95em;
-  }
+.value-display {
+  font-weight: bold;
+  color: #333;
+}
+.emoji-display {
+  font-size: 1.2em; /* Um Emoji größer zu machen */
+  vertical-align: -0.15em; /* Vertikale Verschiebung */
+  margin-right: 3px;
+}
 
-  .slider {
-    width: 100%;
-    cursor: pointer;
-    accent-color: #007bff;
-  }
-  .motivation-slider {
-    accent-color: #e83e8c;
-  }
-
-  .slider-labels {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.75em;
-    color: #777;
-    margin-top: 4px;
-  }
-
-  .value-display {
-    font-weight: bold;
-    color: #333;
-  }
-  .emoji-display {
-    font-size: 1.2em; /* Um Emoji größer zu machen */
-    vertical-align: -0.15em; /* Vertikale Verschiebung */
-    margin-right: 3px;
-  }
-
-  .submit-button {
-    display: block;
-    width: 100%;
-    padding: 10px 15px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1em;
-    font-weight: 500;
-    transition: background-color 0.2s;
-    margin-top: 10px;
-  }
-  .submit-button:hover {
-    background-color: #218838;
-  }
-  .submit-button:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-  }
+.submit-button {
+  display: block;
+  width: 100%;
+  padding: 10px 15px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  margin-top: 10px;
+}
+.submit-button:hover {
+  background-color: #218838;
+}
+.submit-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
 
 </style>
 
