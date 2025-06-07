@@ -39,31 +39,34 @@
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const weekday = (today.getDay() + 6) % 7; // Montag = 0
-    const start = new Date(today);
-    start.setDate(start.getDate() - weekday - 34); // 35 Tage ab letztem Montag
+    // Montag dieser Woche finden
+    const weekdayToday = (today.getDay() + 6) % 7; // Mo=0, So=6
+    const end = new Date(today);
+    const start = new Date(end);
+    start.setDate(end.getDate() - 34 - weekdayToday); // 5 Wochen + diese Woche bis Mo
 
     const calendarMap = new Map(data.map(d => [d.date, d.count]));
     const calendar: { date: string; count: number }[][] = [];
 
     const current = new Date(start);
-
     for (let i = 0; i < 35; i++) {
       const iso = current.toISOString().split("T")[0];
       const isFuture = current.getTime() > today.getTime();
       const count = isFuture ? -1 : (calendarMap.get(iso) || 0);
-      const wd = (current.getDay() + 6) % 7;
 
-      if (calendar.length === 0 || wd === 0) {
+      const weekday = (current.getDay() + 6) % 7; // Mo=0, So=6
+
+      if (calendar.length === 0 || weekday === 0) {
         calendar.push(Array(7).fill(null));
       }
 
-      calendar[calendar.length - 1][wd] = { date: iso, count };
+      calendar[calendar.length - 1][weekday] = { date: iso, count };
       current.setDate(current.getDate() + 1);
     }
 
     return calendar;
   }
+
 
 
   /** Reihenfolge der Wochentage in deutscher Kurzform */
