@@ -45,7 +45,7 @@
 
   const weekday = (today.getDay() + 6) % 7; // Montag = 0
   const start = new Date(today);
-  start.setDate(start.getDate() - (35 + weekday - 1)); // Start am Montag vor 5 Wochen
+  start.setDate(start.getDate() - (35 + weekday)); // Start am Montag vor 5 Wochen
 
   const current = new Date(start);
 
