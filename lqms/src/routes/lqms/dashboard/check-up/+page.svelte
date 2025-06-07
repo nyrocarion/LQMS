@@ -65,6 +65,7 @@
 
       calendar[calendar.length - 1][weekday] = { date: iso, count };
       current.setDate(current.getDate() + 1);
+      console.log("looking for date:", iso, "map has:", calendarMap.has(iso), "value:", calendarMap.get(iso));
     }
 
     return calendar;
