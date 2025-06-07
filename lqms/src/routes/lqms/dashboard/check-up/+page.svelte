@@ -22,11 +22,11 @@
 
   /** Selektion der Farbe der Heatmap zu je einem Tag */
   function getHeatmapColor(count) {
-    if (count === -1) return '#e4e4e4';  // zukünftiger Tag
-    if (count === 0) return '#b5b5b5';   // keine Aktivität
-    if (count === 1) return '#64e85d';
-    if (count === 2) return '#37c230';
-    if (count >= 3) return '#229c1c';
+    if (count === -1) return '#dedede';  // zukünftiger Tag
+    if (count === 0) return '#2c2c2c';   // keine Aktivität
+    if (count === 1) return '#285430';
+    if (count === 2) return '#4E944F';
+    if (count >= 3) return '#70AF85';
   }
 
   /** Formatieren des Datums */
@@ -41,7 +41,6 @@
 
     // Finde den Anfang der aktuellen Woche (Montag)
     const end = new Date(today);
-    const weekday = (today.getDay() + 6) % 7; // Montag = 0
     const start = new Date(end);
     start.setDate(end.getDate() - 34); // 35 Tage + Offset zu Mo
 
@@ -51,7 +50,7 @@
     const current = new Date(start);
     for (let i = 0; i < 35; i++) {
       const iso = current.toISOString().split("T")[0];
-      const dateCopy = new Date(current);
+      const dateCopy = new Date(current); // damit nicht verändert
       const isFuture = dateCopy.getTime() > today.getTime();
 
       const count = isFuture ? 0 : (calendarMap.get(iso) || 0);
@@ -69,7 +68,7 @@
     return calendar;
   }
 
-  /** Reihenfolge der Wochentage in Kurzform */
+  /** Reihenfolge der Wochentage in deutscher Kurzform */
   const weekdays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
 
   /** Holen des Status je Modul */
@@ -132,7 +131,7 @@
               {#each week as day}
                 <div
                   class="heatmap-day"
-                  style="background-color: {day ? getHeatmapColor(day.count) : '#e4e4e4'}"
+                  style="background-color: {day ? getHeatmapColor(day.count) : '#dedede'}"
                   title={day ? `${formatDate(day.date)}: ${day.count} Sessions` : ''}
                 ></div>
               {/each}
