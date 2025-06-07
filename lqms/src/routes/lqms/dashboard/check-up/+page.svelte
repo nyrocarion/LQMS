@@ -39,27 +39,31 @@
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    // Heute ist der letzte Tag im Grid
+    // Finde den Anfang der aktuellen Woche (Montag)
     const end = new Date(today);
-
-    // Der erste Tag ist also 34 Tage vor heute
+    const weekday = (today.getDay() + 6) % 7; // Montag = 0
     const start = new Date(end);
-    start.setDate(end.getDate() - 34);
+    start.setDate(end.getDate() - 34); // 35 Tage + Offset zu Mo
 
     const calendarMap = new Map(data.map(d => [d.date, d.count]));
     const calendar: { date: string; count: number }[][] = [];
 
     const current = new Date(start);
-    for (let week = 0; week < 5; week++) {
-      const weekRow: { date: string; count: number }[] = [];
-      for (let day = 0; day < 7; day++) {
-        const iso = current.toISOString().split("T")[0];
-        const isFuture = current.getTime() > today.getTime();
-        const count = isFuture ? -1 : (calendarMap.get(iso) || 0);
-        weekRow.push({ date: iso, count });
-        current.setDate(current.getDate() + 1);
+    for (let i = 0; i < 35; i++) {
+      const iso = current.toISOString().split("T")[0];
+      const dateCopy = new Date(current);
+      const isFuture = dateCopy.getTime() > today.getTime();
+
+      const count = isFuture ? 0 : (calendarMap.get(iso) || 0);
+      const weekday = (current.getDay() + 6) % 7;
+
+      if (calendar.length === 0 || weekday === 0) {
+        calendar.push(Array(7).fill(null));
       }
-      calendar.push(weekRow);
+
+      calendar[calendar.length - 1][weekday] = { date: iso, count };
+
+      current.setDate(current.getDate() + 1);
     }
 
     return calendar;
