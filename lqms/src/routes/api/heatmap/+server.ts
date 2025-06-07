@@ -8,9 +8,9 @@ export const GET: RequestHandler = async ({ locals }) => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
+  const weekday = (today.getDay() + 6) % 7; // Montag = 0
   const startDate = new Date(today);
-  startDate.setDate(today.getDate() - 34); // 35 Tage inkl. heute
-
+  startDate.setDate(today.getDate() - weekday - 34);
   const sqlStart = startDate.toISOString().split('T')[0];
 
   // Hole nur rows aus dem Query

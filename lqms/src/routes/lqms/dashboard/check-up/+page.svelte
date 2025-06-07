@@ -22,7 +22,7 @@
 
   /** Selektion der Farbe der Heatmap zu je einem Tag */
   function getHeatmapColor(count) {
-    if (count === -1) return '#c9c9c9';  // zukünftiger Tag
+    if (count === -1) return '#e4e4e4';  // zukünftiger Tag
     if (count === 0) return '#a3a3a3';   // keine Aktivität
     if (count === 1) return '#64e85d';
     if (count === 2) return '#37c230';
@@ -39,34 +39,32 @@
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    // Finde den Anfang der aktuellen Woche (Montag)
     const weekday = (today.getDay() + 6) % 7; // Montag = 0
     const start = new Date(today);
-    start.setDate(today.getDate() - weekday - 35);
+    start.setDate(start.getDate() - weekday - 34); // 35 Tage ab letztem Montag
 
     const calendarMap = new Map(data.map(d => [d.date, d.count]));
     const calendar: { date: string; count: number }[][] = [];
 
     const current = new Date(start);
+
     for (let i = 0; i < 35; i++) {
       const iso = current.toISOString().split("T")[0];
-      const dateCopy = new Date(current); // damit nicht verändert
-      const isFuture = dateCopy.getTime() > today.getTime();
+      const isFuture = current.getTime() > today.getTime();
+      const count = isFuture ? -1 : (calendarMap.get(iso) || 0);
+      const wd = (current.getDay() + 6) % 7;
 
-      const count = isFuture ? 0 : (calendarMap.get(iso) || 0);
-      const weekday = (current.getDay() + 6) % 7;
-
-      if (calendar.length === 0 || weekday === 0) {
+      if (calendar.length === 0 || wd === 0) {
         calendar.push(Array(7).fill(null));
       }
 
-      calendar[calendar.length - 1][weekday] = { date: iso, count };
-
+      calendar[calendar.length - 1][wd] = { date: iso, count };
       current.setDate(current.getDate() + 1);
     }
 
     return calendar;
   }
+
 
   /** Reihenfolge der Wochentage in deutscher Kurzform */
   const weekdays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
