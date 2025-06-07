@@ -25,7 +25,12 @@ export const GET: RequestHandler = async ({ locals }) => {
 
   const sessionMap = new Map<string, number>();
   for (const row of sessions as { date: Date; count: number }[]) {
-    const iso = row.date.toISOString().split('T')[0];
+    const date = new Date(row.date);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const iso = `${year}-${month}-${day}`;
+
     sessionMap.set(iso, row.count);
   }
 
