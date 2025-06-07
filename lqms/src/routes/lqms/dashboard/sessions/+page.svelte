@@ -12,7 +12,7 @@
     <div class="timer-block">
       <h1>
         <div>
-        Sessiondauer:
+        Lernsession
         </div>
       </h1>
       <div class="timer-blank">
@@ -105,59 +105,47 @@
 
 <style>
 .timer-blank{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-  width: 100%;
+  position: relative;
+  top: 75px;
 }
 
 .timer-dot{
-  font-size: clamp(2rem, 8vw, 4rem);
-  line-height: 1;
-  margin: 0 0.1em;
+  font-size: 50px;
+  padding: 0 0.2em;
+  position: relative;
+  bottom: 20;
 }
 
 .timer-number{
-  font-size: clamp(3rem, 12vw, 8rem);
+  font-size: 130px;
+  padding: 0 0.2em;
+  font-family: 'Inter', sans-serif;
   font-variant-numeric: tabular-nums;
-  line-height: 1;
 }
 
 .timer-block {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  /*gap: 1rem;*/
+  display: grid;
+  gap: 1rem;
   color: #3c68a3;
   background-color: white;
-  max-width: min(90vw, 800px);
+  max-width: 1000px;
   margin: 0 auto;
   text-align: center;
-  /*padding: 0 25px;*/
-  padding: 2rem 1rem;
+  padding: 0 25px;
   border-radius: 15px;
-  /*height: 500px;
-  top: 100px;*/
-  min-height: 0;
-}
-
-.timer-block h1 {
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
-  margin-bottom: 1rem;
+  height: 500px;
+  top: 100px;
 }
 
 .button-grid {
+  position: relative;
   display: flex;
-  gap: 1rem;
-  width: 100%;
-  max-width: 300px;
-  justify-content: center;
+  gap: 10px;
+  margin-bottom: 50px;
+  margin-top: 10px;
 }
 
-/*.clock {
+.clock {
   padding: 20px 20px;
   background-color: #007bff;
   border: none;
@@ -165,45 +153,12 @@
   cursor: pointer;
   flex: 1;
 }
-*/
 
-.clock {
-  flex: 1;
-  padding: 1rem;
-  background-color: #007bff;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  min-height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-
-.clock:hover:not(:disabled) {
-  background-color: #0056b3;
-  transform: translateY(-2px);
-}
-
-
-  /* Wenn Button nicht gehen soll
+  /* Wenn Button nicht gehen soll */
   .clock:disabled {
     background-color: #ccc;
     cursor: not-allowed;
-  }*/
-
-.clock:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.clock svg {
-  width: clamp(20px, 3vw, 24px);
-  height: clamp(20px, 3vw, 24px); 
-} 
+  }
 
   /* Styles für das Feedback Popup */
   .feedback-modal-overlay {
