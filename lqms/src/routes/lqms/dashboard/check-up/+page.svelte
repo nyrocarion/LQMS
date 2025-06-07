@@ -39,26 +39,21 @@
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    // Finde den Start der Anzeige: Immer Montag vor 34 Tagen
     const start = new Date(today);
     start.setDate(start.getDate() - 34);
-
-    const startWeekday = (start.getDay() + 6) % 7; // 0 = Montag
-    start.setDate(start.getDate() - startWeekday); // Auf Montag der Woche zurückspringen
+    const startWeekday = (start.getDay() + 6) % 7;
+    start.setDate(start.getDate() - startWeekday);
 
     const calendarMap = new Map(data.map(d => [d.date, d.count]));
     const calendar: { date: string; count: number }[][] = [];
 
     const current = new Date(start);
-    for (let i = 0; i < 5 * 7; i++) { // 5 Wochen
-      const iso = current.toISOString().split("T")[0];
+    for (let i = 0; i < 5 * 7; i++) {
+      const iso = toLocalDateString(current);  // <--- hier ersetzt
       const isFuture = current > today;
-      const count = isFuture
-        ? -1
-        : calendarMap.get(iso) ?? 0;
+      const count = isFuture ? -1 : calendarMap.get(iso) ?? 0;
 
-      const weekday = (current.getDay() + 6) % 7; // 0 = Montag
-
+      const weekday = (current.getDay() + 6) % 7;
       if (calendar.length === 0 || weekday === 0) {
         calendar.push(Array(7).fill(null));
       }
