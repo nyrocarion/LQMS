@@ -178,7 +178,7 @@
   width: 75%;
   height: 75%;
   /*padding: 25px 30px;*/
-  padding: 200px 200px;
+  /*padding: 200px 200px;*/
   border-radius: 8px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   /*width: 1px;*/
