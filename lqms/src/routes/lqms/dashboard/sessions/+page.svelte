@@ -12,7 +12,7 @@
     <div class="timer-block">
       <h1>
         <div>
-        Lernsession
+        LERNSESSION
         </div>
       </h1>
       <div class="timer-blank">
@@ -116,7 +116,7 @@
 }
 
 .timer-number{
-  font-size: 130px;
+  font-size: 200px;
   padding: 0 0.2em;
   font-family: 'Inter', sans-serif;
   font-variant-numeric: tabular-nums;
@@ -139,12 +139,15 @@
 .button-grid {
   position: relative;
   display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 10px;
   margin-bottom: 50px;
-  margin-top: 10px;
+  margin-top: 40px;
 }
 
 .clock {
+  max-width: 150px;
   padding: 20px 20px;
   background-color: #007bff;
   border: none;
