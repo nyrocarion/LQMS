@@ -38,5 +38,6 @@ export const GET: RequestHandler = async ({ locals }) => {
     result.push({ date: iso, count });
   }
 
+  console.log(result)
   return json(result);
 };
