@@ -37,8 +37,8 @@ p {
   min-width: 1200px;*/
   width: 100vw;
   height: 100vh;
-  margin: auto;
-  position: relative;
+  /*margin: auto;
+  position: relative;*/
   background: linear-gradient(90deg, #FEC996,#E37C95,#B894DC,#EAC4F4);
   background-color: rgba(255, 255, 255, 0.3);
 }
