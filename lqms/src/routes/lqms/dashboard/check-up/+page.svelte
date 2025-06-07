@@ -132,7 +132,7 @@
               {#each week as day}
                 <div
                   class="heatmap-day"
-                  style="background-color: {day ? getHeatmapColor(day.count) : '#c9c9c9'}"
+                  style="background-color: {day ? getHeatmapColor(day.count) : '#e4e4e4'}"
                   title={day ? `${formatDate(day.date)}: ${day.count} Sessions` : ''}
                 ></div>
               {/each}
