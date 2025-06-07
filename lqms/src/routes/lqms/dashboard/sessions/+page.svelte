@@ -105,45 +105,59 @@
 
 <style>
 .timer-blank{
-  position: relative;
-  top: 75px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
 }
+
 .timer-dot{
-  font-size: 50px;
-  padding: 0 0.2em;
-  position: relative;
-  bottom: 20;
+  font-size: clamp(2rem, 8vw, 4rem);
+  line-height: 1;
+  margin: 0 0.1em;
 }
 
 .timer-number{
-  font-size: 130px;
-  padding: 0 0.2em;
-  font-family: 'Courier New', Courier, monospace;
+  font-size: clamp(3rem, 12vw, 8rem);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
 }
 
 .timer-block {
-  display: grid;
-  gap: 1rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /*gap: 1rem;*/
   color: #3c68a3;
   background-color: white;
-  max-width: 1000px;
+  max-width: min(90vw, 800px);
   margin: 0 auto;
   text-align: center;
-  padding: 0 25px;
+  /*padding: 0 25px;*/
+  padding: 2rem 1rem;
   border-radius: 15px;
-  height: 500px;
-  top: 100px;
+  /*height: 500px;
+  top: 100px;*/
+  min-height: 0;
+}
+
+.timer-block h1 {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  margin-bottom: 1rem;
 }
 
 .button-grid {
-  position: relative;
   display: flex;
-  gap: 10px;
-  margin-bottom: 50px;
-  margin-top: 10px;
+  gap: 1rem;
+  width: 100%;
+  max-width: 300px;
+  justify-content: center;
 }
 
-.clock {
+/*.clock {
   padding: 20px 20px;
   background-color: #007bff;
   border: none;
@@ -151,12 +165,45 @@
   cursor: pointer;
   flex: 1;
 }
+*/
 
-  /* Wenn Button nicht gehen soll */
+.clock {
+  flex: 1;
+  padding: 1rem;
+  background-color: #007bff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.clock:hover:not(:disabled) {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+
+  /* Wenn Button nicht gehen soll
   .clock:disabled {
     background-color: #ccc;
     cursor: not-allowed;
-  }
+  }*/
+
+.clock:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.clock svg {
+  width: clamp(20px, 3vw, 24px);
+  height: clamp(20px, 3vw, 24px); 
+} 
 
   /* Styles für das Feedback Popup */
   .feedback-modal-overlay {
