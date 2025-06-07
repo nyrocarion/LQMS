@@ -40,10 +40,9 @@
     today.setHours(0, 0, 0, 0);
 
     // Finde den Anfang der aktuellen Woche (Montag)
-    const end = new Date(today);
     const weekday = (today.getDay() + 6) % 7; // Montag = 0
-    const start = new Date(end);
-    start.setDate(end.getDate() - 34); // 35 Tage + Offset zu Mo
+    const start = new Date(today);
+    start.setDate(today.getDate() - weekday - 35);
 
     const calendarMap = new Map(data.map(d => [d.date, d.count]));
     const calendar: { date: string; count: number }[][] = [];
