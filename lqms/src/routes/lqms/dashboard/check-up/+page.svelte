@@ -42,9 +42,11 @@
     // Finde den Start der Anzeige: Immer Montag vor 34 Tagen
     const start = new Date(today);
     start.setDate(start.getDate() - 34);
+    console.log(start)
 
     const startWeekday = (start.getDay() + 6) % 7; // 0 = Montag
     start.setDate(start.getDate() - startWeekday); // Auf Montag der Woche zurückspringen
+    console.log(startWeekday)
 
     const calendarMap = new Map(data.map(d => [d.date, d.count]));
     const calendar: { date: string; count: number }[][] = [];
