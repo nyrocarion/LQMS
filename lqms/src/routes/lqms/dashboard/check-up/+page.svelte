@@ -23,7 +23,7 @@
   /** Selektion der Farbe der Heatmap zu je einem Tag */
   function getHeatmapColor(count) {
     if (count === -1) return '#e4e4e4';  // zukünftiger Tag
-    if (count === 0) return '#a3a3a3';   // keine Aktivität
+    if (count === 0) return '#b5b5b5';   // keine Aktivität
     if (count === 1) return '#64e85d';
     if (count === 2) return '#37c230';
     if (count >= 3) return '#229c1c';
@@ -39,37 +39,32 @@
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    // Montag dieser Woche finden
-    const weekdayToday = (today.getDay() + 6) % 7; // Mo=0, So=6
     const end = new Date(today);
+    const weekdayToday = today.getDay(); // So=0, Mo=1, ..., Sa=6
+    const offsetToMonday = (weekdayToday + 6) % 7; // Mo=0
     const start = new Date(end);
-    start.setDate(end.getDate() - 34 - weekdayToday); // 5 Wochen + diese Woche bis Mo
+    start.setDate(end.getDate() - 34 - offsetToMonday); // Start bei Montag vor 5 Wochen
 
     const calendarMap = new Map(data.map(d => [d.date, d.count]));
     const calendar: { date: string; count: number }[][] = [];
 
     const current = new Date(start);
-    for (let i = 0; i < 35; i++) {
-      const iso = current.toISOString().split("T")[0];
-      const isFuture = current.getTime() > today.getTime();
-      const count = isFuture ? -1 : (calendarMap.get(iso) || 0);
-
-      const weekday = (current.getDay() + 6) % 7; // Mo=0, So=6
-
-      if (calendar.length === 0 || weekday === 0) {
-        calendar.push(Array(7).fill(null));
+    for (let week = 0; week < 5; week++) {
+      const weekRow: { date: string; count: number }[] = [];
+      for (let day = 0; day < 7; day++) {
+        const iso = current.toISOString().split("T")[0];
+        const isFuture = current.getTime() > today.getTime();
+        const count = isFuture ? -1 : (calendarMap.get(iso) || 0);
+        weekRow.push({ date: iso, count });
+        current.setDate(current.getDate() + 1);
       }
-
-      calendar[calendar.length - 1][weekday] = { date: iso, count };
-      current.setDate(current.getDate() + 1);
+      calendar.push(weekRow);
     }
 
     return calendar;
   }
 
-
-
-  /** Reihenfolge der Wochentage in deutscher Kurzform */
+  /** Reihenfolge der Wochentage in Kurzform */
   const weekdays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
 
   /** Holen des Status je Modul */
