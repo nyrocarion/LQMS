@@ -37,9 +37,6 @@ export const GET: RequestHandler = async ({ request  }) => {
       grouped[course.module] = {};
     }
 
-    // Extrahiere Datumsteil (z.B. "2025-06-08")
-    const dateKey = new Date(course.date).toISOString().split("T")[0];
-
     const formatter = new Intl.DateTimeFormat('sv-SE', {
       timeZone: 'Europe/Stockholm',
       year: 'numeric',
@@ -47,7 +44,7 @@ export const GET: RequestHandler = async ({ request  }) => {
       day: '2-digit'
     });
     const [day, month, year] = formatter.format(new Date(course.date)).split('.');
-    dateKey = `${year}-${month}-${day}`;
+    const dateKey = `${year}-${month}-${day}`;
 
     if (!grouped[course.module][dateKey]) {
       grouped[course.module][dateKey] = [];
