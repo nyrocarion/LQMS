@@ -160,7 +160,6 @@
     .dashboard {
       display: flex;
       gap: var(--col-gap);
-      width: 100%;
       max-width: 1920px;
       background: #ffb49c;
       padding: var(--col-gap);
@@ -368,7 +367,7 @@
           <img style="width:50px;" src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png" alt="Avatar 2" /><br><br>
           <b>Name: {user.name}</b><br>
           <b>Id: {user.id}</b><br>
-          <b>Streak: <strong>{streak}</strong> 🔥Tage in Folge!</b>
+          <b>Streak: <strong>{streak}</strong> Tage 🔥!</b>
           </div>
         </div>
         <div class="panel tall beige_bg">
