@@ -94,9 +94,9 @@ async function getMeme() {
       "Content-Type": "application/x-www-form-urlencoded"
       },
       body: new URLSearchParams({
-          template_id: "114585149",
-          text0: "Ich wenn die Meme API langsam lädt",
-          text1: "",
+          template_id: "One-Does-Not-Simply",
+          text0: "One Does not simply",
+          text1: "complete a learning session",
           username: user,
           password: pw,
     })

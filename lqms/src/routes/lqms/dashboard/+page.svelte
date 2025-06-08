@@ -125,8 +125,7 @@
     <!-- L -->
     <div class="column">
         <div class="panel medium beige_bg">Lernverhalten / Konzentrationskurve
-        <h2>Etwas zum Lachen</h2>
-            <img style="height:100px;" id="meme" src="" alt="Meme"/></div>
+        </div>
         <div class="panel medium beige_bg">Arbeitszeiten Diagramm</div>
         <div class="panel medium beige_bg">
             <h2>Dein täglicher Lerntipp</h2>
@@ -166,7 +165,10 @@
           <b>{user}</b><br>
           </div>
         </div>
-        <div class="panel tall beige_bg">To Do Liste</div>
+        <div class="panel tall beige_bg">
+          <h2>Etwas zum Lachen</h2>
+          <img style="height:100px;" id="meme" src="" alt="Meme"/>
+        </div>
         <div class="panel tall beige_bg">Progress Chart</div>
     </div>
   </section>
