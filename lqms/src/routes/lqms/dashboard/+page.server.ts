@@ -143,6 +143,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
     ORDER BY session_date
   `, [userId]);
   // generated a list of the last 5 days for the legend
+  console.log("raw db call output",rawData)
   const today = new Date();
   const labels = [];
   for (let i = 4; i >= 0; i--) {
@@ -155,7 +156,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
   const map = Object.fromEntries(rawData.map(d => [d.session_date, d.total_duration]));
   const durations = labels.map(date => {
     const seconds = map[date] || 0;
-    return Math.max(1, Math.ceil(seconds / 60)); // <-- round up seconds to full minutes!
+    return Math.ceil(seconds / 60); // <-- round up seconds to full minutes!
   });
   console.log("durations",durations);
 
