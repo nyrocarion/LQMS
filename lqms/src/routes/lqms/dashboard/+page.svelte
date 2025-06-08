@@ -4,10 +4,75 @@
   import { onMount } from 'svelte';
 	export let data: PageData;
 	const { user, tip, dailyfact, dailymeme, lectures } = data;
+  let heatmapData = [];
+  let heatmapCalendar = [];
   onMount(() => {
     const memeElement = document.getElementById("meme") as HTMLImageElement;
     memeElement.src = dailymeme;
+
+    const heatmapRes = await fetch("/api/heatmap", {credentials: "include"});
+    heatmapData = await heatmapRes.json();
+    heatmapCalendar = generateCalendarData(heatmapData);
   })
+  /** Copied from check up tab */
+  /** Selektion der Farbe der Heatmap zu je einem Tag */
+  function getHeatmapColor(count) {
+    if (count === -1) return '#dedede';  // zukünftiger Tag
+    if (count === 0) return '#bababa';   // keine Aktivität
+    if (count === 1) return '#66e85a';
+    if (count === 2) return '#33de23';
+    if (count >= 3) return '#18ba09';
+  }
+
+  /** Formatieren des Datums */
+  function formatDate(date: string) {
+    const d = new Date(date);
+    return `${d.getDate()}.${d.getMonth() + 1}`;
+  }
+
+  function generateCalendarData(data: { date: string; count: number }[]) {
+    const todayString = new Date().toLocaleDateString('sv-SE');
+    const today = new Date(todayString);
+
+    // Finde den Start der Anzeige: Immer Montag vor 34 Tagen
+    const start = new Date(today);
+    start.setDate(start.getDate() - 34);
+
+    const startWeekday = (start.getDay() + 6) % 7; // 0 = Montag
+    start.setDate(start.getDate() - startWeekday); // Auf Montag der Woche zurückspringen
+
+    const calendarMap = new Map(data.map(d => [d.date, d.count]));
+    const calendar: { date: string; count: number }[][] = [];
+
+    const current = new Date(start);
+    for (let i = 0; i < 5 * 7; i++) { // 5 Wochen
+      const iso = current.toISOString().split("T")[0];
+      const isFuture = current > today;
+      const count = isFuture
+        ? -1
+        : calendarMap.get(iso) ?? 0;
+
+      const weekday = (current.getDay() + 6) % 7; // 0 = Montag
+
+      if (calendar.length === 0 || weekday === 0) {
+        calendar.push(Array(7).fill(null));
+      }
+
+      calendar[calendar.length - 1][weekday] = { date: iso, count };
+      current.setDate(current.getDate() + 1);
+    }
+
+    return calendar;
+  }
+
+
+  /** Reihenfolge der Wochentage in deutscher Kurzform */
+  const weekdays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+
+  /** Holen des Status je Modul */
+  function getStatusLabel(status: number): string {
+    return ["Waiting", "Doing", "Done"][status] || "Unknown";
+  }
 </script>
 
 <svelte:head>
@@ -108,6 +173,53 @@
     margin: 0 0 0.5em 0;
     color: #333;
    } 
+
+   /* copied from check up */
+   .div3 {
+  padding: 10px 25px;
+  border-radius: 15px;
+  }
+  .heatmap-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 6px;
+  padding-top: 10px;
+}
+
+.heatmap-header {
+  display: flex;
+  gap: 4px;
+  align-self: center;
+}
+
+.weekday-label {
+  width: 30px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #642bff;
+  font-weight: bold;
+}
+
+.heatmap-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-self: center;
+}
+
+.week-row {
+  display: flex;
+  gap: 4px;
+}
+
+.heatmap-day {
+  width: 30px;
+  height: 30px;
+  border-radius: 3px;
+  background-color: #dddddd;
+  transition: background-color 0.3s;
+}
   </style>
 </svelte:head>
 
@@ -131,7 +243,33 @@
             <h2>Dein täglicher Lerntipp</h2>
             <div>{tip}</div>
         </div>
-        <div class="panel beige_bg" style="flex:1">Heat Map</div>
+        <div class="panel beige_bg" style="flex:1">
+          <div class="div3">
+            <h3>Aktivitäten (35 Tage)</h3>
+            <div class="heatmap-wrapper">
+              <div class="heatmap-header">
+                {#each weekdays as label}
+                  <div class="weekday-label">{label}</div>
+                {/each}
+              </div>
+
+              <!-- Grid für 5 Wochen x 7 Tage -->
+              <div class="heatmap-grid">
+                {#each heatmapCalendar as week}
+                  <div class="week-row">
+                    {#each week as day}
+                      <div
+                        class="heatmap-day"
+                        style="background-color: {day ? getHeatmapColor(day.count) : '#dedede'}"
+                        title={day ? `${formatDate(day.date)}: ${day.count} Sessions` : ''}
+                      ></div>
+                    {/each}
+                  </div>
+                {/each}
+              </div>
+            </div>
+          </div>
+        </div>
     </div>
 
     <!-- M -->
