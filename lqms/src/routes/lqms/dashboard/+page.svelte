@@ -351,8 +351,9 @@
           <h2>Profile</h2>
           <div >
           <img style="width:50px;" src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png" alt="Avatar 2" />
-          <b>{user.email}</b><br>
-          <b>{user.id}</b>
+          <b>Name: {user.name}</b>
+          <b>Id: {user.id}</b><br>
+          <b>Streak: {user.streak}</b>
           </div>
         </div>
         <div class="panel tall beige_bg">
