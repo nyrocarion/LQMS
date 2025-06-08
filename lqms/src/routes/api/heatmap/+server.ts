@@ -3,12 +3,13 @@ import { json, type RequestHandler } from '@sveltejs/kit';
 
 export const GET: RequestHandler = async ({ locals }) => {
   const userId = locals.userId;
-  if (!userId) return json({ error: 'Nicht eingeloggt' }, { status: 401 });
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
   const startDate = new Date(today);
+  console.log(startDate)
+  console.log(today)
   startDate.setDate(today.getDate() - 34); // 35 Tage inkl. heute
 
   const sqlStart = startDate.toISOString().split('T')[0];
