@@ -112,7 +112,7 @@
   font-size: 50px;
   padding: 0 0.2em;
   position: relative;
-  bottom: 20;
+  bottom: 55;
 }
 
 .timer-number{
@@ -132,7 +132,7 @@
   text-align: center;
   padding: 0 25px;
   border-radius: 15px;
-  height: 500px;
+  height: 600px;
   top: 100px;
 }
 
