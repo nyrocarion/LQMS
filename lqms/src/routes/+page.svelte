@@ -143,6 +143,7 @@
 </script>
 
 <div class="hero">
+  <center>
   <div class="app-container">
     <div class="top-left-box">
       <div class="auth-links">
@@ -213,6 +214,7 @@
       </div>
     </div>
   </div>
+  </center>
 </div>
 
 
