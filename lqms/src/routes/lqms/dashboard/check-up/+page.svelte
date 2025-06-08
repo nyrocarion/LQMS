@@ -36,37 +36,34 @@
   }
 
   function generateCalendarData(data: { date: string; count: number }[]) {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // auf Mitternacht setzen
+    const todayString = new Date().toLocaleDateString('sv-SE');
+    const today = new Date(todayString);
 
-    // Start: 34 Tage zurück, dann auf Montag der Woche zurückspringen
+    // Finde den Start der Anzeige: Immer Montag vor 34 Tagen
     const start = new Date(today);
     start.setDate(start.getDate() - 34);
-    const startWeekday = (start.getDay() + 6) % 7; // Montag = 0
-    start.setDate(start.getDate() - startWeekday); // auf Montag springen
+
+    const startWeekday = (start.getDay() + 6) % 7; // 0 = Montag
+    start.setDate(start.getDate() - startWeekday); // Auf Montag der Woche zurückspringen
 
     const calendarMap = new Map(data.map(d => [d.date, d.count]));
     const calendar: { date: string; count: number }[][] = [];
 
     const current = new Date(start);
-    for (let i = 0; i < 5 * 7; i++) {
+    for (let i = 0; i < 5 * 7; i++) { // 5 Wochen
       const iso = current.toISOString().split("T")[0];
-      const day = new Date(current);
-      day.setHours(0, 0, 0, 0); // Mitternacht
+      const isFuture = current > today;
+      const count = isFuture
+        ? -1
+        : calendarMap.get(iso) ?? 0;
 
-      // Neue Woche starten
-      const weekday = (current.getDay() + 6) % 7; // Montag = 0
+      const weekday = (current.getDay() + 6) % 7; // 0 = Montag
+
       if (calendar.length === 0 || weekday === 0) {
         calendar.push(Array(7).fill(null));
       }
 
-      // Wir sind in der letzten Woche (letzte Zeile)?
-      const isLastWeek = calendar.length === 5;
-      const isFuture = isLastWeek && day > today;
-
-      const count = isFuture ? -1 : (calendarMap.get(iso) ?? 0);
       calendar[calendar.length - 1][weekday] = { date: iso, count };
-
       current.setDate(current.getDate() + 1);
     }
 
