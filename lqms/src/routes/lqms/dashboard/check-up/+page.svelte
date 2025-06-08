@@ -183,7 +183,7 @@
                         </div>
 
                         {#if expanded[modul + '_' + date]}
-                          <div class="date-content" in:slide={{duration: 300}} out:slide={{duration: 300}} ></div>
+                          <div transition:slide={{ duration: 300 }} class="date-content"></div>
                           {#each items as item}
                             <div class="course-card">
                               <div class="course-header">
