@@ -113,10 +113,12 @@
 }
 
 .timer-dot{
+  position: relative;
+  top: -55px;
+  transform: translateY(100px);
   font-size: 50px;
   padding: 0 0.2em;
-  position: relative;
-  bottom: 55;
+  
 }
 
 .timer-number{
