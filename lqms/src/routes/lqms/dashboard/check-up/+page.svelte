@@ -112,6 +112,18 @@
       console.error('Fehler beim Aktualisieren');
       return;
     }
+
+    console.log('Update:', { id, field, newStatus });
+
+    for (const [modul, dates] of Object.entries(tasksByModule)) {
+      for (const [date, items] of Object.entries(dates)) {
+        for (const item of items) {
+          if (item.id === id) {
+            item[field] = newStatus;
+          }
+        }
+      }
+    }
   }
 </script>
 
@@ -164,8 +176,8 @@
                                       {t.label}: {getStatusText(item[t.key])}
                                       <input
                                         type="checkbox"
-                                        bind:checked={item[t.key]}
-                                        on:change={() => updateStatus(item.id, t.key, +item[t.key])}
+                                        checked={item[t.key]}
+                                        on:change={(e) => updateStatus(item.id, t.key, e.target.checked ? 1 : 0)}
                                       />
                                     </div>
                                   {/if}
