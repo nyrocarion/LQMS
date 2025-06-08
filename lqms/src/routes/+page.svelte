@@ -289,7 +289,6 @@
 
   .hero {
     display: flex;
-    flex-direction: column;
     align-items: center;
     padding: 40px;
     font-family: Verdana;
