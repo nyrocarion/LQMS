@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import { fade, slide } from 'svelte/transition';
 
   let tasks = [];
   let heatmapData = [];
@@ -74,37 +75,80 @@
     return calendar;
   }
 
-  /** Reihenfolge der Wochentage in deutscher Kurzform */
+  /** Reihenfolge der Wochentage in Kurzform */
   const weekdays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
 
   /** Holen des Status je Modul */
-  function getStatusText(status: number): string {
-  switch (status) {
-    case 0: return 'Wartend';
-    case 1: return 'Am Erledigen';
-    case 2: return 'Erledigt';
-    default: return 'Unbekannt';
+  function getStatusTextModul(status: number): string {
+    switch (status) {
+      case 0: return 'Wartend';
+      case 1: return 'Am Erledigen';
+      case 2: return 'Erledigt';
+      default: return 'Unbekannt';
+    }
   }
-}
+
+  function getStatusText(status: number): string {
+    switch (status) {
+      case 0: return 'Wartend';
+      case 1: return 'Erledigt';
+      default: return 'Unbekannt';
+    }
+  }
 
   function toggle(modul: string, date: string) {
     const key = modul + '_' + date;
-    expanded[key] = !expanded[key];
+    expanded = { ...expanded, [key]: !expanded[key]};
   }
 
-  async function updateStatus(id: number, field: string, value: number) {
+  async function updateStatus(id: number, field: string, newStatus: number) {
     const res = await fetch('/api/tasks', {
       method: 'PUT',
       credentials: 'include',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ id, field, value })
+      body: JSON.stringify({ id, field, newStatus })
     });
 
-    const data = await res.json();
-		if (!data.success) {
-			console.error('Fehler beim Speichern:', data.error);
-			// Optional: UI-Feedback anzeigen
-		}
+    if (!res.ok) {
+      console.error('Fehler beim Aktualisieren');
+      return;
+    }
+
+    // Lokales Update
+    for (const [modul, dates] of Object.entries(tasksByModule)) {
+      for (const [date, items] of Object.entries(dates)) {
+        const course = items.find(i => i.id === id);
+        if (course) {
+          course[field] = newStatus;
+
+          // Überprüfen, ob alle Felder abgehakt sind
+          const allFieldsChecked = 
+            (course.presentationstatus === 1) &&
+            (course.scriptstatus === 1) &&
+            (course.notesstatus === 1) &&
+            (!course.exercisesheet || course.exercisestatus === 1); 
+
+          if (allFieldsChecked) {
+            // Status auf 2 setzen, wenn alle Felder abgehakt sind
+            const statusRes = await fetch('/api/tasks/', {
+              method: 'PUT',
+              credentials: 'include',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ id, status: 2 })
+            });
+
+            if (!statusRes.ok) {
+              console.error('Fehler beim Setzen des Status');
+            } else {
+              course.status = 1;  // Lokale Statusänderung
+            }
+          }
+
+          tasksByModule = structuredClone(tasksByModule);
+          return;
+        }
+      }
+    }
   }
 </script>
 
@@ -139,26 +183,26 @@
                         </div>
 
                         {#if expanded[modul + '_' + date]}
+                          <div class="date-content" in:slide={{duration: 300}} out:slide={{duration: 300}} ></div>
                           {#each items as item}
                             <div class="course-card">
                               <div class="course-header">
-                                <strong>Vorlesung:</strong> {item.displayname}<br>
-                                <strong>Status:</strong> {getStatusText(item.status)}
+                                <strong>Status:</strong> {getStatusTextModul(item.status)}
                               </div>
                               <div class="task-list">
                                 {#each [
-                                  {label: 'Präsentation', key: 'presentationstatus'},
-                                  {label: 'Skript', key: 'scriptstatus'},
-                                  {label: 'Notizen', key: 'notesstatus'},
-                                  {label: 'Übungsblatt', key: 'exercisestatus', cond: item.exercisesheet}
+                                  {label: 'Präsentation', key: 'presentationstatus', show: true},
+                                  {label: 'Skript', key: 'scriptstatus', show: true},
+                                  {label: 'Notizen', key: 'notesstatus', show: true},
+                                  {label: 'Übungsblatt', key: 'exercisestatus', show: item.exercisesheet === 1}
                                 ] as t}
-                                  {#if t.cond !== false}
+                                  {#if t.show}
                                     <div>
                                       {t.label}: {getStatusText(item[t.key])}
                                       <input
                                         type="checkbox"
-                                        bind:checked={item[t.key]}
-                                        on:change={() => updateStatus(item.id, t.key, +item[t.key])}
+                                        checked={item[t.key]}
+                                        on:change={(e) => updateStatus(item.id, t.key, e.target.checked ? 1 : 0)}
                                       />
                                     </div>
                                   {/if}
@@ -255,17 +299,6 @@
   text-decoration: none;
 }
 
-#sessions  { background-color: #479496; }
-#checkup   { background-color: #3c68a3; }
-#dashboard { background-color: #b96c96; }
-#lectures  { background-color: #ec7b6a; }
-
-#sessions, #checkup, #dashboard, #lectures {
-  padding: 15px 55px; /* Top - Right - Bottom - Left */
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
-}
-
 .div2, .div3, .div4 {
   padding: 10px 25px;
   border-radius: 15px;
@@ -275,9 +308,9 @@
   grid-area: div1;
   color: #3c68a3;
   background-color: white;
-  font-weight: bold;
   padding: 0 25px;
   border-radius: 15px;
+  min-width: 400px;
 }
 
 .div2 {
@@ -302,10 +335,10 @@
 
 .course-card {
   padding: 10px 15px;
-  margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 8px;
   background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .course-header {
@@ -326,16 +359,26 @@
 
 .date-group {
   margin-left: 15px;
+  margin-bottom: 10px;
 }
+
 .date-header {
   font-size: 1rem;
+  font-weight: bold;
   cursor: pointer;
-  background: #e0e0e0;
+  background-color: #cccccc;
   padding: 5px 10px;
   border-radius: 5px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.date-content {
+  padding: 10px;
+  background-color: #f9f9f9;
+  margin-top: 10px;
+  border-radius: 5px;
 }
 
 .div3 {

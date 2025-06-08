@@ -29,7 +29,7 @@ export const GET: RequestHandler = async ({ request  }) => {
    WHERE userid = ?`,
   [userId]
   );
-
+  
   const grouped = {};
 
   for (const course of courses) {
@@ -37,8 +37,14 @@ export const GET: RequestHandler = async ({ request  }) => {
       grouped[course.module] = {};
     }
 
-    // Extrahiere Datumsteil (z.B. "2025-06-08")
-    const dateKey = new Date(course.date).toISOString().split("T")[0];
+    const formatter = new Intl.DateTimeFormat('sv-SE', {
+      timeZone: 'Europe/Stockholm',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    });
+    const [day, month, year] = formatter.format(new Date(course.date)).split('.');
+    const dateKey = `${year}-${month}-${day}`;
 
     if (!grouped[course.module][dateKey]) {
       grouped[course.module][dateKey] = [];
@@ -59,14 +65,26 @@ export const GET: RequestHandler = async ({ request  }) => {
 return json(grouped);
 };
 
-export const PUT: RequestHandler = async ({ request }) => {
-  const { id, field, value } = await request.json();
-  const allowed = ['status','presentationstatus','scriptstatus','notesstatus','exercisestatus'];
-  if (!allowed.includes(field)) return new Response('Invalid field', { status: 400 });
 
-  await db.query(
-    `UPDATE course SET ${field} = ? WHERE id = ?`,
-    [value, id]
-  );
-  return new json({success: true});
+export const PUT: RequestHandler = async ({ request }) => {
+  try {
+    const { id, field, newStatus } = await request.json();
+
+    const allowed = ['status','presentationstatus','scriptstatus','notesstatus','exercisestatus'];
+    if (!allowed.includes(field)) {
+      console.warn(`Illegal field update attempt: ${field}`);
+      return new Response('Invalid field', { status: 400 });
+    }
+
+    await db.query(
+      `UPDATE course SET ${field} = ? WHERE id = ?`,
+      [newStatus, id]
+    );
+
+    return json({ success: true });
+
+  } catch (err) {
+    console.error('Fehler im PUT-Handler:', err);
+    return new Response('Server error', { status: 500 });
+  }
 };
