@@ -274,17 +274,6 @@
   text-decoration: none;
 }
 
-#sessions  { background-color: #479496; }
-#checkup   { background-color: #3c68a3; }
-#dashboard { background-color: #b96c96; }
-#lectures  { background-color: #ec7b6a; }
-
-#sessions, #checkup, #dashboard, #lectures {
-  padding: 15px 55px; /* Top - Right - Bottom - Left */
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
-}
-
 .div2, .div3, .div4 {
   padding: 10px 25px;
   border-radius: 15px;
@@ -296,6 +285,7 @@
   background-color: white;
   padding: 0 25px;
   border-radius: 15px;
+  min-width: 400px;
 }
 
 .div2 {
