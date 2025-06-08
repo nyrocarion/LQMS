@@ -65,14 +65,27 @@ export const GET: RequestHandler = async ({ request  }) => {
 return json(grouped);
 };
 
-export const PUT: RequestHandler = async ({ request }) => {
-  const { id, field, newStatus } = await request.json();
-  const allowed = ['status','presentationstatus','scriptstatus','notesstatus','exercisestatus'];
-  if (!allowed.includes(field)) return new Response('Invalid field', { status: 400 });
 
-  await db.query(
-    `UPDATE course SET ${field} = ? WHERE id = ?`,
-    [newStatus, id]
-  );
-  return new json({success: true});
+export const PUT: RequestHandler = async ({ request }) => {
+  try {
+    const { id, field, newStatus } = await request.json();
+    console.log('Update:', { id, field, newStatus });
+
+    const allowed = ['status','presentationstatus','scriptstatus','notesstatus','exercisestatus'];
+    if (!allowed.includes(field)) {
+      console.warn(`Illegal field update attempt: ${field}`);
+      return new Response('Invalid field', { status: 400 });
+    }
+
+    await db.query(
+      `UPDATE course SET ${field} = ? WHERE id = ?`,
+      [newStatus, id]
+    );
+
+    return json({ success: true });
+
+  } catch (err) {
+    console.error('Fehler im PUT-Handler:', err);
+    return new Response('Server error', { status: 500 });
+  }
 };
