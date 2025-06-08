@@ -244,12 +244,10 @@
             <h2>Dein täglicher Lerntipp</h2>
             <div>{tip}</div>
         </div>
-        <div class="panel medium beige_bg">Lernverhalten / Konzentrationskurve
-        </div>
-        <div class="panel medium beige_bg">Arbeitszeiten Diagramm</div>
+        <div class="panel medium beige_bg">Arbeitszeiten Diagramm?</div>
         <div class="panel beige_bg" style="flex:1">
           <div class="div3">
-            <h3>Aktivitäten (35 Tage)</h3>
+            <h2>Deine Aktivitäten (35 Tage)</h2>
             <div class="heatmap-wrapper">
               <div class="heatmap-header">
                 {#each weekdays as label}
