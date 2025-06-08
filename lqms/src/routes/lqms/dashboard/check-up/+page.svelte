@@ -366,7 +366,7 @@
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
-  background-color: #eeeeee;
+  background-color: #cccccc;
   padding: 5px 10px;
   border-radius: 5px;
   display: flex;
