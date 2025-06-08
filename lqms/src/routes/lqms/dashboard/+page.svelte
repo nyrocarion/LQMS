@@ -160,9 +160,11 @@
     <!-- R -->
     <div class="column">
         <div class="panel medium beige_bg">
-          <h3>Profile</h3>
+          <h2>Profile</h2>
+          <div >
           <img style="width:50px;" src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png" alt="Avatar 2" />
-          <b>Username</b><br>
+          <b>{user}</b><br>
+          </div>
         </div>
         <div class="panel tall beige_bg">To Do Liste</div>
         <div class="panel tall beige_bg">Progress Chart</div>
