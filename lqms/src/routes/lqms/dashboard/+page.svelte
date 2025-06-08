@@ -6,9 +6,13 @@
 	const { user, tip, dailyfact, dailymeme, lectures } = data;
   let heatmapData = [];
   let heatmapCalendar = [];
-  onMount(() => {
+  let tasks = [];
+  onMount(async () => {
     const memeElement = document.getElementById("meme") as HTMLImageElement;
     memeElement.src = dailymeme;
+
+    const taskRes = await fetch("/api/tasks", {credentials: "include"});
+    tasks = await taskRes.json();
 
     const heatmapRes = await fetch("/api/heatmap", {credentials: "include"});
     heatmapData = await heatmapRes.json();
@@ -236,13 +240,13 @@
   <section class="dashboard">
     <!-- L -->
     <div class="column">
-        <div class="panel medium beige_bg">Lernverhalten / Konzentrationskurve
-        </div>
-        <div class="panel medium beige_bg">Arbeitszeiten Diagramm</div>
         <div class="panel medium beige_bg">
             <h2>Dein täglicher Lerntipp</h2>
             <div>{tip}</div>
         </div>
+        <div class="panel medium beige_bg">Lernverhalten / Konzentrationskurve
+        </div>
+        <div class="panel medium beige_bg">Arbeitszeiten Diagramm</div>
         <div class="panel beige_bg" style="flex:1">
           <div class="div3">
             <h3>Aktivitäten (35 Tage)</h3>
@@ -307,7 +311,30 @@
           <h2>Etwas zum Lachen</h2>
           <img style="width:300px;" id="meme" src="" alt="Meme"/>
         </div>
-        <div class="panel tall beige_bg">Progress Chart</div>
+        <div class="panel tall beige_bg">
+          <div class="div1">
+          <h2>To-Do Übersicht</h2>
+          <div class="div2">
+            {#if tasks.length === 0}
+              <p>Du hast noch keine Aufgaben hinzugefügt.<br>Beginne mit einer neuen Session, um Fortschritte zu sehen.</p>
+            {:else}
+              {#each Object.entries(groupTasks(tasks)) as [modul, items]}
+                <h3>{modul}</h3>
+                {#each ['Waiting', 'Doing', 'Done'] as statusLabel}
+                  <div>
+                    <h4>{statusLabel}</h4>
+                    <ul>
+                      {#each items.filter(task => getStatusLabel(task.status) === statusLabel) as task}
+                        <li>{task.displayname}: {task.type}</li>
+                      {/each}
+                    </ul>
+                  </div>
+                {/each}
+              {/each}
+            {/if}
+          </div>
+      </div>
+        </div>
     </div>
   </section>
 </center>
