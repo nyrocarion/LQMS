@@ -24,47 +24,42 @@ export const GET: RequestHandler = async ({ request  }) => {
 
   /** Modellierung eines Kurses */
   const [courses] = await db.query(
-    `SELECT id, module, displayname, presentationstatus, scriptstatus, notesstatus, exercisestatus, exercisesheet
-     FROM course
-     WHERE userid = ?`,
-    [userId]
+  `SELECT module, displayname, status, date, presentationstatus, scriptstatus, notesstatus, exercisestatus, exercisesheet
+   FROM course
+   WHERE userid = ?`,
+  [userId]
   );
 
-  const tasks = [];
+  const grouped = {};
 
   for (const course of courses) {
-    const { id, module, displayname, presentationstatus, scriptstatus, notesstatus, exercisestatus, exercisesheet } = course;
+    if (!grouped[course.module]) {
+      grouped[course.module] = [];
+    }
 
-    // Für jedes Modul generiere ich eine Task je Status (0 = Waiting, 1 = Doing, 2 = Done)
-    // Falls der Status nicht gesetzt ist, 0 = Waiting
-    tasks.push({
-      module,
-      tasks: [
-        {
-          title: `${displayname}: Präsentation`,
-          status: presentationstatus || 0
-        },
-        {
-          title: `${displayname}: Skript lesen`,
-          status: scriptstatus || 0
-        },
-        {
-          title: `${displayname}: Notizen erstellen`,
-          status: notesstatus || 0
-        },
-        {
-          title: `${displayname}: Übungen machen`,
-          status: exercisestatus || 0
-        },
-        ...(exercisesheet ? [
-          {
-            title: `${displayname}: Übungsblatt`,
-            status: exercisesheet || 0
-          }
-        ] : [])
-      ]
+    grouped[course.module].push({
+      displayname: course.displayname,
+      status: course.status,
+      date: course.date,
+      presentationstatus: course.presentationstatus,
+      scriptstatus: course.scriptstatus,
+      notesstatus: course.notesstatus,
+      exercisestatus: course.exercisesheet ? course.exercisestatus : null,
+      exercisesheet: course.exercisesheet
     });
   }
 
-  return json(tasks);
+return json(grouped);
+};
+
+export const PUT: RequestHandler = async ({ request }) => {
+  const { id, field, value } = await request.json();
+  const allowed = ['status','presentationstatus','scriptstatus','notesstatus','exercisestatus'];
+  if (!allowed.includes(field)) return new Response('Invalid field', { status: 400 });
+
+  await db.query(
+    `UPDATE course SET ${field} = ? WHERE id = ?`,
+    [value, id]
+  );
+  return new Response('OK');
 };
