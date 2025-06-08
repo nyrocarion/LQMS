@@ -36,44 +36,43 @@
   }
 
   function generateCalendarData(data: { date: string; count: number }[]) {
-  const now = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // auf Mitternacht setzen
 
-  // Finde den Start der Anzeige: Immer Montag vor 34 Tagen
-  const start = new Date(today);
-  start.setDate(today.getDate() - 34);
+    // Start: 34 Tage zurück, dann auf Montag der Woche zurückspringen
+    const start = new Date(today);
+    start.setDate(start.getDate() - 34);
+    const startWeekday = (start.getDay() + 6) % 7; // Montag = 0
+    start.setDate(start.getDate() - startWeekday); // auf Montag springen
 
-  const startWeekday = (start.getDay() + 6) % 7; // 0 = Montag
-  start.setDate(start.getDate() - startWeekday); // Auf Montag der Woche zurückspringen
+    const calendarMap = new Map(data.map(d => [d.date, d.count]));
+    const calendar: { date: string; count: number }[][] = [];
 
-  const calendarMap = new Map(data.map(d => [d.date, d.count]));
-  const calendar: { date: string; count: number }[][] = [];
+    const current = new Date(start);
+    for (let i = 0; i < 5 * 7; i++) {
+      const iso = current.toISOString().split("T")[0];
+      const day = new Date(current);
+      day.setHours(0, 0, 0, 0); // Mitternacht
 
-  const current = new Date(start);
-  for (let i = 0; i < 5 * 7; i++) { // 5 Wochen
-    const iso = current.toISOString().split("T")[0];
+      // Neue Woche starten
+      const weekday = (current.getDay() + 6) % 7; // Montag = 0
+      if (calendar.length === 0 || weekday === 0) {
+        calendar.push(Array(7).fill(null));
+      }
 
-    // Jetzt vergleichen wir Tagesgenau, aber nur innerhalb der letzten Woche
-    const future =
-      current.getTime() > today.getTime() &&
-      i >= (5 * 7 - 7); // Letzte Woche → nur diese Graubereiche
+      // Wir sind in der letzten Woche (letzte Zeile)?
+      const isLastWeek = calendar.length === 5;
+      const isFuture = isLastWeek && day > today;
 
-    const count = future
-      ? -1
-      : calendarMap.get(iso) ?? 0;
+      const count = isFuture ? -1 : (calendarMap.get(iso) ?? 0);
+      calendar[calendar.length - 1][weekday] = { date: iso, count };
 
-    const weekday = (current.getDay() + 6) % 7; // 0 = Montag
-
-    if (calendar.length === 0 || weekday === 0) {
-      calendar.push(Array(7).fill(null));
+      current.setDate(current.getDate() + 1);
     }
 
-    calendar[calendar.length - 1][weekday] = { date: iso, count };
-    current.setDate(current.getDate() + 1);
+    return calendar;
   }
 
-  return calendar;
-}
 
   /** Reihenfolge der Wochentage in deutscher Kurzform */
   const weekdays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
