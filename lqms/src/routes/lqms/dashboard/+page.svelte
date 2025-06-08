@@ -365,7 +365,7 @@
         <div class="panel medium beige_bg">
           <h2>Profile</h2>
           <div>
-          <img style="width:50px;" src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png" alt="Avatar 2" />
+          <img style="width:50px;" src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png" alt="Avatar 2" /><br><br>
           <b>Name: {user.name}</b><br>
           <b>Id: {user.id}</b><br>
           <b>Streak: <strong>{streak}</strong> 🔥Tage in Folge!</b>
