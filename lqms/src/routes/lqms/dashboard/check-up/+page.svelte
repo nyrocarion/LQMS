@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import { fade, slide } from 'svelte/transition';
 
   let tasks = [];
   let heatmapData = [];
@@ -182,6 +183,7 @@
                         </div>
 
                         {#if expanded[modul + '_' + date]}
+                          <div class="date-content" in:slide={{duration: 300}} out:slide={{duration: 300}} ></div>
                           {#each items as item}
                             <div class="course-card">
                               <div class="course-header">
@@ -336,6 +338,7 @@
   border: 1px solid #ccc;
   border-radius: 8px;
   background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .course-header {
@@ -358,15 +361,24 @@
   margin-left: 15px;
   margin-bottom: 10px;
 }
+
 .date-header {
   font-size: 1rem;
+  font-weight: bold;
   cursor: pointer;
-  background: #e0e0e0;
+  background-color: #eeeeee;
   padding: 5px 10px;
   border-radius: 5px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.date-content {
+  padding: 10px;
+  background-color: #f9f9f9;
+  margin-top: 10px;
+  border-radius: 5px;
 }
 
 .div3 {
