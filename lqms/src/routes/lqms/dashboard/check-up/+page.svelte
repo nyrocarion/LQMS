@@ -36,8 +36,8 @@
   }
 
   function generateCalendarData(data: { date: string; count: number }[]) {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const todayString = new Date().toLocaleDateString('sv-SE');
+    const today = new Date(todayString);
 
     // Finde den Start der Anzeige: Immer Montag vor 34 Tagen
     const start = new Date(today);

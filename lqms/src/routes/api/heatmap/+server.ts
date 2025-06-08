@@ -4,8 +4,8 @@ import { json, type RequestHandler } from '@sveltejs/kit';
 export const GET: RequestHandler = async ({ locals }) => {
   const userId = locals.userId;
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const todayString = new Date().toLocaleDateString('sv-SE');
+  const today = new Date(todayString);
 
   const startDate = new Date(today);
   console.log(startDate)
