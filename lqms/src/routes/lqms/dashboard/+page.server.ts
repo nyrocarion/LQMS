@@ -143,7 +143,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
     ORDER BY session_date
   `, [userId]);
   // generated a list of the last 5 days for the legend
-  console.log("raw db call output",rawData)
+  console.log("raw db call output",rawData);
   const today = new Date();
   const labels = [];
   for (let i = 4; i >= 0; i--) {
