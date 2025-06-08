@@ -131,7 +131,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 
   // get activity data from db
   const userId = user.id
-  const rawData = await db.all(`
+  const rawData = await db.query(`
     SELECT 
       DATE(date) as session_date,
       SUM(time) as total_duration
