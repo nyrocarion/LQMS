@@ -42,7 +42,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 
     /** 3.) Benutzerdaten in der DB speichern */
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
-    const result = await db.query('INSERT INTO user (name, email, password, streak, cookies, emailv, admin) VALUES (?, ?, ?, 0, 1, 0, 0)', [username, email, hashedPassword]);
+    const result = await db.query('INSERT INTO user (name, email, password, streak, cookies, emailv) VALUES (?, ?, ?, 0, 1, 0)', [username, email, hashedPassword]);
     const insertId = result[0].insertId; // ID des neuen Benutzers
 
     /** War die Registrierung erfolgreich, so wird ein JWT erstellt */
@@ -68,7 +68,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
       });
 
       /** Senden der Registrierungsemail */
-      sendRegistrationMail(email, username);
+      await sendRegistrationMail(email, username, insertId);
 
       if (result[0].affectedRows === 1) {
         return json({ message: 'Registrierung erfolgreich' }, { status: 201 });

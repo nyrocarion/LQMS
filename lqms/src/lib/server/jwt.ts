@@ -22,3 +22,11 @@ export function verifyJWT(token: string): UserPayload | null {
     return null;
   }
 }
+
+export function createEmailVerificationToken(payload: { id: number, email: string }) {
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: '1d' });
+}
+
+export function verifyEmailToken(token: string) {
+  return jwt.verify(token, JWT_SECRET) as { id: number, email: string };
+}

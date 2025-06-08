@@ -1,25 +1,30 @@
 import type { Handle } from '@sveltejs/kit';
 import { verifyJWT } from '$lib/server/jwt';
+import { db } from '$lib/server/database';
+import { redirect } from '@sveltejs/kit';
 
-/** Das Routen von Anfragen */
 export const handle: Handle = async ({ event, resolve }) => {
-
-  /** JWT als Prüfkonstante */
   const token = event.cookies.get('authToken');
-  
-  /** Alle Unterseiten der Landingpage werden geschützt -> OHNE Cookies kein Zugriff */
+
   if (token) {
-  const payload = verifyJWT(token);
-  if (payload) {
-    event.locals.userId = payload.id;
-  } else {
-    event.cookies.delete('authToken', { path: '/' });
+    try {
+      const user = verifyJWT(token);
+      event.locals.user = user;
+
+      // Hole vollständige Benutzerinfo aus DB (inkl. emailv)
+      const [rows] = await db.query('SELECT emailv FROM user WHERE id = ?', [user.id]);
+      const userInfo = rows[0];
+
+      // Falls E-Mail nicht verifiziert
+      if (userInfo && userInfo.emailv === 0 && event.url.pathname !== '/' && !event.url.pathname.startsWith('/verify-email')) {
+        throw redirect(303, '/?message=unverified');
+      }
+
+    } catch (err) {
+      // Ungültiger Token → ignorieren
+      event.locals.user = null;
+    }
   }
-}
 
-if (event.url.pathname.startsWith('/lqms') && !event.locals.userId) {
-  return Response.redirect(new URL('/', event.url), 303);
-}
-
-return resolve(event);
+  return resolve(event);
 };

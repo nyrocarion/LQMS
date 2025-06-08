@@ -1,5 +1,9 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
+  import { page } from '$app/stores';
+  import { onMount } from 'svelte';
+
+  let showMessage = false;
   let showAuthModal: 'register' | 'login' | null = null;
   let registrationSuccessMessage: string | null = null;
   let username = '';
@@ -10,6 +14,14 @@
     email?: string;
     password?: string;
   } = {};
+
+  $: message = $page.url.searchParams.get('message');
+
+  onMount(() => {
+    if (message === 'unverified') {
+      showMessage = true;
+    }
+  });
 
   function openAuthModal(type: 'register' | 'login') {
     showAuthModal = type;
@@ -177,6 +189,11 @@
             </div>
           </div>
         </div>
+      {#if showMessage}
+        <div class="bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-3 rounded mb-4">
+          Deine E-Mail wurde noch nicht verifiziert.
+        </div>
+      {/if}
         <div class="info-box">
           <h3>Womit hilft es dir?</h3>
           <div class="section">
