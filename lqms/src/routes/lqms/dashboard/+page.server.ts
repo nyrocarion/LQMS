@@ -130,7 +130,8 @@ export const load: PageServerLoad = async ({ cookies }) => {
   const tip = (result[0] && result[0][0]?.tipps) ?? 'Kein Tipp gefunden';
 
   // get activity data from db
-  const userId = user.id
+  const userId = user.id;
+  console.log("id for db call: ",userId);
   const rawData = await db.query(`
     SELECT 
       DATE(date) as session_date,
@@ -149,12 +150,14 @@ export const load: PageServerLoad = async ({ cookies }) => {
     d.setDate(today.getDate() - i);
     labels.push(d.toISOString().split('T')[0]);
   }
+  console.log("labels",labels);
   // Map raw data to date => duration
   const map = Object.fromEntries(rawData.map(d => [d.session_date, d.total_duration]));
   const durations = labels.map(date => {
     const seconds = map[date] || 0;
     return Math.max(1, Math.ceil(seconds / 60)); // <-- round up seconds to full minutes!
   });
+  console.log("durations",durations);
 
   // loaded from external api
   const dailyfact =  await fetchDateFact();
