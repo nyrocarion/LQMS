@@ -70,13 +70,29 @@
     return calendar;
   }
 
-
   /** Reihenfolge der Wochentage in deutscher Kurzform */
   const weekdays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
 
   /** Holen des Status je Modul */
   function getStatusLabel(status: number): string {
     return ["Waiting", "Doing", "Done"][status] || "Unknown";
+  }
+
+  let tasksByModule = {};
+  let expanded = {}; // tracket aufgeklappte Datumsgruppen pro Modul
+
+  function toggle(modul: string, date: string) {
+    const key = modul + '_' + date;
+    expanded[key] = !expanded[key];
+  }
+
+  async function updateStatus(id: number, field: string, value: number) {
+  await fetch('/api/tasks', {
+    method: 'PUT',
+    credentials: 'include',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ id, field, value })
+    });
   }
 </script>
 
@@ -95,25 +111,56 @@
       <main>
         <article>
           <h2>Check-Up</h2>
-          <div class="div2">
-            {#if tasks.length === 0}
-              <p>Du hast noch keine Aufgaben hinzugefügt.<br>Beginne mit einer neuen Session, um Fortschritte zu sehen.</p>
-            {:else}
-              {#each Object.entries(groupTasks(tasks)) as [modul, items]}
-                <h3>{modul}</h3>
-                {#each ['Waiting', 'Doing', 'Done'] as statusLabel}
-                  <div>
-                    <h4>{statusLabel}</h4>
-                    <ul>
-                      {#each items.filter(task => getStatusLabel(task.status) === statusLabel) as task}
-                        <li>{task.displayname}: {task.type}</li>
-                      {/each}
-                    </ul>
+            <div class="div2">
+              {#if Object.keys(tasksByModule).length === 0}
+                <p>Du hast noch keine Aufgaben…</p>
+              {:else}
+                {#each Object.entries(tasksByModule) as [modul, dates]}
+                  <div class="module-block">
+                    <h3 class="module-title">{modul}</h3>
+
+                    {#each Object.entries(dates) as [date, items]}
+                      <div class="date-group">
+                        <div class="date-header" on:click={() => toggle(modul, date)}>
+                          <strong>{formatDate(date)}</strong>
+                          <span>{expanded[modul + '_' + date] ? '▾' : '▸'}</span>
+                        </div>
+
+                        {#if expanded[modul + '_' + date]}
+                          {#each items as item}
+                            <div class="course-card">
+                              <div class="course-header">
+                                <strong>Vorlesung:</strong> {item.displayname}<br>
+                                <strong>Status:</strong> {getStatusLabel(item.status)}
+                              </div>
+                              <div class="task-list">
+                                {#each [
+                                  {label: 'Präsentation', key: 'presentationstatus'},
+                                  {label: 'Skript', key: 'scriptstatus'},
+                                  {label: 'Notizen', key: 'notesstatus'},
+                                  {label: 'Übungsblatt', key: 'exercisestatus', cond: item.exercisesheet}
+                                ] as t}
+                                  {#if t.cond !== false}
+                                    <div>
+                                      {t.label}: {getStatusLabel(item[t.key])}
+                                      <input
+                                        type="checkbox"
+                                        bind:checked={item[t.key]}
+                                        on:change={() => updateStatus(item.id, t.key, +item[t.key])}
+                                      />
+                                    </div>
+                                  {/if}
+                                {/each}
+                              </div>
+                            </div>
+                          {/each}
+                        {/if}
+                      </div>
+                    {/each}
                   </div>
                 {/each}
-              {/each}
-            {/if}
-          </div>
+              {/if}
+            </div>
         </article>
       </main>
     </div>
@@ -225,6 +272,58 @@
   grid-area: div2;
   background-color: white;
   color: #000;
+}
+
+.module-block {
+  margin-bottom: 30px;
+  padding: 15px;
+  background: #f5f5f5;
+  border-left: 6px solid #3c68a3;
+  border-radius: 10px;
+}
+
+.module-title {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #3c68a3;
+}
+
+.course-card {
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: white;
+}
+
+.course-header {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.task-list div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 4px 0;
+}
+
+.task-list input[type="checkbox"] {
+  transform: scale(1.2);
+}
+
+.date-group {
+  margin-left: 15px;
+}
+.date-header {
+  font-size: 1rem;
+  cursor: pointer;
+  background: #e0e0e0;
+  padding: 5px 10px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .div3 {
