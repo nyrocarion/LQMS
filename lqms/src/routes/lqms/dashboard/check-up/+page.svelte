@@ -75,7 +75,7 @@
     return calendar;
   }
 
-  /** Reihenfolge der Wochentage in Kurzform */
+  /** Reihenfolge der Wochentage */
   const weekdays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
 
   /** Holen des Status je Modul */

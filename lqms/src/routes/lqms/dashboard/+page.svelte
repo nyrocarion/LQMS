@@ -8,7 +8,9 @@
   let heatmapData = [];
   let heatmapCalendar = [];
   let tasks = [];
+  let streak = 0;
   let canvasEl;
+
   onMount(async () => {
     const memeElement = document.getElementById("meme") as HTMLImageElement;
     memeElement.src = dailymeme;
@@ -19,6 +21,10 @@
     const heatmapRes = await fetch("/api/heatmap", {credentials: "include"});
     heatmapData = await heatmapRes.json();
     heatmapCalendar = generateCalendarData(heatmapData);
+
+    const streakRes = await fetch("/api/streak", {credentials: "include"});
+    const streakData = await streakRes.json();
+    streak = streakData.streak;
 
     /** all the stuff for the diagram generation*/
     new Chart(canvasEl, {
@@ -72,6 +78,7 @@
     }
   });
   });
+
   /** Copied from check up tab */
   /** Selektion der Farbe der Heatmap zu je einem Tag */
   function getHeatmapColor(count) {
@@ -123,8 +130,7 @@
     return calendar;
   }
 
-
-  /** Reihenfolge der Wochentage in deutscher Kurzform */
+  /** Reihenfolge der Wochentage */
   const weekdays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
 
   /** Holen des Status je Modul */
@@ -361,7 +367,7 @@
           <img style="width:50px;" src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png" alt="Avatar 2" />
           <b>Name: {user.name}</b><br>
           <b>Id: {user.id}</b><br>
-          <b>Streak: {user.streak}</b>
+          <b>Streak: {streak}</b>
           </div>
         </div>
         <div class="panel tall beige_bg">
