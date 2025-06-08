@@ -129,7 +129,7 @@
 
           if (allFieldsChecked) {
             // Status auf 2 setzen, wenn alle Felder abgehakt sind
-            const statusRes = await fetch('/api/tasks/status', {
+            const statusRes = await fetch('/api/tasks/', {
               method: 'PUT',
               credentials: 'include',
               headers: { 'Content-Type': 'application/json' },
