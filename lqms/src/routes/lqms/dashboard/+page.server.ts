@@ -134,11 +134,11 @@ export const load: PageServerLoad = async ({ cookies }) => {
   console.log("id for db call: ",userId);
   const rawData = await db.query(`
     SELECT 
-    DATE(CONVERT_TZ(date, 'UTC', 'Europe/Berlin')) as session_date,
-    SUM(time) as total_duration
+      DATE(date + INTERVAL 2 HOUR) as session_date,
+      SUM(time) as total_duration
     FROM session
     WHERE completedby = ?
-      AND DATE(CONVERT_TZ(date, 'UTC', 'Europe/Berlin')) >= CURDATE() - INTERVAL 4 DAY
+      AND DATE(date + INTERVAL 2 HOUR) >= CURDATE() - INTERVAL 4 DAY
     GROUP BY session_date
     ORDER BY session_date
   `, [userId]);
