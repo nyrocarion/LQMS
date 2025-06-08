@@ -383,11 +383,13 @@
 
 .div3 {
   grid-area: div3;
+  max-height: 300px;
   background-color: white;
 }
 
 .div4 {
   grid-area: div4;
+  max-height: 300px;
   background-color: white;
   padding-bottom: 25px;
 }
@@ -437,6 +439,7 @@
 .streak-display {
   display: flex;
   flex-direction: column;
+
   align-items: center;
   justify-content: center;
   font-size: 1.2rem;
