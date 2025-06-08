@@ -2,7 +2,6 @@
   import { onMount } from "svelte";
 
   let tasks = [];
-  let course
   let heatmapData = [];
   let heatmapCalendar = [];
   let tasksByModule = {};
@@ -120,6 +119,30 @@
         const course = items.find(i => i.id === id);
         if (course) {
           course[field] = newStatus;
+
+          // Überprüfen, ob alle Felder abgehakt sind
+          const allFieldsChecked = 
+            (course.presentationstatus === 1) &&
+            (course.scriptstatus === 1) &&
+            (course.notesstatus === 1) &&
+            (!course.exercisesheet || course.exercisestatus === 1); 
+
+          if (allFieldsChecked) {
+            // Status auf 2 setzen, wenn alle Felder abgehakt sind
+            const statusRes = await fetch('/api/tasks/status', {
+              method: 'PUT',
+              credentials: 'include',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ id, status: 2 })
+            });
+
+            if (!statusRes.ok) {
+              console.error('Fehler beim Setzen des Status');
+            } else {
+              course.status = 1;  // Lokale Statusänderung
+            }
+          }
+
           tasksByModule = structuredClone(tasksByModule);
           return;
         }
