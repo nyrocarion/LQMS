@@ -8,8 +8,6 @@ export const GET: RequestHandler = async ({ locals }) => {
   const today = new Date(todayString);
 
   const startDate = new Date(today);
-  console.log(startDate)
-  console.log(today)
   startDate.setDate(today.getDate() - 34); // 35 Tage inkl. heute
 
   const sqlStart = startDate.toISOString().split('T')[0];
@@ -26,7 +24,7 @@ export const GET: RequestHandler = async ({ locals }) => {
 
   const sessionMap = new Map<string, number>();
   for (const row of sessions as { date: Date; count: number }[]) {
-    const iso = row.date.toISOString().split('T')[0];
+    const iso = row.date.toLocaleDateString('sv-SE')
     sessionMap.set(iso, row.count);
   }
 
@@ -34,11 +32,10 @@ export const GET: RequestHandler = async ({ locals }) => {
   for (let i = 0; i < 35; i++) {
     const d = new Date(startDate);
     d.setDate(startDate.getDate() + i);
-    const iso = d.toISOString().split('T')[0];
+    const iso = d.toLocaleDateString('sv-SE');
     const count = sessionMap.get(iso) || 0;
     result.push({ date: iso, count });
   }
 
-  console.log(result)
   return json(result);
 };
