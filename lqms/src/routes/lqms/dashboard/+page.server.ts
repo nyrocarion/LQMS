@@ -144,19 +144,26 @@ export const load: PageServerLoad = async ({ cookies }) => {
   `, [userId]);
   // generated a list of the last 5 days for the legend
   console.log("raw db call output",rawData);
+  const rows = rawData[0];
+
   const today = new Date();
   const labels = [];
   for (let i = 4; i >= 0; i--) {
     const d = new Date(today);
     d.setDate(today.getDate() - i);
-    labels.push(d.toISOString().split('T')[0]);
+    labels.push(d.toLocaleDateString('sv-SE'));
   }
   console.log("labels",labels);
   // Map raw data to date => duration
-  const map = Object.fromEntries(rawData.map(d => [d.session_date, d.total_duration]));
+  const map = Object.fromEntries(
+    rows.map(d => [
+      new Date(d.session_date).toLocaleDateString('sv-SE'), // format: "YYYY-MM-DD"
+      Number(d.total_duration)
+    ])
+  );
   const durations = labels.map(date => {
     const seconds = map[date] || 0;
-    return Math.ceil(seconds / 60); // <-- round up seconds to full minutes!
+    return seconds < 60 ? 0 : Math.ceil(seconds / 60); // <-- round up seconds to full minutes!
   });
   console.log("durations",durations);
 
