@@ -167,7 +167,7 @@
         </div>
         <div class="panel tall beige_bg">
           <h2>Etwas zum Lachen</h2>
-          <img style="height:100px;" id="meme" src="" alt="Meme"/>
+          <img style="width:300px;" id="meme" src="" alt="Meme"/>
         </div>
         <div class="panel tall beige_bg">Progress Chart</div>
     </div>
