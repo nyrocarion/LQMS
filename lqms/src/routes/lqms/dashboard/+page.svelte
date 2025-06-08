@@ -47,7 +47,7 @@
           }
         },
         legend: {
-          display: false // optional: zeigt nur die Daten ohne Legende
+          display: true
         }
       },
       scales: {
