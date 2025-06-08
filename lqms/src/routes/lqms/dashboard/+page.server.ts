@@ -137,7 +137,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
       SUM(time) as total_duration
     FROM session
     WHERE completedby = ?
-      AND DATE(date) >= DATE('now', '-4 day')
+      AND DATE(date) >= CURDATE() - INTERVAL 4 DAY
     GROUP BY session_date
     ORDER BY session_date
   `, [userId]);
