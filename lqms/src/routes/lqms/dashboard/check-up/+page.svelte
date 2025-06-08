@@ -78,14 +78,22 @@
   const weekdays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
 
   /** Holen des Status je Modul */
-  function getStatusText(status: number): string {
-  switch (status) {
-    case 0: return 'Wartend';
-    case 1: return 'Am Erledigen';
-    case 2: return 'Erledigt';
-    default: return 'Unbekannt';
+  function getStatusTextModul(status: number): string {
+    switch (status) {
+      case 0: return 'Wartend';
+      case 1: return 'Am Erledigen';
+      case 2: return 'Erledigt';
+      default: return 'Unbekannt';
+    }
   }
-}
+
+  function getStatusText(status: number): string {
+    switch (status) {
+      case 0: return 'Wartend';
+      case 1: return 'Erledigt';
+      default: return 'Unbekannt';
+    }
+  }
 
   function toggle(modul: string, date: string) {
     const key = modul + '_' + date;
@@ -143,7 +151,7 @@
                             <div class="course-card">
                               <div class="course-header">
                                 <strong>Vorlesung:</strong> {item.displayname}<br>
-                                <strong>Status:</strong> {getStatusText(item.status)}
+                                <strong>Status:</strong> {getStatusTextModul(item.status)}
                               </div>
                               <div class="task-list">
                                 {#each [
