@@ -134,11 +134,11 @@ export const load: PageServerLoad = async ({ cookies }) => {
   console.log("id for db call: ",userId);
   const rawData = await db.query(`
     SELECT 
-      DATE(date) as session_date,
-      SUM(time) as total_duration
+    DATE(CONVERT_TZ(date, 'UTC', 'Europe/Berlin')) as session_date,
+    SUM(time) as total_duration
     FROM session
     WHERE completedby = ?
-      AND DATE(date) >= CURDATE() - INTERVAL 4 DAY
+      AND DATE(CONVERT_TZ(date, 'UTC', 'Europe/Berlin')) >= CURDATE() - INTERVAL 4 DAY
     GROUP BY session_date
     ORDER BY session_date
   `, [userId]);
@@ -146,26 +146,31 @@ export const load: PageServerLoad = async ({ cookies }) => {
   console.log("raw db call output",rawData);
   const rows = rawData[0];
 
+  // local time berlin
   const today = new Date();
   const labels = [];
   for (let i = 4; i >= 0; i--) {
     const d = new Date(today);
     d.setDate(today.getDate() - i);
-    labels.push(d.toLocaleDateString('sv-SE'));
+    labels.push(d.toLocaleDateString('sv-SE'));  // 'YYYY-MM-DD'
   }
-  console.log("labels",labels);
-  // Map raw data to date => duration
+
+  // Map from session_date (String 'YYYY-MM-DD') to total_duration (sec)
   const map = Object.fromEntries(
     rows.map(d => [
-      new Date(d.session_date).toLocaleDateString('sv-SE'), // format: "YYYY-MM-DD"
+      d.session_date,    
       Number(d.total_duration)
     ])
   );
+
+  // time in min (rounded up)
   const durations = labels.map(date => {
     const seconds = map[date] || 0;
-    return seconds < 60 ? 0 : Math.ceil(seconds / 60); // <-- round up seconds to full minutes!
+    return seconds < 60 ? 0 : Math.ceil(seconds / 60);
   });
-  console.log("durations",durations);
+
+  console.log('labels:', labels);
+  console.log('durations:', durations);
 
   // loaded from external api
   const dailyfact =  await fetchDateFact();
