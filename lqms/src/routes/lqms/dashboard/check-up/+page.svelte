@@ -389,7 +389,7 @@
 
 .div4 {
   grid-area: div4;
-  max-height: 300px;
+  max-height: 230px;
   background-color: white;
   padding-bottom: 25px;
 }
