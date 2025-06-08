@@ -320,7 +320,6 @@
 
 .course-card {
   padding: 10px 15px;
-  margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 8px;
   background-color: white;
@@ -344,6 +343,7 @@
 
 .date-group {
   margin-left: 15px;
+  margin-bottom: 10px;
 }
 .date-header {
   font-size: 1rem;
