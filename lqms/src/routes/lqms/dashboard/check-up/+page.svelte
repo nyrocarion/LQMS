@@ -183,33 +183,34 @@
                         </div>
 
                         {#if expanded[modul + '_' + date]}
-                          <div transition:slide={{ duration: 300 }} class="date-content"></div>
-                          {#each items as item}
-                            <div class="course-card">
-                              <div class="course-header">
-                                <strong>Status:</strong> {getStatusTextModul(item.status)}
+                          <div class="date-content" in:slide={{ duration: 300 }} out:slide={{ duration: 300 }}>
+                            {#each items as item}
+                              <div class="course-card">
+                                <div class="course-header">
+                                  <strong>Status:</strong> {getStatusTextModul(item.status)}
+                                </div>
+                                <div class="task-list">
+                                  {#each [
+                                    {label: 'Präsentation', key: 'presentationstatus', show: true},
+                                    {label: 'Skript', key: 'scriptstatus', show: true},
+                                    {label: 'Notizen', key: 'notesstatus', show: true},
+                                    {label: 'Übungsblatt', key: 'exercisestatus', show: item.exercisesheet === 1}
+                                  ] as t}
+                                    {#if t.show}
+                                      <div>
+                                        {t.label}: {getStatusText(item[t.key])}
+                                        <input
+                                          type="checkbox"
+                                          checked={item[t.key]}
+                                          on:change={(e) => updateStatus(item.id, t.key, e.target.checked ? 1 : 0)}
+                                        />
+                                      </div>
+                                    {/if}
+                                  {/each}
+                                </div>
                               </div>
-                              <div class="task-list">
-                                {#each [
-                                  {label: 'Präsentation', key: 'presentationstatus', show: true},
-                                  {label: 'Skript', key: 'scriptstatus', show: true},
-                                  {label: 'Notizen', key: 'notesstatus', show: true},
-                                  {label: 'Übungsblatt', key: 'exercisestatus', show: item.exercisesheet === 1}
-                                ] as t}
-                                  {#if t.show}
-                                    <div>
-                                      {t.label}: {getStatusText(item[t.key])}
-                                      <input
-                                        type="checkbox"
-                                        checked={item[t.key]}
-                                        on:change={(e) => updateStatus(item.id, t.key, e.target.checked ? 1 : 0)}
-                                      />
-                                    </div>
-                                  {/if}
-                                {/each}
-                              </div>
-                            </div>
-                          {/each}
+                            {/each}
+                          </div>
                         {/if}
                       </div>
                     {/each}
