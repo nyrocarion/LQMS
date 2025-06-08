@@ -98,7 +98,7 @@
 
   function toggle(modul: string, date: string) {
     const key = modul + '_' + date;
-    expanded[key] = !expanded[key];
+    expanded = { ...expanded, [key]: !expanded[key]};
   }
 
   async function updateStatus(id: number, field: string, newStatus: number) {
