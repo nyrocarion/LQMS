@@ -120,6 +120,7 @@
         const course = items.find(i => i.id === id);
         if (course) {
           course[field] = newStatus;
+          tasksByModule = structuredClone(tasksByModule);
           return;
         }
       }
