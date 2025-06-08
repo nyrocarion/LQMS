@@ -2,11 +2,13 @@
 <script lang="ts">
 	import type { PageData } from './$types';
   import { onMount } from 'svelte';
+  import Chart from 'chart.js/auto';
 	export let data: PageData;
-	const { user, tip, dailyfact, dailymeme, lectures } = data;
+	const { user, tip, dailyfact, dailymeme, lectures, labels, durations } = data;
   let heatmapData = [];
   let heatmapCalendar = [];
   let tasks = [];
+  let canvasEl;
   onMount(async () => {
     const memeElement = document.getElementById("meme") as HTMLImageElement;
     memeElement.src = dailymeme;
@@ -17,7 +19,51 @@
     const heatmapRes = await fetch("/api/heatmap", {credentials: "include"});
     heatmapData = await heatmapRes.json();
     heatmapCalendar = generateCalendarData(heatmapData);
-  })
+
+    /** all the stuff for the diagram generation*/
+    new Chart(canvasEl, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Lernzeit in Minuten',
+          data: durations,
+          backgroundColor: 'rgba(54, 162, 235, 0.6)',
+          borderRadius: 6
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Lernzeit der letzten 5 Tage'
+          },
+          tooltip: {
+            callbacks: {
+              label: context => `${context.parsed.y} Minuten`
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            stepSize: 1,
+            title: {
+              display: true,
+              text: 'Minuten'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Datum'
+            }
+          }
+        }
+      }
+    });
+  });
   /** Copied from check up tab */
   /** Selektion der Farbe der Heatmap zu je einem Tag */
   function getHeatmapColor(count) {
@@ -244,7 +290,10 @@
             <h2>Dein täglicher Lerntipp</h2>
             <div>{tip}</div>
         </div>
-        <div class="panel medium beige_bg">Arbeitszeiten Diagramm?</div>
+        <div class="panel medium beige_bg">
+          <h2>Deine Sessions in den letzten 5 Tagen</h2>
+          <canvas bind:this={canvasEl}></canvas>
+        </div>
         <div class="panel beige_bg" style="flex:1">
           <div class="div3">
             <h2>Deine Aktivitäten (35 Tage)</h2>
@@ -302,7 +351,7 @@
           <h2>Profile</h2>
           <div >
           <img style="width:50px;" src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png" alt="Avatar 2" />
-          <b>{user.name}</b><br>
+          <b>{user.email}</b><br>
           <b>{user.id}</b>
           </div>
         </div>

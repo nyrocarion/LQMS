@@ -3,6 +3,7 @@ import type { PageServerLoad } from './$types';
 import { verifyJWT } from '$lib/server/jwt';
 import { db } from '$lib/server/database';
 
+
 async function fetchDateFact() {
   var today = new Date();
   var day = String(today.getDate()).padStart(2, '0');
@@ -114,6 +115,7 @@ async function getMeme() {
   };
 };
 
+
 // nur eine load Funktion erlaubt pro Datei :(
 export const load: PageServerLoad = async ({ cookies }) => {
   // User Kram
@@ -125,8 +127,34 @@ export const load: PageServerLoad = async ({ cookies }) => {
   const id = Math.floor(Math.random() * 11) + 1;
   const result = await db.query('SELECT `tipps` FROM `content` WHERE `id` = ?', [id]);
   // Gibt eine Ausgabe egal welcher Fall auftritt
-  console.log("result from db call",result);
   const tip = (result[0] && result[0][0]?.tipps) ?? 'Kein Tipp gefunden';
+
+  // get activity data from db
+  const userId = user.id
+  const rawData = await db.all(`
+    SELECT 
+      DATE(date) as session_date,
+      SUM(time) as total_duration
+    FROM session
+    WHERE completedby = ?
+      AND DATE(date) >= DATE('now', '-4 day')
+    GROUP BY session_date
+    ORDER BY session_date
+  `, [userId]);
+  // generated a list of the last 5 days for the legend
+  const today = new Date();
+  const labels = [];
+  for (let i = 4; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    labels.push(d.toISOString().split('T')[0]);
+  }
+  // Map raw data to date => duration
+  const map = Object.fromEntries(rawData.map(d => [d.session_date, d.total_duration]));
+  const durations = labels.map(date => {
+    const seconds = map[date] || 0;
+    return Math.max(1, Math.ceil(seconds / 60)); // <-- round up seconds to full minutes!
+  });
 
   // loaded from external api
   const dailyfact =  await fetchDateFact();
@@ -140,5 +168,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
     dailyfact,
     dailymeme,
     lectures,
+    map,
+    durations
   };
 };
