@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
 
   let tasks = [];
+  let course
   let heatmapData = [];
   let heatmapCalendar = [];
   let tasksByModule = {};
@@ -113,14 +114,13 @@
       return;
     }
 
-    console.log('Update:', { id, field, newStatus });
-
+    // Lokales Update
     for (const [modul, dates] of Object.entries(tasksByModule)) {
       for (const [date, items] of Object.entries(dates)) {
-        for (const item of items) {
-          if (item.id === id) {
-            item[field] = newStatus;
-          }
+        const course = items.find(i => i.id === id);
+        if (course) {
+          course[field] = newStatus;
+          return;
         }
       }
     }
@@ -161,7 +161,6 @@
                           {#each items as item}
                             <div class="course-card">
                               <div class="course-header">
-                                <strong>Vorlesung:</strong> {item.displayname}<br>
                                 <strong>Status:</strong> {getStatusTextModul(item.status)}
                               </div>
                               <div class="task-list">
