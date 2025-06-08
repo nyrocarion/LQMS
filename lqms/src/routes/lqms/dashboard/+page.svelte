@@ -22,52 +22,55 @@
 
     /** all the stuff for the diagram generation*/
     new Chart(canvasEl, {
-      type: 'bar',
-      data: {
-        labels,
-        datasets: [{
-          label: 'Lernzeit in Minuten',
-          data: durations,
-          backgroundColor: 'rgba(75, 192, 192, 0.6)',
-          borderColor: 'rgba(75, 192, 192, 1)',
-          borderWidth: 1,
-          borderRadius: 6
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          title: {
-            display: true,
-            text: 'Lernzeit der letzten 5 Tage'
-          },
-          tooltip: {
-            callbacks: {
-              label: context => `${context.parsed.y} Minuten`
-            }
+    type: 'bar',
+    data: {
+      labels, // 
+      datasets: [{
+        label: 'Lernzeit in Minuten',
+        data: durations, 
+        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1,
+        borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        title: {
+          display: true,
+          text: 'Lernzeit der letzten 5 Tage'
+        },
+        tooltip: {
+          callbacks: {
+            label: context => `${context.parsed.y} Minuten`
           }
         },
-        scales: {
-          y: {
-            beginAtZero: true,
-            ticks: {
-              stepSize: 1,
-              callback: value => Number.isInteger(value) ? value : ''
-            },
-            title: {
-              display: true,
-              text: 'Minuten'
-            }
+        legend: {
+          display: false // optional: zeigt nur die Daten ohne Legende
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            stepSize: 1,
+            callback: value => Number.isInteger(value) ? value : ''
           },
-          x: {
-            title: {
-              display: true,
-              text: 'Datum'
-            }
+          title: {
+            display: true,
+            text: 'Minuten'
+          }
+        },
+        x: {
+          title: {
+            display: true,
+            text: 'Datum'
           }
         }
       }
-    });
+    }
+  });
   });
   /** Copied from check up tab */
   /** Selektion der Farbe der Heatmap zu je einem Tag */
