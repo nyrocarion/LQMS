@@ -24,14 +24,49 @@
     new Chart(canvasEl, {
       type: 'bar',
       data: {
-        labels: ['A', 'B', 'C'],
+        labels,
         datasets: [{
-          label: 'Test',
-          data: [10, 20, 30],
-          backgroundColor: 'rgba(75, 192, 192, 0.6)'
+          label: 'Lernzeit in Minuten',
+          data: durations,
+          backgroundColor: 'rgba(75, 192, 192, 0.6)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1,
+          borderRadius: 6
         }]
       },
-      options: { responsive: true }
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Lernzeit der letzten 5 Tage'
+          },
+          tooltip: {
+            callbacks: {
+              label: context => `${context.parsed.y} Minuten`
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              stepSize: 1,
+              callback: value => Number.isInteger(value) ? value : ''
+            },
+            title: {
+              display: true,
+              text: 'Minuten'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Datum'
+            }
+          }
+        }
+      }
     });
   });
   /** Copied from check up tab */
