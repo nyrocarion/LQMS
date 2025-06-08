@@ -24,7 +24,7 @@ export const GET: RequestHandler = async ({ request  }) => {
 
   /** Modellierung eines Kurses */
   const [courses] = await db.query(
-  `SELECT module, displayname, status, date, presentationstatus, scriptstatus, notesstatus, exercisestatus, exercisesheet
+  `SELECT id, module, displayname, status, date, presentationstatus, scriptstatus, notesstatus, exercisestatus, exercisesheet
    FROM course
    WHERE userid = ?`,
   [userId]
@@ -68,5 +68,5 @@ export const PUT: RequestHandler = async ({ request }) => {
     `UPDATE course SET ${field} = ? WHERE id = ?`,
     [value, id]
   );
-  return new Response('OK');
+  return new json({success: true});
 };

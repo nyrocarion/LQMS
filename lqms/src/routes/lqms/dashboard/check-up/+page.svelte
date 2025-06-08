@@ -78,9 +78,14 @@
   const weekdays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
 
   /** Holen des Status je Modul */
-  function getStatusLabel(status: number): string {
-    return ["Waiting", "Doing", "Done"][status] || "Unknown";
+  function getStatusText(status: number): string {
+  switch (status) {
+    case 0: return 'Wartend';
+    case 1: return 'Am Erledigen';
+    case 2: return 'Erledigt';
+    default: return 'Unbekannt';
   }
+}
 
   function toggle(modul: string, date: string) {
     const key = modul + '_' + date;
@@ -88,12 +93,18 @@
   }
 
   async function updateStatus(id: number, field: string, value: number) {
-  await fetch('/api/tasks', {
-    method: 'PUT',
-    credentials: 'include',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({ id, field, value })
+    const res = await fetch('/api/tasks', {
+      method: 'PUT',
+      credentials: 'include',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ id, field, value })
     });
+
+    const data = await res.json();
+		if (!data.success) {
+			console.error('Fehler beim Speichern:', data.error);
+			// Optional: UI-Feedback anzeigen
+		}
   }
 </script>
 
@@ -132,7 +143,7 @@
                             <div class="course-card">
                               <div class="course-header">
                                 <strong>Vorlesung:</strong> {item.displayname}<br>
-                                <strong>Status:</strong> {getStatusLabel(item.status)}
+                                <strong>Status:</strong> {getStatusText(item.status)}
                               </div>
                               <div class="task-list">
                                 {#each [
@@ -143,7 +154,7 @@
                                 ] as t}
                                   {#if t.cond !== false}
                                     <div>
-                                      {t.label}: {getStatusLabel(item[t.key])}
+                                      {t.label}: {getStatusText(item[t.key])}
                                       <input
                                         type="checkbox"
                                         bind:checked={item[t.key]}
