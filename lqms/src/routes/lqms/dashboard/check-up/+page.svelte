@@ -165,7 +165,7 @@
                                       <input
                                         type="checkbox"
                                         checked={item[t.key] === 1}
-                                        on:change={() => updateStatus(item.id, t.key, item[t.key] === 1 ? 0 : 1)}
+                                        on:change={() => updateStatus(item.id, t.key, +item[t.key])}
                                       />
                                     </div>
                                   {/if}
