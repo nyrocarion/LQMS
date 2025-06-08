@@ -152,11 +152,9 @@
     }
 
     body {
-      margin: 0;
       background: var(--bg-col);
       display: flex;
       justify-content: center;
-      padding: 2rem;
     }
 
     .dashboard {
@@ -194,24 +192,27 @@
       color: #655a55;
     }
 
-      .row{
+    .row{
       display:flex;
       gap:var(--row-gap);
       flex:1;           
       min-height:0;    
-      }
+    }
 
     /* individual sizes */
     .tall {
       min-height: 180px;
     }
+
     .medium {
       min-height: 120px;
     }
+
     /* Placeholder colors */
     .beige_bg {
       background: var(--beige);
     }
+
     .lightred_bg {
       background: var(--lightred);
     }
@@ -232,58 +233,58 @@
     }
 
     h2 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin: 0 0 0.5em 0;
-    color: #333;
-   } 
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 0 0 0.5em 0;
+      color: #333;
+    } 
 
-   /* copied from check up */
-   .div3 {
-  padding: 10px 25px;
-  border-radius: 15px;
-  }
-  .heatmap-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  gap: 6px;
-  padding-top: 10px;
-}
+    /* copied from check up */
+    .div3 {
+      padding: 10px 25px;
+      border-radius: 15px;
+      }
+      .heatmap-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      gap: 6px;
+      padding-top: 10px;
+    }
 
-.heatmap-header {
-  display: flex;
-  gap: 4px;
-  align-self: center;
-}
+    .heatmap-header {
+      display: flex;
+      gap: 4px;
+      align-self: center;
+    }
 
-.weekday-label {
-  width: 30px;
-  text-align: center;
-  font-size: 0.8rem;
-  color: #642bff;
-  font-weight: bold;
-}
+    .weekday-label {
+      width: 30px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #642bff;
+      font-weight: bold;
+    }
 
-.heatmap-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  align-self: center;
-}
+    .heatmap-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      align-self: center;
+    }
 
-.week-row {
-  display: flex;
-  gap: 4px;
-}
+    .week-row {
+      display: flex;
+      gap: 4px;
+    }
 
-.heatmap-day {
-  width: 30px;
-  height: 30px;
-  border-radius: 3px;
-  background-color: #dddddd;
-  transition: background-color 0.3s;
-}
+    .heatmap-day {
+      width: 30px;
+      height: 30px;
+      border-radius: 3px;
+      background-color: #dddddd;
+      transition: background-color 0.3s;
+    }
   </style>
 </svelte:head>
 
@@ -367,7 +368,7 @@
           <img style="width:50px;" src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png" alt="Avatar 2" />
           <b>Name: {user.name}</b><br>
           <b>Id: {user.id}</b><br>
-          <b>Streak: {streak}</b>
+          <b>Streak: <strong>{streak}</strong> 🔥Tage in Folge!</b>
           </div>
         </div>
         <div class="panel tall beige_bg">
