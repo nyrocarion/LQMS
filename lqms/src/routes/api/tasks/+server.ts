@@ -34,13 +34,20 @@ export const GET: RequestHandler = async ({ request  }) => {
 
   for (const course of courses) {
     if (!grouped[course.module]) {
-      grouped[course.module] = [];
+      grouped[course.module] = {};
     }
 
-    grouped[course.module].push({
+    // Extrahiere Datumsteil (z.B. "2025-06-08")
+    const dateKey = new Date(course.date).toISOString().split("T")[0];
+
+    if (!grouped[course.module][dateKey]) {
+      grouped[course.module][dateKey] = [];
+    }
+
+    grouped[course.module][dateKey].push({
+      id: course.id,
       displayname: course.displayname,
       status: course.status,
-      date: course.date,
       presentationstatus: course.presentationstatus,
       scriptstatus: course.scriptstatus,
       notesstatus: course.notesstatus,
