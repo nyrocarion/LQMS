@@ -112,6 +112,7 @@
 </svelte:head>
 
 <div class="app-container">
+  <center>
   <header class="nav">
     <ul>
       <li id="sessions"><a href="./dashboard/sessions/">Sessions</a></li>
@@ -167,4 +168,5 @@
         <div class="panel tall beige_bg">Progress Chart</div>
     </div>
   </section>
+</center>
 </div>
