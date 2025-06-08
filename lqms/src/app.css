@@ -31,7 +31,6 @@ p {
 
 .app-container {
   padding: 0 2rem 2rem;
-  width: 100vw;
   height: 100vh;
   margin: auto;
   position: relative;
@@ -44,7 +43,6 @@ p {
 }
 
 .nav ul {
-  list-style: none;
   list-style-type: none;
   display: flex;
   justify-content: center;
