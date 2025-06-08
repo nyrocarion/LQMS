@@ -142,8 +142,8 @@
   }
 </script>
 
+<center>
 <div class="hero">
-  <center>
   <div class="app-container">
     <div class="top-left-box">
       <div class="auth-links">
@@ -214,9 +214,8 @@
       </div>
     </div>
   </div>
-  </center>
 </div>
-
+</center>
 
 {#if showAuthModal}
   <div class="modal-overlay" on:click={closeAuthModal}>
