@@ -4,12 +4,16 @@
   let tasks = [];
   let heatmapData = [];
   let heatmapCalendar = [];
+  let tasksByModule = {};
+  let expanded = {};
   let streak = 0;
 
   /** Vorladen der Daten aus API-Endpunkten */
   onMount(async () => {
     const taskRes = await fetch("/api/tasks", {credentials: "include"});
     tasks = await taskRes.json();
+
+    tasksByModule = tasks;
 
     const heatmapRes = await fetch("/api/heatmap", {credentials: "include"});
     heatmapData = await heatmapRes.json();
@@ -77,9 +81,6 @@
   function getStatusLabel(status: number): string {
     return ["Waiting", "Doing", "Done"][status] || "Unknown";
   }
-
-  let tasksByModule = {};
-  let expanded = {}; // tracket aufgeklappte Datumsgruppen pro Modul
 
   function toggle(modul: string, date: string) {
     const key = modul + '_' + date;
