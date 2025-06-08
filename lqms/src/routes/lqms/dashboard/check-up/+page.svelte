@@ -164,7 +164,7 @@
                                       {t.label}: {getStatusText(item[t.key])}
                                       <input
                                         type="checkbox"
-                                        checked={item[t.key] === 1}
+                                        bind:checked={item[t.key]}
                                         on:change={() => updateStatus(item.id, t.key, +item[t.key])}
                                       />
                                     </div>
