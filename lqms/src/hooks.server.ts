@@ -17,7 +17,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 
       // Falls E-Mail nicht verifiziert
       if (userInfo && userInfo.emailv === 0 && event.url.pathname !== '/' && !event.url.pathname.startsWith('/verify-email')) {
-        throw redirect(303, '/?message=unverified');
+        throw redirect(303, '/');
       }
 
     } catch (err) {
