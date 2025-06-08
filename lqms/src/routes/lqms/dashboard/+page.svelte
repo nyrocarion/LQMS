@@ -2,12 +2,127 @@
 <script lang="ts">
 	import type { PageData } from './$types';
   import { onMount } from 'svelte';
+  import Chart from 'chart.js/auto';
 	export let data: PageData;
-	const { user, tip, dailyfact, dailymeme, lectures } = data;
-  onMount(() => {
+	const { user, tip, dailyfact, dailymeme, lectures, labels, durations } = data;
+  let heatmapData = [];
+  let heatmapCalendar = [];
+  let tasks = [];
+  let canvasEl;
+  onMount(async () => {
     const memeElement = document.getElementById("meme") as HTMLImageElement;
     memeElement.src = dailymeme;
-  })
+
+    const taskRes = await fetch("/api/tasks", {credentials: "include"});
+    tasks = await taskRes.json();
+
+    const heatmapRes = await fetch("/api/heatmap", {credentials: "include"});
+    heatmapData = await heatmapRes.json();
+    heatmapCalendar = generateCalendarData(heatmapData);
+
+    /** all the stuff for the diagram generation*/
+    new Chart(canvasEl, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Lernzeit in Minuten',
+          data: durations,
+          backgroundColor: 'rgba(54, 162, 235, 0.6)',
+          borderRadius: 6
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Lernzeit der letzten 5 Tage'
+          },
+          tooltip: {
+            callbacks: {
+              label: context => `${context.parsed.y} Minuten`
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            stepSize: 1,
+            title: {
+              display: true,
+              text: 'Minuten'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Datum'
+            }
+          }
+        }
+      }
+    });
+  });
+  /** Copied from check up tab */
+  /** Selektion der Farbe der Heatmap zu je einem Tag */
+  function getHeatmapColor(count) {
+    if (count === -1) return '#dedede';  // zukünftiger Tag
+    if (count === 0) return '#bababa';   // keine Aktivität
+    if (count === 1) return '#66e85a';
+    if (count === 2) return '#33de23';
+    if (count >= 3) return '#18ba09';
+  }
+
+  /** Formatieren des Datums */
+  function formatDate(date: string) {
+    const d = new Date(date);
+    return `${d.getDate()}.${d.getMonth() + 1}`;
+  }
+
+  function generateCalendarData(data: { date: string; count: number }[]) {
+    const todayString = new Date().toLocaleDateString('sv-SE');
+    const today = new Date(todayString);
+
+    // Finde den Start der Anzeige: Immer Montag vor 34 Tagen
+    const start = new Date(today);
+    start.setDate(start.getDate() - 34);
+
+    const startWeekday = (start.getDay() + 6) % 7; // 0 = Montag
+    start.setDate(start.getDate() - startWeekday); // Auf Montag der Woche zurückspringen
+
+    const calendarMap = new Map(data.map(d => [d.date, d.count]));
+    const calendar: { date: string; count: number }[][] = [];
+
+    const current = new Date(start);
+    for (let i = 0; i < 5 * 7; i++) { // 5 Wochen
+      const iso = current.toISOString().split("T")[0];
+      const isFuture = current > today;
+      const count = isFuture
+        ? -1
+        : calendarMap.get(iso) ?? 0;
+
+      const weekday = (current.getDay() + 6) % 7; // 0 = Montag
+
+      if (calendar.length === 0 || weekday === 0) {
+        calendar.push(Array(7).fill(null));
+      }
+
+      calendar[calendar.length - 1][weekday] = { date: iso, count };
+      current.setDate(current.getDate() + 1);
+    }
+
+    return calendar;
+  }
+
+
+  /** Reihenfolge der Wochentage in deutscher Kurzform */
+  const weekdays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+
+  /** Holen des Status je Modul */
+  function getStatusLabel(status: number): string {
+    return ["Waiting", "Doing", "Done"][status] || "Unknown";
+  }
 </script>
 
 <svelte:head>
@@ -108,10 +223,58 @@
     margin: 0 0 0.5em 0;
     color: #333;
    } 
+
+   /* copied from check up */
+   .div3 {
+  padding: 10px 25px;
+  border-radius: 15px;
+  }
+  .heatmap-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 6px;
+  padding-top: 10px;
+}
+
+.heatmap-header {
+  display: flex;
+  gap: 4px;
+  align-self: center;
+}
+
+.weekday-label {
+  width: 30px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #642bff;
+  font-weight: bold;
+}
+
+.heatmap-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-self: center;
+}
+
+.week-row {
+  display: flex;
+  gap: 4px;
+}
+
+.heatmap-day {
+  width: 30px;
+  height: 30px;
+  border-radius: 3px;
+  background-color: #dddddd;
+  transition: background-color 0.3s;
+}
   </style>
 </svelte:head>
 
 <div class="app-container">
+  <center>
   <header class="nav">
     <ul>
       <li id="sessions"><a href="./dashboard/sessions/">Sessions</a></li>
@@ -123,15 +286,41 @@
   <section class="dashboard">
     <!-- L -->
     <div class="column">
-        <div class="panel medium beige_bg">Lernverhalten / Konzentrationskurve
-        <h2>Etwas zum Lachen</h2>
-            <img style="height:100px;" id="meme" src="" alt="Meme"/></div>
-        <div class="panel medium beige_bg">Arbeitszeiten Diagramm</div>
         <div class="panel medium beige_bg">
             <h2>Dein täglicher Lerntipp</h2>
             <div>{tip}</div>
         </div>
-        <div class="panel beige_bg" style="flex:1">Heat Map</div>
+        <div class="panel medium beige_bg">
+          <h2>Deine Sessions in den letzten 5 Tagen</h2>
+          <canvas bind:this={canvasEl}></canvas>
+        </div>
+        <div class="panel beige_bg" style="flex:1">
+          <div class="div3">
+            <h2>Deine Aktivitäten (35 Tage)</h2>
+            <div class="heatmap-wrapper">
+              <div class="heatmap-header">
+                {#each weekdays as label}
+                  <div class="weekday-label">{label}</div>
+                {/each}
+              </div>
+
+              <!-- Grid für 5 Wochen x 7 Tage -->
+              <div class="heatmap-grid">
+                {#each heatmapCalendar as week}
+                  <div class="week-row">
+                    {#each week as day}
+                      <div
+                        class="heatmap-day"
+                        style="background-color: {day ? getHeatmapColor(day.count) : '#dedede'}"
+                        title={day ? `${formatDate(day.date)}: ${day.count} Sessions` : ''}
+                      ></div>
+                    {/each}
+                  </div>
+                {/each}
+              </div>
+            </div>
+          </div>
+        </div>
     </div>
 
     <!-- M -->
@@ -159,12 +348,43 @@
     <!-- R -->
     <div class="column">
         <div class="panel medium beige_bg">
-          <h3>Profile</h3>
+          <h2>Profile</h2>
+          <div >
           <img style="width:50px;" src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png" alt="Avatar 2" />
-          <b>Username</b><br>
+          <b>Name: {user.name}</b>
+          <b>Id: {user.id}</b><br>
+          <b>Streak: {user.streak}</b>
+          </div>
         </div>
-        <div class="panel tall beige_bg">To Do Liste</div>
-        <div class="panel tall beige_bg">Progress Chart</div>
+        <div class="panel tall beige_bg">
+          <h2>Etwas zum Lachen</h2>
+          <img style="width:300px;" id="meme" src="" alt="Meme"/>
+        </div>
+        <div class="panel tall beige_bg">
+          <div class="div1">
+          <h2>To-Do Übersicht</h2>
+          <div class="div2">
+            {#if tasks.length === 0}
+              <p>Du hast noch keine Aufgaben hinzugefügt.<br>Beginne mit einer neuen Session, um Fortschritte zu sehen.</p>
+            {:else}
+              {#each Object.entries(groupTasks(tasks)) as [modul, items]}
+                <h3>{modul}</h3>
+                {#each ['Waiting', 'Doing', 'Done'] as statusLabel}
+                  <div>
+                    <h4>{statusLabel}</h4>
+                    <ul>
+                      {#each items.filter(task => getStatusLabel(task.status) === statusLabel) as task}
+                        <li>{task.displayname}: {task.type}</li>
+                      {/each}
+                    </ul>
+                  </div>
+                {/each}
+              {/each}
+            {/if}
+          </div>
+      </div>
+        </div>
     </div>
   </section>
+</center>
 </div>

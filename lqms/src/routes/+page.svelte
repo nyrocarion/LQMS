@@ -197,7 +197,7 @@
         </div>
         <div class="avatar-card">
           <h4>Lukas</h4>
-          <img src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png" alt="Avatar 2" />
+          <img src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/profile_pic_luk.jpg" alt="Avatar von Lukas" />
           <p>Zeitmanipulator</p>
         </div>
         <div class="avatar-card">
