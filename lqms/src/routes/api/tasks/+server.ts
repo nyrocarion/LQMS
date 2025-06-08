@@ -66,13 +66,13 @@ return json(grouped);
 };
 
 export const PUT: RequestHandler = async ({ request }) => {
-  const { id, field, value } = await request.json();
+  const { id, field, newStatus } = await request.json();
   const allowed = ['status','presentationstatus','scriptstatus','notesstatus','exercisestatus'];
   if (!allowed.includes(field)) return new Response('Invalid field', { status: 400 });
 
   await db.query(
     `UPDATE course SET ${field} = ? WHERE id = ?`,
-    [value, id]
+    [newStatus, id]
   );
   return new json({success: true});
 };
