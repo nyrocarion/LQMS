@@ -74,7 +74,7 @@
     return calendar;
   }
 
-  /** Reihenfolge der Wochentage in deutscher Kurzform */
+  /** Reihenfolge der Wochentage in Kurzform */
   const weekdays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
 
   /** Holen des Status je Modul */
@@ -100,19 +100,18 @@
     expanded[key] = !expanded[key];
   }
 
-  async function updateStatus(id: number, field: string, value: number) {
+  async function updateStatus(id: number, field: string, newStatus: number) {
     const res = await fetch('/api/tasks', {
       method: 'PUT',
       credentials: 'include',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ id, field, value })
+      body: JSON.stringify({ id, field, newStatus })
     });
 
-    const data = await res.json();
-		if (!data.success) {
-			console.error('Fehler beim Speichern:', data.error);
-			// Optional: UI-Feedback anzeigen
-		}
+    if (!res.ok) {
+      console.error('Fehler beim Aktualisieren');
+      return;
+    }
   }
 </script>
 
@@ -155,18 +154,18 @@
                               </div>
                               <div class="task-list">
                                 {#each [
-                                  {label: 'Präsentation', key: 'presentationstatus'},
-                                  {label: 'Skript', key: 'scriptstatus'},
-                                  {label: 'Notizen', key: 'notesstatus'},
-                                  {label: 'Übungsblatt', key: 'exercisestatus', cond: item.exercisesheet}
+                                  {label: 'Präsentation', key: 'presentationstatus', show: true},
+                                  {label: 'Skript', key: 'scriptstatus', show: true},
+                                  {label: 'Notizen', key: 'notesstatus', show: true},
+                                  {label: 'Übungsblatt', key: 'exercisestatus', show: item.exercisesheet === 1}
                                 ] as t}
-                                  {#if t.cond !== false}
+                                  {#if t.show}
                                     <div>
                                       {t.label}: {getStatusText(item[t.key])}
                                       <input
                                         type="checkbox"
-                                        bind:checked={item[t.key]}
-                                        on:change={() => updateStatus(item.id, t.key, +item[t.key])}
+                                        checked={item[t.key] === 1}
+                                        on:change={() => updateStatus(item.id, t.key, item[t.key] === 1 ? 0 : 1)}
                                       />
                                     </div>
                                   {/if}
@@ -283,7 +282,6 @@
   grid-area: div1;
   color: #3c68a3;
   background-color: white;
-  font-weight: bold;
   padding: 0 25px;
   border-radius: 15px;
 }
