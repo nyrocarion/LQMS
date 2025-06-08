@@ -158,7 +158,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
   // Map from session_date (String 'YYYY-MM-DD') to total_duration (sec)
   const map = Object.fromEntries(
     rows.map(d => [
-      d.session_date,    
+      new Date(d.session_date).toLocaleDateString('sv-SE'), // <- korrekt formatiert!
       Number(d.total_duration)
     ])
   );
