@@ -22,47 +22,52 @@
 
     /** all the stuff for the diagram generation*/
     new Chart(canvasEl, {
-      type: 'bar',
-      data: {
-        labels,
-        datasets: [{
-          label: 'Lernzeit in Minuten',
-          data: durations,
-          backgroundColor: 'rgba(54, 162, 235, 0.6)',
-          borderRadius: 6
-        }]
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Lernzeit in Minuten',
+        data: durations,
+        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1,
+        borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        title: {
+          display: true,
+          text: 'Lernzeit der letzten 5 Tage'
+        },
+        tooltip: {
+          callbacks: {
+            label: context => `${context.parsed.y} Minuten`
+          }
+        }
       },
-      options: {
-        responsive: true,
-        plugins: {
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            stepSize: 1,
+            callback: value => Number.isInteger(value) ? value : ''
+          },
           title: {
             display: true,
-            text: 'Lernzeit der letzten 5 Tage'
-          },
-          tooltip: {
-            callbacks: {
-              label: context => `${context.parsed.y} Minuten`
-            }
+            text: 'Minuten'
           }
         },
-        scales: {
-          y: {
-            beginAtZero: true,
-            stepSize: 1,
-            title: {
-              display: true,
-              text: 'Minuten'
-            }
-          },
-          x: {
-            title: {
-              display: true,
-              text: 'Datum'
-            }
+        x: {
+          title: {
+            display: true,
+            text: 'Datum'
           }
         }
       }
-    });
+    }
+  });
   });
   /** Copied from check up tab */
   /** Selektion der Farbe der Heatmap zu je einem Tag */
@@ -349,9 +354,9 @@
     <div class="column">
         <div class="panel medium beige_bg">
           <h2>Profile</h2>
-          <div >
+          <div>
           <img style="width:50px;" src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png" alt="Avatar 2" />
-          <b>Name: {user.name}</b>
+          <b>Name: {user.name}</b><br>
           <b>Id: {user.id}</b><br>
           <b>Streak: {user.streak}</b>
           </div>
