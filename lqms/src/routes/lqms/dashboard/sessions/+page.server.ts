@@ -51,14 +51,15 @@ export const actions: Actions = {
       if(userId == null)
         return { error: 'Du bist nicht angemeldet!'};
 
+
+      const result = await db.query('SELECT * FROM `session` WHERE DATE(`date`) = ? AND `completedby` = ?', [date_today, userId]) ?? 500303;
+      console.log(result)
+
       // DB-Eintrag
       await db.query(
         'INSERT INTO session (time, efficiency, motivated, completedby) VALUES (?, ?, ?, ?)',
         [totalseconds, efficiency, motivation, userId]
       );
-
-      const result = await db.query('SELECT * FROM `session` WHERE DATE(`date`) = ? AND `completedby` = ?', [date_today, userId]) ?? 500303;
-      console.log(result)
 
       if(result == null)
       {
