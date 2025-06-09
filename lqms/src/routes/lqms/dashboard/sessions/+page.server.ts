@@ -50,7 +50,7 @@ export const actions: Actions = {
         [totalseconds, efficiency, motivation, userId]
       );
 
-      const result = await db.query('SELECT * FROM `session` WHERE (`date` = ?,`completedby` = ?) LIMIT 1', [date, userId]) ?? null;
+      const result = await db.query('SELECT * FROM `session` WHERE (`date` = ?,`completedby` = ?) LIMIT 1', [date, userId]);
       console.log(result)
 
       if(result == null)
