@@ -129,9 +129,16 @@ export const load: PageServerLoad = async ({ cookies }) => {
   // Gibt eine Ausgabe egal welcher Fall auftritt
   const tip = (result[0] && result[0][0]?.tipps) ?? 'Kein Tipp gefunden';
 
-  // get activity data from db
+  
   const userId = user.id;
-  console.log("id for db call: ",userId);
+
+  // get profile data from db
+  // get profile name and email
+  const profileName = await db.query('SELECT `name` FROM `user` WHERE `id` = ?', [userId]);
+  const profileMail = await db.query('SELECT `email` FROM `user` WHERE `id` = ?', [userId]);
+  console.log(profileName,profileMail);
+
+  // get activity data from db
   const rawData = await db.query(`
     SELECT 
       DATE(date + INTERVAL 2 HOUR) as session_date,
