@@ -65,10 +65,10 @@ export const GET: RequestHandler = async ({ request  }) => {
 return json(grouped);
 };
 
-
 export const PUT: RequestHandler = async ({ request }) => {
   try {
     const { id, field, newStatus } = await request.json();
+    console.log(id, field, newStatus)
 
     const allowed = ['status','presentationstatus','scriptstatus','notesstatus','exercisestatus'];
     if (!allowed.includes(field)) {
