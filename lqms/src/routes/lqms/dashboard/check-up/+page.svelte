@@ -42,23 +42,23 @@
 
   export function generateCalendarData(heatmapData: { date: string; count: number }[]) {
     const today = new Date();
-    const todayIso = today.toISOString().split("T")[0]; // YYYY-MM-DD
-
     const weekStart = 0; // 0 = Sonntag
 
+    // Wochentag relativ zum gewünschten Wochenstart (z. B. 1 bei Mo, 0 bei So)
     const todayIndex = today.getDay();
     const daysSinceWeekStart = (todayIndex - weekStart + 7) % 7;
 
+    // Sonntag (oder anderer Wochentag) der aktuellen Woche
     const startOfCurrentWeek = new Date(today);
     startOfCurrentWeek.setDate(today.getDate() - daysSinceWeekStart);
 
+    // Startpunkt: 4 Wochen vor dem aktuellen Wochenstart
     const startDate = new Date(startOfCurrentWeek);
     startDate.setDate(startOfCurrentWeek.getDate() - 7 * 4);
 
     const dataMap = new Map<string, number>();
     for (const d of heatmapData) {
-      const key = new Date(d.date).toISOString().split("T")[0];
-      dataMap.set(key, d.count);
+      dataMap.set(d.date, d.count);
     }
 
     const calendarData: {
@@ -78,9 +78,8 @@
         const iso = currentDate.toISOString().split("T")[0];
         const count = dataMap.get(iso) ?? 0;
 
-        const isToday = iso === todayIso;
-        console.log("iso: " + iso + " , todayIso: " + todayIso)
-        const isFuture = iso > todayIso;
+        const isToday = iso === today.toISOString().split("T")[0];
+        const isFuture = currentDate >= today;
 
         weekData.push({
           date: currentDate,
@@ -88,7 +87,6 @@
           isToday,
           isFuture
         });
-
       }
 
       calendarData.push(weekData);
