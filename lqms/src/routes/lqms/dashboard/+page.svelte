@@ -380,7 +380,7 @@
           <h2>Etwas zum Lachen</h2>
           <img style="width:300px;" id="meme" src="" alt="Meme"/>
         </div>
-        <div class="panel tall beige_bg">
+        <div style="flex: 1" class="panel tall beige_bg">
           <div class="div1">
           <h2>To-Do Übersicht</h2>
           <div class="div2">
