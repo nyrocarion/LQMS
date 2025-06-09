@@ -1,5 +1,5 @@
 <!-- Timer Block -->
-<div style="height:100%" class="app-container">
+<div style="height:100ch" class="app-container">
   <header class="nav">
     <ul>
       <li id="sessions"><a href="../dashboard/sessions/">Sessions</a></li>
