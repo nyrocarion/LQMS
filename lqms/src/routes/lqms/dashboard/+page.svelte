@@ -229,7 +229,6 @@
       display: flex;
       flex-direction: column; /* Untereinander */
       gap: 1rem; /* Abstand zwischen den Cards */
-      margin-top: 1rem;
       flex:1;
     }
 
