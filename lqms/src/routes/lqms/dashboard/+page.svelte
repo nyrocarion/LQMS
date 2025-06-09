@@ -18,13 +18,8 @@
 
     const taskRes = await fetch("/api/tasks", {credentials: "include"});
     rawTasks = await taskRes.json();
-    console.log(tasks);
+    console.log(tasks); 
 
-    type TaskItem = {
-    date: string;
-    name: string;
-    };  
-    
     for (const [subject, entries] of Object.entries(rawTasks)) {
       for (const [date, tasks] of Object.entries(entries)) {
         for (const task of tasks) {
@@ -38,6 +33,7 @@
         }
       }
     }
+    console.log(pendingItems);
 
     const heatmapRes = await fetch("/api/heatmap", {credentials: "include"});
     heatmapData = await heatmapRes.json();
