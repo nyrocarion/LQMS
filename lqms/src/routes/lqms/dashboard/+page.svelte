@@ -340,7 +340,7 @@
     <!-- M -->
     <div class="column">
         <div class="panel beige_bg">
-            <h2 >Ein Fakt üher den heutigen Tag</h2><br>
+            <h2 >Ein Fakt über den heutigen Tag</h2><br>
             <span>{dailyfact}</span>
         </div>
         <div class="panel beige_bg lecture-container">
@@ -362,7 +362,7 @@
     <!-- R -->
     <div class="column">
         <div class="panel medium beige_bg">
-          <h2>Profile</h2>
+          <h2>Profil</h2>
           <div>
           <img style="width:50px;" src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png" alt="Avatar 2" /><br><br>
           <b>Name: {user.name}</b><br>
