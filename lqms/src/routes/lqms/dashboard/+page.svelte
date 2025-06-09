@@ -18,6 +18,7 @@
     const taskRes = await fetch("/api/tasks", {credentials: "include"});
     tasks = await taskRes.json();
 
+
     const heatmapRes = await fetch("/api/heatmap", {credentials: "include"});
     heatmapData = await heatmapRes.json();
     heatmapCalendar = generateCalendarData(heatmapData);
@@ -229,6 +230,7 @@
       flex-direction: column; /* Untereinander */
       gap: 1rem; /* Abstand zwischen den Cards */
       margin-top: 1rem;
+      flex:1;
     }
 
     h2 {
