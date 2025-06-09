@@ -18,14 +18,16 @@
 
     const taskRes = await fetch("/api/tasks", {credentials: "include"});
     rawTasks = await taskRes.json();
-    console.log(tasks); 
+    console.log(rawTasks);  
+
+    const tasksToDo = [];
 
     for (const [subject, entries] of Object.entries(rawTasks)) {
       for (const [date, tasks] of Object.entries(entries)) {
         for (const task of tasks) {
           if (task.status === 0 || task.status === 1) {
-            const cleanedDate = date.split("-").slice(-3).join("-"); // e.g. 2025-06-07
-            pendingItems.push({
+            const cleanedDate = date.split("-").slice(-3).join("-");
+            tasksToDo.push({
               date: cleanedDate,
               name: task.displayname
             });
@@ -33,6 +35,8 @@
         }
       }
     }
+
+    pendingItems = tasksToDo;
     console.log(pendingItems);
 
     const heatmapRes = await fetch("/api/heatmap", {credentials: "include"});
@@ -304,7 +308,7 @@
   </style>
 </svelte:head>
 
-<div class="app-container">
+<div class="parent app-container">
   <center>
   <header class="nav">
     <ul>
@@ -399,18 +403,17 @@
           <div class="div1">
           <h2>To-Do Übersicht</h2>
           <div style="display: flex; flex-direction: column; gap: 12px;">
-          {#each pendingItems as item}
-            <div style="border: 1px solid #ccc; border-radius: 10px; padding: 12px; background: #ec7b6a;">
-              <div style="font-weight: bold; font-size: 1.2em;">{item.name}</div>
-              <div style="color: #999;">Fällig am: {item.date}</div>
-            </div>
-          {/each}
-
-          {#if pendingItems.length === 0}
-            <div style="color: #666;">Alle Aufgaben sind erledigt 🎉</div>
-          {/if}
+            {#each pendingItems as item}
+              <div style="border: 1px solid #ccc; border-radius: 10px; padding: 12px; background: #ec7b6a;">
+                <div style="font-weight: bold; font-size: 1.2em;">{item.name}</div>
+                <div>Fällig am: {item.date}</div>
+              </div>
+            {/each}
+            {#if pendingItems.length === 0}
+              <div style="color: #666;">Alle Aufgaben sind erledigt 🎉</div>
+            {/if}
+          </div>
         </div>
-      </div>
         </div>
     </div>
   </section>
