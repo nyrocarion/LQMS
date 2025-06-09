@@ -68,7 +68,6 @@
       isToday: boolean;
       isFuture: boolean;
     }[][] = [];
-    console.log(calendarData)
 
     today.setDate(today.getDate() - 1)
 
