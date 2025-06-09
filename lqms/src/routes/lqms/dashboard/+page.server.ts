@@ -134,9 +134,9 @@ export const load: PageServerLoad = async ({ cookies }) => {
 
   // get profile data from db
   // get profile name and email
-  const profileName = await db.query('SELECT `name` FROM `user` WHERE `id` = ?', [userId]);
-  const profileMail = await db.query('SELECT `email` FROM `user` WHERE `id` = ?', [userId]);
-  console.log(profileName,profileMail);
+  const profileRes = await db.query('SELECT `name`,`email` FROM `user` WHERE `id` = ?', [userId]);
+  const profileName = profileRes[0][0]?.name;
+  const profileMail = profileRes[0][0]?.email;
 
   // get activity data from db
   const rawData = await db.query(`
@@ -192,6 +192,8 @@ export const load: PageServerLoad = async ({ cookies }) => {
     dailymeme,
     lectures,
     map,
-    durations
+    durations,
+    profileName,
+    profileMail,
   };
 };

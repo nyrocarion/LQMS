@@ -4,7 +4,7 @@
   import { onMount } from 'svelte';
   import Chart from 'chart.js/auto';
 	export let data: PageData;
-	const { user, tip, dailyfact, dailymeme, lectures, labels, durations } = data;
+	const { user, tip, dailyfact, dailymeme, lectures, labels, durations, profileName, profileMail } = data;
   let heatmapData = [];
   let heatmapCalendar = [];
   let tasks = [];
@@ -365,7 +365,7 @@
           <h2>Profil</h2>
           <div>
           <img style="width:50px;" src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png" alt="Avatar 2" /><br><br>
-          <b>Name: {user.name}</b><br>
+          <b>Name: {profileName}</b> {profileMail}<br>
           <b>Id: {user.id}</b><br>
           <b>Streak: <strong>{streak}</strong> Tage 🔥!</b>
           </div>
