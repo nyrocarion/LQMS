@@ -361,16 +361,17 @@
 
     <!-- R -->
     <div class="column">
-        <div style="display: flex; align-items: center; background-color: #f5f5dc; padding: 16px; border-radius: 8px;">
-        <img src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png"
-            alt="Avatar"
-            style="width: 80px; height: 80px; border-radius: 50%; margin-right: 20px;" />
-        <div>
-          <div style="font-size: 1.5em; font-weight: bold; margin-bottom: 4px;">{profileName}</div>
-          <div style="font-size: 0.95em; color: #555; margin-bottom: 8px;">{profileMail}</div>
-          <div style="font-size: 0.9em; color: #777;">ID: {user.id}</div>
-          <div style="font-size: 1em;">
-            <strong>Streak:</strong> <span style="font-weight: bold; color: orange;">{streak}</span> Tage 🔥!
+        <div style="text-align:left" class="panel tall beige_bg">
+          <img src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png"
+              alt="Avatar"
+              style="width: 80px; height: 80px; border-radius: 50%; margin-right: 20px;" />
+          <div>
+            <div style="font-size: 1.5em; font-weight: bold; margin-bottom: 4px;">{profileName}</div>
+            <div style="font-size: 0.95em; color: #555; margin-bottom: 8px;">{profileMail}</div>
+            <div style="font-size: 0.9em; color: #777;">ID: {user.id}</div>
+            <div style="font-size: 1em;">
+              <strong>Streak:</strong> <span style="font-weight: bold; color: orange;">{streak}</span> Tage 🔥!
+            </div>
           </div>
         </div>
       </div>
