@@ -181,7 +181,7 @@
     .dashboard {
       display: flex;
       gap: var(--col-gap);
-      width: 1920px;
+      width: 1600px;
       padding: var(--col-gap);
       border-radius: 12px;
     }
