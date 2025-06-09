@@ -35,7 +35,7 @@
       datasets: [{
         label: 'Lernzeit in Minuten',
         data: durations, 
-        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+        backgroundColor: 'rgba(71, 148, 150, 1)',
         borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 1,
         borderRadius: 6
@@ -229,7 +229,6 @@
       display: flex;
       flex-direction: column; /* Untereinander */
       gap: 1rem; /* Abstand zwischen den Cards */
-      margin-top: 1rem;
       flex:1;
     }
 
@@ -380,7 +379,7 @@
           <h2>Etwas zum Lachen</h2>
           <img style="width:300px;" id="meme" src="" alt="Meme"/>
         </div>
-        <div class="panel tall beige_bg">
+        <div style="flex: 1" class="panel tall beige_bg">
           <div class="div1">
           <h2>To-Do Übersicht</h2>
           <div class="div2">
