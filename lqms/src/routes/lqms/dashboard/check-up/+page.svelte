@@ -69,9 +69,10 @@
     }[][] = [];
     console.log(calendarData)
 
+    today.setDate(today.getDate() - 1)
+
     for (let week = 0; week < 5; week++) {
       const weekData = [];
-      today.setDate(today.getDate() - 1)
       for (let day = 0; day < 7; day++) {
         const currentDate = new Date(startDate);
         currentDate.setDate(startDate.getDate() + week * 7 + day);
@@ -81,7 +82,6 @@
 
         const isToday = iso === today.toISOString().split("T")[0];
         
-        console.log(today + " :Heute, " + currentDate + " :Current")
         const isFuture = currentDate > today;
 
         weekData.push({
@@ -173,6 +173,12 @@
       }
     }
   }
+
+  const addDays = (date, days) => {
+    const result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  };
 </script>
 
 <div class="parent app-container">
@@ -261,7 +267,7 @@
                 <div
                   class="heatmap-day"
                   style="background-color: {day.isFuture ? '#dedede' : getHeatmapColor(day.count)}"
-                  title={day ? `${formatDate(day.date)}: ${day.count} Sessions` : ''}
+                  title={day ? `${formatDate(addDays(day.date, 1))}: ${day.count} Sessions` : ''}
                 ></div>
               {/each}
             </div>
