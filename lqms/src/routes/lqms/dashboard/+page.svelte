@@ -8,7 +8,9 @@
   let heatmapData = [];
   let heatmapCalendar = [];
   let tasks = [];
+  let streak = 0;
   let canvasEl;
+
   onMount(async () => {
     const memeElement = document.getElementById("meme") as HTMLImageElement;
     memeElement.src = dailymeme;
@@ -19,6 +21,10 @@
     const heatmapRes = await fetch("/api/heatmap", {credentials: "include"});
     heatmapData = await heatmapRes.json();
     heatmapCalendar = generateCalendarData(heatmapData);
+
+    const streakRes = await fetch("/api/streak", {credentials: "include"});
+    const streakData = await streakRes.json();
+    streak = streakData.streak;
 
     /** all the stuff for the diagram generation*/
     new Chart(canvasEl, {
@@ -72,6 +78,7 @@
     }
   });
   });
+
   /** Copied from check up tab */
   /** Selektion der Farbe der Heatmap zu je einem Tag */
   function getHeatmapColor(count) {
@@ -123,8 +130,7 @@
     return calendar;
   }
 
-
-  /** Reihenfolge der Wochentage in deutscher Kurzform */
+  /** Reihenfolge der Wochentage */
   const weekdays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
 
   /** Holen des Status je Modul */
@@ -146,17 +152,14 @@
     }
 
     body {
-      margin: 0;
       background: var(--bg-col);
       display: flex;
       justify-content: center;
-      padding: 2rem;
     }
 
     .dashboard {
       display: flex;
       gap: var(--col-gap);
-      width: 100%;
       max-width: 1920px;
       background: #ffb49c;
       padding: var(--col-gap);
@@ -188,24 +191,27 @@
       color: #655a55;
     }
 
-      .row{
+    .row{
       display:flex;
       gap:var(--row-gap);
       flex:1;           
       min-height:0;    
-      }
+    }
 
     /* individual sizes */
     .tall {
       min-height: 180px;
     }
+
     .medium {
       min-height: 120px;
     }
+
     /* Placeholder colors */
     .beige_bg {
       background: var(--beige);
     }
+
     .lightred_bg {
       background: var(--lightred);
     }
@@ -226,58 +232,58 @@
     }
 
     h2 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin: 0 0 0.5em 0;
-    color: #333;
-   } 
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 0 0 0.5em 0;
+      color: #333;
+    } 
 
-   /* copied from check up */
-   .div3 {
-  padding: 10px 25px;
-  border-radius: 15px;
-  }
-  .heatmap-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  gap: 6px;
-  padding-top: 10px;
-}
+    /* copied from check up */
+    .div3 {
+      padding: 10px 25px;
+      border-radius: 15px;
+      }
+      .heatmap-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      gap: 6px;
+      padding-top: 10px;
+    }
 
-.heatmap-header {
-  display: flex;
-  gap: 4px;
-  align-self: center;
-}
+    .heatmap-header {
+      display: flex;
+      gap: 4px;
+      align-self: center;
+    }
 
-.weekday-label {
-  width: 30px;
-  text-align: center;
-  font-size: 0.8rem;
-  color: #642bff;
-  font-weight: bold;
-}
+    .weekday-label {
+      width: 30px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #642bff;
+      font-weight: bold;
+    }
 
-.heatmap-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  align-self: center;
-}
+    .heatmap-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      align-self: center;
+    }
 
-.week-row {
-  display: flex;
-  gap: 4px;
-}
+    .week-row {
+      display: flex;
+      gap: 4px;
+    }
 
-.heatmap-day {
-  width: 30px;
-  height: 30px;
-  border-radius: 3px;
-  background-color: #dddddd;
-  transition: background-color 0.3s;
-}
+    .heatmap-day {
+      width: 30px;
+      height: 30px;
+      border-radius: 3px;
+      background-color: #dddddd;
+      transition: background-color 0.3s;
+    }
   </style>
 </svelte:head>
 
@@ -358,10 +364,10 @@
         <div class="panel medium beige_bg">
           <h2>Profile</h2>
           <div>
-          <img style="width:50px;" src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png" alt="Avatar 2" />
+          <img style="width:50px;" src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png" alt="Avatar 2" /><br><br>
           <b>Name: {user.name}</b><br>
           <b>Id: {user.id}</b><br>
-          <b>Streak: {user.streak}</b>
+          <b>Streak: <strong>{streak}</strong> Tage 🔥!</b>
           </div>
         </div>
         <div class="panel tall beige_bg">

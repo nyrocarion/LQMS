@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { fade, slide } from 'svelte/transition';
+  import { slide } from 'svelte/transition';
 
   let tasks = [];
   let heatmapData = [];
@@ -75,7 +75,7 @@
     return calendar;
   }
 
-  /** Reihenfolge der Wochentage in Kurzform */
+  /** Reihenfolge der Wochentage */
   const weekdays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
 
   /** Holen des Status je Modul */
@@ -183,33 +183,34 @@
                         </div>
 
                         {#if expanded[modul + '_' + date]}
-                          <div class="date-content" in:slide={{duration: 300}} out:slide={{duration: 300}} ></div>
-                          {#each items as item}
-                            <div class="course-card">
-                              <div class="course-header">
-                                <strong>Status:</strong> {getStatusTextModul(item.status)}
+                          <div class="date-content" in:slide={{ duration: 300 }} out:slide={{ duration: 300 }}>
+                            {#each items as item}
+                              <div class="course-card">
+                                <div class="course-header">
+                                  <strong>Status:</strong> {getStatusTextModul(item.status)}
+                                </div>
+                                <div class="task-list">
+                                  {#each [
+                                    {label: 'Präsentation', key: 'presentationstatus', show: true},
+                                    {label: 'Skript', key: 'scriptstatus', show: true},
+                                    {label: 'Notizen', key: 'notesstatus', show: true},
+                                    {label: 'Übungsblatt', key: 'exercisestatus', show: item.exercisesheet === 1}
+                                  ] as t}
+                                    {#if t.show}
+                                      <div>
+                                        {t.label}: {getStatusText(item[t.key])}
+                                        <input
+                                          type="checkbox"
+                                          checked={item[t.key]}
+                                          on:change={(e) => updateStatus(item.id, t.key, e.target.checked ? 1 : 0)}
+                                        />
+                                      </div>
+                                    {/if}
+                                  {/each}
+                                </div>
                               </div>
-                              <div class="task-list">
-                                {#each [
-                                  {label: 'Präsentation', key: 'presentationstatus', show: true},
-                                  {label: 'Skript', key: 'scriptstatus', show: true},
-                                  {label: 'Notizen', key: 'notesstatus', show: true},
-                                  {label: 'Übungsblatt', key: 'exercisestatus', show: item.exercisesheet === 1}
-                                ] as t}
-                                  {#if t.show}
-                                    <div>
-                                      {t.label}: {getStatusText(item[t.key])}
-                                      <input
-                                        type="checkbox"
-                                        checked={item[t.key]}
-                                        on:change={(e) => updateStatus(item.id, t.key, e.target.checked ? 1 : 0)}
-                                      />
-                                    </div>
-                                  {/if}
-                                {/each}
-                              </div>
-                            </div>
-                          {/each}
+                            {/each}
+                          </div>
                         {/if}
                       </div>
                     {/each}
@@ -383,11 +384,13 @@
 
 .div3 {
   grid-area: div3;
+  max-height: 300px;
   background-color: white;
 }
 
 .div4 {
   grid-area: div4;
+  max-height: 230px;
   background-color: white;
   padding-bottom: 25px;
 }
@@ -437,6 +440,7 @@
 .streak-display {
   display: flex;
   flex-direction: column;
+
   align-items: center;
   justify-content: center;
   font-size: 1.2rem;

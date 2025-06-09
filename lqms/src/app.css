@@ -6,8 +6,6 @@ html {
 }
 
 body {
-  margin: 0;
-  padding: 0;
   font-family: "Poppins", sans-serif;
   font-weight: 400;
   font-style: normal;
@@ -33,9 +31,6 @@ p {
 
 .app-container {
   padding: 0 2rem 2rem;
-  /*max-width: 1920px;
-  min-width: 1200px;*/
-  width: 100vw;
   /*height: 100vh;*/
   margin: auto;
   position: relative;
@@ -48,7 +43,6 @@ p {
 }
 
 .nav ul {
-  list-style: none;
   list-style-type: none;
   display: flex;
   justify-content: center;

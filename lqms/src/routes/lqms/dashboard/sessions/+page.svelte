@@ -53,7 +53,11 @@
 {#if showFeedbackPopup}
   <div class="feedback-modal-overlay">
     <div class="feedback-modal-content" on:click|stopPropagation>
-      <h2>Session Feedback</h2>
+      <h2>
+        <div class="feedback-heading">
+          Session Feedback
+        </div>
+      </h2>
         <form method="POST">
           <div class="form-group">
             <label for="efficiency-slider">
@@ -96,8 +100,10 @@
               <span>Gut</span>
             </div>
           </div>
-          <button type="submit" class="submit-button"> Feedback senden! </button>
-        </form>
+          <div class="form-group">
+            <button type="submit" class="submit-button"> Feedback senden! </button>
+          </div>
+          </form>
     </div>
   </div>
 {/if}
@@ -108,11 +114,18 @@
   top: 75px;
 }
 
+.feedback-heading{
+  padding-top: 5%;
+  padding-bottom: 18%;
+}
+
 .timer-dot{
+  position: relative;
+  top: -55px;
+  transform: translateY(100px);
   font-size: 50px;
   padding: 0 0.2em;
-  position: relative;
-  bottom: 20;
+  
 }
 
 .timer-number{
@@ -132,7 +145,7 @@
   text-align: center;
   padding: 0 25px;
   border-radius: 15px;
-  height: 500px;
+  height: 600px;
   top: 100px;
 }
 
@@ -182,7 +195,7 @@
   height: 75%;
   /*padding: 25px 30px;*/
   /*padding: 200px 200px;*/
-  border-radius: 8px;
+  border-radius: 15px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   /*width: 1px;*/
   max-width: 90%;
@@ -201,6 +214,8 @@
 
 .form-group {
   margin-bottom: 20px;
+  margin-left: 100px;
+  margin-right: 100px;
 }
 
 .form-group label {
@@ -250,6 +265,7 @@
   font-weight: 500;
   transition: background-color 0.2s;
   margin-top: 10px;
+  text-align: center;
 }
 .submit-button:hover {
   background-color: #218838;
