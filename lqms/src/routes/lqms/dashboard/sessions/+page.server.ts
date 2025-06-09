@@ -52,8 +52,9 @@ export const actions: Actions = {
         return { error: 'Du bist nicht angemeldet!'};
 
 
-      const result = await db.query('SELECT * FROM `session` WHERE DATE(`date`) = ? AND `completedby` = ?', [date_today, userId]) ?? 500303;
+      const result = await db.query('SELECT * FROM `session` WHERE DATE(`date`) = ? AND `completedby` = ?', [date_today, userId]);
       console.log(result)
+      console.log(result.length)
 
       // DB-Eintrag
       await db.query(
@@ -61,7 +62,7 @@ export const actions: Actions = {
         [totalseconds, efficiency, motivation, userId]
       );
 
-      if(result == null)
+      if(!result || result.length === 0)
       {
         console.log("Hat funktioniert")
         const update = await db.query('UPDATE user SET `streak` = ? WHERE `id` = ?', [streak, userId]);
