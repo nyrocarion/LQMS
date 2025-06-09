@@ -109,6 +109,10 @@
 {/if}
 
 <style>
+body {
+  height: 100%;
+}
+
 .timer-blank{
   position: relative;
   top: 75px;
