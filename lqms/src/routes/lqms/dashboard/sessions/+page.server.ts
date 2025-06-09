@@ -17,6 +17,8 @@ onMount(async () => {
   const streakRes = await fetch("/api/streak", {credentials: "include"});
   const streakData = await streakRes.json();
   streak = streakData.streak;
+  streak = streak + 1;
+  console.log(streak)
 });
 
 function getCurrentDate(): string {
@@ -40,7 +42,7 @@ export const actions: Actions = {
     const { efficiency, totalseconds, motivation } = parsed.data;
 
     let date_today = getCurrentDate();
-    streak = streak + 1;
+    
 
     try {
       // JWT wird vom Cookie abgegriffen und decoded um ID zu extrahieren
