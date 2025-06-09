@@ -41,56 +41,59 @@
   }
 
   export function generateCalendarData(heatmapData: { date: string; count: number }[]) {
-    const today = new Date();
-    const weekStart = 0; // Sonntag
-    const todayIndex = today.getDay(); // 0 = So, ..., 6 = Sa
+  const today = new Date();
+  const weekStart = 0; // 0 = Sonntag
 
-    // Bestimme den Sonntag der aktuellen Woche
-    const startOfCurrentWeek = new Date(today);
-    startOfCurrentWeek.setDate(today.getDate() - todayIndex);
+  // Wochentag relativ zum gewünschten Wochenstart (z. B. 1 bei Mo, 0 bei So)
+  const todayIndex = today.getDay();
+  const daysSinceWeekStart = (todayIndex - weekStart + 7) % 7;
 
-    // Berechne den Starttag für 5 volle Wochen (inklusive aktueller Woche)
-    const startDate = new Date(startOfCurrentWeek);
-    startDate.setDate(startOfCurrentWeek.getDate() - 7 * 4); // 4 Wochen zurück
+  // Sonntag (oder anderer Wochentag) der aktuellen Woche
+  const startOfCurrentWeek = new Date(today);
+  startOfCurrentWeek.setDate(today.getDate() - daysSinceWeekStart);
 
-    const dataMap = new Map<string, number>();
-    for (const d of heatmapData) {
-      dataMap.set(d.date, d.count);
-    }
+  // Startpunkt: 4 Wochen vor dem aktuellen Wochenstart
+  const startDate = new Date(startOfCurrentWeek);
+  startDate.setDate(startOfCurrentWeek.getDate() - 7 * 4);
 
-    const calendarData: {
-      date: Date;
-      count: number;
-      isToday: boolean;
-      isFuture: boolean;
-    }[][] = [];
-
-    for (let week = 0; week < 5; week++) {
-      const weekData = [];
-
-      for (let day = 0; day < 7; day++) {
-        const currentDate = new Date(startDate);
-        currentDate.setDate(startDate.getDate() + week * 7 + day);
-
-        const iso = currentDate.toISOString().split("T")[0];
-        const count = dataMap.get(iso) ?? 0;
-
-        const isToday = iso === today.toISOString().split("T")[0];
-        const isFuture = currentDate > today;
-
-        weekData.push({
-          date: currentDate,
-          count,
-          isToday,
-          isFuture
-        });
-      }
-
-      calendarData.push(weekData);
-    }
-
-    return calendarData; // 5 Zeilen, 7 Spalten – fertig fürs Grid
+  const dataMap = new Map<string, number>();
+  for (const d of heatmapData) {
+    dataMap.set(d.date, d.count);
   }
+
+  const calendarData: {
+    date: Date;
+    count: number;
+    isToday: boolean;
+    isFuture: boolean;
+  }[][] = [];
+
+  for (let week = 0; week < 5; week++) {
+    const weekData = [];
+
+    for (let day = 0; day < 7; day++) {
+      const currentDate = new Date(startDate);
+      currentDate.setDate(startDate.getDate() + week * 7 + day);
+
+      const iso = currentDate.toISOString().split("T")[0];
+      const count = dataMap.get(iso) ?? 0;
+
+      const isToday = iso === today.toISOString().split("T")[0];
+      const isFuture = currentDate > today;
+
+      weekData.push({
+        date: currentDate,
+        count,
+        isToday,
+        isFuture
+      });
+    }
+
+    calendarData.push(weekData);
+  }
+
+  return calendarData;
+}
 
 
   /** Reihenfolge der Wochentage */
