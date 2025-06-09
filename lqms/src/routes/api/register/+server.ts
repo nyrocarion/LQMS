@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { sendRegistrationMail } from '$lib/server/mailer';
 
 /** Das ist die Anzahl der verwendeten Salt-Runden für die Verschlüsselung des Passworts! */ 
-const SALT_ROUNDS = 15;
+const SALT_ROUNDS = 12;
 
 /** Ein Schema zur Sicherstellung der benötigten Daten bei der Registrierung */
 const registerSchema = z.object({
