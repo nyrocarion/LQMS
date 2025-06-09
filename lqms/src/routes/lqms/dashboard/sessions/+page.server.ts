@@ -14,7 +14,11 @@ let streak = 0;
 
 /** Vorladen der Daten aus API-Endpunkten */
 onMount(async () => {
-  
+  const streakRes = await fetch("/api/streak", {credentials: "include"});
+  const streakData = await streakRes.json();
+  streak = streakData.streak;
+  streak = streak + 1;
+  console.log(streak)
 });
 
 function getCurrentDate(): string {
@@ -45,12 +49,7 @@ export const actions: Actions = {
       const jwt = cookies.get('authToken');
       const userId = verifyJWT(jwt)?.id ?? null;
       console.log(userId)
-      const streakRes = await fetch("/api/streak", {credentials: "include"});
-      const streakData = await streakRes.json();
-      streak = streakData.streak;
-      streak = streak + 1;
-      console.log(streak)
-      
+
       if(userId == null)
         return { error: 'Du bist nicht angemeldet!'};
 
