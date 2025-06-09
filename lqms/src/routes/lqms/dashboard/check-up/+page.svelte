@@ -67,6 +67,7 @@
       isToday: boolean;
       isFuture: boolean;
     }[][] = [];
+    console.log(calendarData)
 
     for (let week = 0; week < 5; week++) {
       const weekData = [];
