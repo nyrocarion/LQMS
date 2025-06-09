@@ -79,6 +79,7 @@
         const count = dataMap.get(iso) ?? 0;
 
         const isToday = iso === todayIso;
+        console.log("iso: " + iso + " , todayIso: " + todayIso)
         const isFuture = iso > todayIso;
 
         weekData.push({
@@ -88,7 +89,6 @@
           isFuture
         });
 
-        console.log(`Day: ${day}, week: ${week}, iso: ${iso}, isToday: ${isToday}, isFuture: ${isFuture}`);
       }
 
       calendarData.push(weekData);
