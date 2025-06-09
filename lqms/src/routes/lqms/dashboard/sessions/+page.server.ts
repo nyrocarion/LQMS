@@ -7,8 +7,16 @@ const feedbackSchema = z.object({
   efficiency: z.coerce.number().int(),
   totalseconds: z.coerce.number().int(),
   motivation: z.coerce.number().int()
-  
 });
+
+function getCurrentDate(): string {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Monat beginnt bei 0, daher +1
+    const day = String(today.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+}
 
 export const actions: Actions = {
   default: async ({ request, cookies }) => {
@@ -34,6 +42,18 @@ export const actions: Actions = {
         'INSERT INTO session (time, efficiency, motivated, completedby) VALUES (?, ?, ?, ?)',
         [totalseconds, efficiency, motivation, userId]
       );
+
+      let streak = 0;
+      const streakRes = await fetch("/api/streak", {credentials: "include"});
+      const streakData = await streakRes.json();
+      streak = streakData.streak;
+      let date = getCurrentDate();
+      let result = await db.query('SELECT * FROM `session` WHERE (`timestamp` = ?,`completedby` = ?) LIMIT 1', [date, userId]) ?? null;
+      console.log(result)
+      streak = streak + 1;
+
+      if(result == null)
+        await db.query('UPDATE user SET streak = ? WHERE id = ?',[streak, userId]);
 
       return { success: 'Feedback gespeichert!' };
     } catch (err) {
