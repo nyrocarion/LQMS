@@ -35,7 +35,7 @@
       datasets: [{
         label: 'Lernzeit in Minuten',
         data: durations, 
-        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+        backgroundColor: 'rgba(71, 148, 150, 1)',
         borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 1,
         borderRadius: 6
