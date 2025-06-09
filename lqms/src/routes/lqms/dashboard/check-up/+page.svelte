@@ -69,9 +69,10 @@
     }[][] = [];
     console.log(calendarData)
 
+    today.setDate(today.getDate() - 1)
+    
     for (let week = 0; week < 5; week++) {
       const weekData = [];
-      today.setDate(today.getDate() - 1)
       for (let day = 0; day < 7; day++) {
         const currentDate = new Date(startDate);
         currentDate.setDate(startDate.getDate() + week * 7 + day);
