@@ -31,7 +31,7 @@ p {
 
 .app-container {
   padding: 0 2rem 2rem;
-  height: 100vh;
+  /*height: 100vh;*/
   margin: auto;
   position: relative;
   background: linear-gradient(90deg, #FEC996,#E37C95,#B894DC,#EAC4F4);

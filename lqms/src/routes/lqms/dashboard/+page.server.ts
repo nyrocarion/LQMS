@@ -129,9 +129,16 @@ export const load: PageServerLoad = async ({ cookies }) => {
   // Gibt eine Ausgabe egal welcher Fall auftritt
   const tip = (result[0] && result[0][0]?.tipps) ?? 'Kein Tipp gefunden';
 
-  // get activity data from db
+  
   const userId = user.id;
-  console.log("id for db call: ",userId);
+
+  // get profile data from db
+  // get profile name and email
+  const profileRes = await db.query('SELECT `name`,`email` FROM `user` WHERE `id` = ?', [userId]);
+  const profileName = profileRes[0][0]?.name;
+  const profileMail = profileRes[0][0]?.email;
+
+  // get activity data from db
   const rawData = await db.query(`
     SELECT 
       DATE(date + INTERVAL 2 HOUR) as session_date,
@@ -185,6 +192,8 @@ export const load: PageServerLoad = async ({ cookies }) => {
     dailymeme,
     lectures,
     map,
-    durations
+    durations,
+    profileName,
+    profileMail,
   };
 };

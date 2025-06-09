@@ -4,7 +4,7 @@
   import { onMount } from 'svelte';
   import Chart from 'chart.js/auto';
 	export let data: PageData;
-	const { user, tip, dailyfact, dailymeme, lectures, labels, durations } = data;
+	const { user, tip, dailyfact, dailymeme, lectures, labels, durations, profileName, profileMail } = data;
   let heatmapData = [];
   let heatmapCalendar = [];
   let tasks = [];
@@ -340,7 +340,7 @@
     <!-- M -->
     <div class="column">
         <div class="panel beige_bg">
-            <h2 >Ein Fakt üher den heutigen Tag</h2><br>
+            <h2 >Ein Fakt über den heutigen Tag</h2><br>
             <span>{dailyfact}</span>
         </div>
         <div class="panel beige_bg lecture-container">
@@ -361,15 +361,19 @@
 
     <!-- R -->
     <div class="column">
-        <div class="panel medium beige_bg">
-          <h2>Profile</h2>
-          <div>
-          <img style="width:50px;" src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png" alt="Avatar 2" /><br><br>
-          <b>Name: {user.name}</b><br>
-          <b>Id: {user.id}</b><br>
-          <b>Streak: <strong>{streak}</strong> Tage 🔥!</b>
+        <div style="display: flex; align-items: center; background-color: #f5f5dc; padding: 16px; border-radius: 8px;">
+        <img src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png"
+            alt="Avatar"
+            style="width: 80px; height: 80px; border-radius: 50%; margin-right: 20px;" />
+        <div>
+          <div style="font-size: 1.5em; font-weight: bold; margin-bottom: 4px;">{profileName}</div>
+          <div style="font-size: 0.95em; color: #555; margin-bottom: 8px;">{profileMail}</div>
+          <div style="font-size: 0.9em; color: #777;">ID: {user.id}</div>
+          <div style="font-size: 1em;">
+            <strong>Streak:</strong> <span style="font-weight: bold; color: orange;">{streak}</span> Tage 🔥!
           </div>
         </div>
+      </div>
         <div class="panel tall beige_bg">
           <h2>Etwas zum Lachen</h2>
           <img style="width:300px;" id="meme" src="" alt="Meme"/>
