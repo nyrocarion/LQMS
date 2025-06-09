@@ -181,7 +181,7 @@
   <button class="cta top-right-button" on:click={() => goto('/lqms/dashboard')}>Zum Start!</button>
 
   <div class="headline">
-    <h1>LQMS</h1>
+    <h1 style="padding:6rem">LQMS</h1>
     <h2>Lernqualitätsmanagementsystem</h2>
   </div>
 
