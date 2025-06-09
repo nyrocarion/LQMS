@@ -61,7 +61,7 @@
         <form method="POST">
           <div class="form-group">
             <label for="efficiency-slider">
-              Ihre Produktivität: <span class="value-display">{efficiency}</span>
+              Deine Produktivität: <span class="value-display">{efficiency}</span>
             </label>
             <input
               type="range"
@@ -84,7 +84,7 @@
           </div>
           <div class="form-group">
             <label for="motivation-slider">
-              Ihre Stimmung: <span class="emoji-display">{getmotivationEmoji(motivation)}</span> (<span class="value-display">{motivation}</span>)
+              Deine Stimmung: <span class="emoji-display">{getmotivationEmoji(motivation)}</span> (<span class="value-display">{motivation}</span>)
             </label>
             <input
               type="range"
