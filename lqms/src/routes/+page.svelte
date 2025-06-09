@@ -164,7 +164,6 @@
 </script>
 
 <center>
-<div class="hero">
   <div class="app-container">
     <div class="top-left-box">
       <div class="auth-links">
@@ -240,7 +239,6 @@
       </div>
     </div>
   </div>
-</div>
 </center>
 
 {#if showAuthModal}
