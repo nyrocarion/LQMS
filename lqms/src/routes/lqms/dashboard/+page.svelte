@@ -308,7 +308,7 @@
   </style>
 </svelte:head>
 
-<div class="app-container">
+<div class="parent app-container">
   <center>
   <header class="nav">
     <ul>
