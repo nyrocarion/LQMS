@@ -18,14 +18,16 @@
 
     const taskRes = await fetch("/api/tasks", {credentials: "include"});
     rawTasks = await taskRes.json();
-    console.log(tasks); 
+    console.log(rawTasks);  
+
+    const tasksToDo = [];
 
     for (const [subject, entries] of Object.entries(rawTasks)) {
       for (const [date, tasks] of Object.entries(entries)) {
         for (const task of tasks) {
           if (task.status === 0 || task.status === 1) {
-            const cleanedDate = date.split("-").slice(-3).join("-"); // e.g. 2025-06-07
-            pendingItems.push({
+            const cleanedDate = date.split("-").slice(-3).join("-");
+            tasksToDo.push({
               date: cleanedDate,
               name: task.displayname
             });
@@ -33,6 +35,8 @@
         }
       }
     }
+
+    pendingItems = tasksToDo;
     console.log(pendingItems);
 
     const heatmapRes = await fetch("/api/heatmap", {credentials: "include"});

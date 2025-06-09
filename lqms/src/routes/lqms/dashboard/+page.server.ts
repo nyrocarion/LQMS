@@ -148,7 +148,6 @@ export const load: PageServerLoad = async ({ cookies }) => {
     ORDER BY session_date
   `, [userId]);
   // generated a list of the last 5 days for the legend
-  console.log("raw db call output",rawData);
   const rows = rawData[0];
 
   // local time berlin
@@ -173,9 +172,6 @@ export const load: PageServerLoad = async ({ cookies }) => {
     const seconds = map[date] || 0;
     return seconds < 60 ? 0 : Math.ceil(seconds / 60);
   });
-
-  console.log('labels:', labels);
-  console.log('durations:', durations);
 
   // loaded from external api
   const dailyfact =  await fetchDateFact();
