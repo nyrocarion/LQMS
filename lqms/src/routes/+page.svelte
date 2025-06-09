@@ -164,7 +164,7 @@
 </script>
 
 <center>
-  <div class="app-container">
+  <div style="min-height:100ch" class="app-container">
     <div class="top-left-box">
       <div class="auth-links">
         <button class="register-button" on:click={() => openAuthModal('register')}>
