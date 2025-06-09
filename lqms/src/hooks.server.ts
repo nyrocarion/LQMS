@@ -8,8 +8,9 @@ export const handle: Handle = async ({ event, resolve }) => {
   const token = event.cookies.get('authToken');
   const currentPath = event.url.pathname;
 
+  const isApiRoute = currentPath.startsWith('/api');
   // geschützte Bereiche sind alles außer "/" und "/verify-email"
-  const isProtectedRoute = currentPath !== '/' && !currentPath.startsWith('/verify-email');
+  const isProtectedRoute = !isApiRoute && currentPath !== '/' && !currentPath.startsWith('/verify-email');
 
   if (token) {
     try {
