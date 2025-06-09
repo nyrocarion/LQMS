@@ -71,7 +71,7 @@
 
     for (let week = 0; week < 5; week++) {
       const weekData = [];
-
+      today.setDate(today.getDate() - 1)
       for (let day = 0; day < 7; day++) {
         const currentDate = new Date(startDate);
         currentDate.setDate(startDate.getDate() + week * 7 + day);
@@ -80,6 +80,8 @@
         const count = dataMap.get(iso) ?? 0;
 
         const isToday = iso === today.toISOString().split("T")[0];
+        
+        console.log(today + " :Heute, " + currentDate + " :Current")
         const isFuture = currentDate > today;
 
         weekData.push({
