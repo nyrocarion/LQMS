@@ -317,7 +317,7 @@
       <li id="lectures"><a href="./dashboard/lectures/">Vorlesungen</a></li>
     </ul>
   </header>
-  <section class="dashboard">
+  <div class="dashboard">
     <!-- L -->
     <div class="column">
         <div class="panel medium beige_bg">
@@ -415,6 +415,6 @@
         </div>
         </div>
     </div>
-  </section>
+  </div>
 </center>
 </div>
