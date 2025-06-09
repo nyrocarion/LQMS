@@ -437,7 +437,6 @@
 
   .headline {
     text-align: center;
-    margin-top: 6rem;
   }
 
   .headline h1 {
