@@ -14,8 +14,9 @@ function getCurrentDate(): string {
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, '0'); // Monat beginnt bei 0, daher +1
     const day = String(today.getDate()).padStart(2, '0');
-
+    console.log(`${year}-${month}-${day}`)
     return `${year}-${month}-${day}`;
+    
 }
 
 export const actions: Actions = {
@@ -28,6 +29,12 @@ export const actions: Actions = {
     }
 
     const { efficiency, totalseconds, motivation } = parsed.data;
+    let streak = 0;
+    const streakRes = await fetch("/api/streak", {credentials: "include"});
+    const streakData = await streakRes.json();
+    streak = streakData.streak;
+    let date = getCurrentDate();
+    streak = streak + 1;
 
     try {
       // JWT wird vom Cookie abgegriffen und decoded um ID zu extrahieren
@@ -43,14 +50,8 @@ export const actions: Actions = {
         [totalseconds, efficiency, motivation, userId]
       );
 
-      let streak = 0;
-      const streakRes = await fetch("/api/streak", {credentials: "include"});
-      const streakData = await streakRes.json();
-      streak = streakData.streak;
-      let date = getCurrentDate();
-      let result = await db.query('SELECT * FROM `session` WHERE (`timestamp` = ?,`completedby` = ?) LIMIT 1', [date, userId]) ?? null;
+      const result = await db.query('SELECT * FROM `session` WHERE (`timestamp` = ?,`completedby` = ?) LIMIT 1', [date, userId]) ?? null;
       console.log(result)
-      streak = streak + 1;
 
       if(result == null)
         await db.query('UPDATE user SET streak = ? WHERE id = ?',[streak, userId]);
