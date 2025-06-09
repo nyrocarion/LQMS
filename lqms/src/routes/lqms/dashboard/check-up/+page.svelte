@@ -40,6 +40,7 @@
     return `${d.getDate()}.${d.getMonth() + 1}`;
   }
 
+  /** Konstruieren der Kalenderdaten */
   export function generateCalendarData(heatmapData: { date: string; count: number }[]) {
     const today = new Date();
     const weekStart = 0; // 0 = Sonntag
@@ -111,6 +112,7 @@
     }
   }
 
+  /** Holen des Status je Aufgabe */
   function getStatusText(status: number): string {
     switch (status) {
       case 0: return 'Wartend';
@@ -119,11 +121,13 @@
     }
   }
 
+  /** Ein- und Ausklappen der Module */
   function toggle(modul: string, date: string) {
     const key = modul + '_' + date;
     expanded = { ...expanded, [key]: !expanded[key]};
   }
 
+  /** Update des Statu nach Interaktion */
   async function updateStatus(id: number, field: string, newStatus: number) {
     const res = await fetch('/api/tasks', {
       method: 'PUT',
@@ -174,6 +178,7 @@
     }
   }
 
+  /** Hinzufügen eines Tages zu einem Datum */
   const addDays = (date, days) => {
     const result = new Date(date);
     result.setDate(result.getDate() + days);
@@ -461,7 +466,6 @@
   width: 30px;
   height: 30px;
   border-radius: 3px;
-  background-color: #dddddd;
   transition: background-color 0.3s;
 }
 
