@@ -55,7 +55,8 @@ export const actions: Actions = {
 
 
       const result = await db.query('SELECT * FROM `session` WHERE DATE(`date`) = ? AND `completedby` = ?', [date_today, userId]);
-      console.log(result)
+      console.log(result[0])
+      console.log(result[0].length)
       console.log(result.length)
 
       // DB-Eintrag
