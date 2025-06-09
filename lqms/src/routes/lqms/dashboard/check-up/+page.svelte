@@ -42,7 +42,7 @@
 
   export function generateCalendarData(heatmapData: { date: string; count: number }[]) {
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Uhrzeit nullen, um Vergleich tagesgenau zu machen
+    const todayIso = today.toISOString().split("T")[0]; // YYYY-MM-DD
 
     const weekStart = 0; // 0 = Sonntag
 
@@ -57,7 +57,8 @@
 
     const dataMap = new Map<string, number>();
     for (const d of heatmapData) {
-      dataMap.set(d.date, d.count);
+      const key = new Date(d.date).toISOString().split("T")[0];
+      dataMap.set(key, d.count);
     }
 
     const calendarData: {
@@ -73,13 +74,12 @@
       for (let day = 0; day < 7; day++) {
         const currentDate = new Date(startDate);
         currentDate.setDate(startDate.getDate() + week * 7 + day);
-        currentDate.setHours(0, 0, 0, 0); // auch hier Uhrzeit nullen
 
         const iso = currentDate.toISOString().split("T")[0];
         const count = dataMap.get(iso) ?? 0;
 
-        const isToday = currentDate.getTime() === today.getTime();
-        const isFuture = currentDate.getTime() > today.getTime();
+        const isToday = iso === todayIso;
+        const isFuture = iso > todayIso;
 
         weekData.push({
           date: currentDate,
@@ -88,7 +88,7 @@
           isFuture
         });
 
-        console.log("Day: " + day + ", week: " + week + ", isFuture: " + isFuture);
+        console.log(`Day: ${day}, week: ${week}, iso: ${iso}, isToday: ${isToday}, isFuture: ${isFuture}`);
       }
 
       calendarData.push(weekData);
