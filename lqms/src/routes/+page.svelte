@@ -163,7 +163,7 @@
 
 </script>
 
-  <div style="min-height:100ch,align-items:center,flex-direction:column,display:flex" class="app-container">
+  <div style="min-height:100vh,align-items:center,flex-direction:column,display:flex" class="app-container">
     <div class="top-left-box">
       <div class="auth-links">
         <button class="register-button" on:click={() => openAuthModal('register')}>
@@ -238,7 +238,7 @@
       </div>
     </div>
   </div>
-  
+
 {#if showAuthModal}
   <div class="modal-overlay" on:click={closeAuthModal}>
     <div class="auth-modal" on:click|stopPropagation>
