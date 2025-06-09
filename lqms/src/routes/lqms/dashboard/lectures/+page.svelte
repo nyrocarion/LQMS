@@ -67,6 +67,7 @@
     padding: 2rem;
     background: #fae4d8;
     min-height: 100vh;
+    border-radius: 15px;
   }
 
   .day-column {
