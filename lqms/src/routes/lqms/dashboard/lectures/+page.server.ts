@@ -16,12 +16,9 @@ export const load: PageServerLoad = async () => {
 
   const today = new Date();
   const startOfWeek = new Date(today);
-  startOfWeek.setDate(today.getDate() - today.getDay() + 1); // monday
-  startOfWeek.setHours(0, 0, 0, 0); // earliest possible time
-
+  startOfWeek.setDate(today.getDate() - today.getDay()); // monday
   const endOfWeek = new Date(startOfWeek);
   endOfWeek.setDate(startOfWeek.getDate() + 4); // friday
-  endOfWeek.setHours(23, 59, 59, 999); // last possible time
 
   const weekLectures = allLectures
     .map((entry: any) => {
@@ -32,11 +29,12 @@ export const load: PageServerLoad = async () => {
         startTime: formatTime(start),
         endTime: formatTime(end),
         room: entry.rooms?.[0] || 'Kein Raum angegeben',
-        startDate: start, 
+        date: start.toISOString().split('T')[0],
       };
     })
     .filter((lecture) => {
-      return lecture.startDate >= startOfWeek && lecture.startDate <= endOfWeek;
+      const date = new Date(lecture.date);
+      return date >= startOfWeek && date <= endOfWeek;
     });
 
   return {
