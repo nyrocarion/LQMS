@@ -302,6 +302,10 @@
 </div>
 
 <style>
+html {
+  height: 100%;
+}
+
 .parent {
   display: flex;
   flex-direction: column;
