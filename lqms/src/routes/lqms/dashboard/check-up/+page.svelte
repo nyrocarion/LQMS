@@ -42,6 +42,7 @@
 
   export function generateCalendarData(heatmapData: { date: string; count: number }[]) {
     const today = new Date();
+    today.setHours(0, 0, 0, 0)
     const weekStart = 0; // 0 = Sonntag
 
     // Wochentag relativ zum gewünschten Wochenstart (z. B. 1 bei Mo, 0 bei So)
