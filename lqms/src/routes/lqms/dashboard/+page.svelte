@@ -18,7 +18,6 @@
 
     const taskRes = await fetch("/api/tasks", {credentials: "include"});
     rawTasks = await taskRes.json();
-    console.log(rawTasks);  
 
     const tasksToDo = [];
 
@@ -37,7 +36,6 @@
     }
 
     pendingItems = tasksToDo;
-    console.log(pendingItems);
 
     const heatmapRes = await fetch("/api/heatmap", {credentials: "include"});
     heatmapData = await heatmapRes.json();
@@ -181,7 +179,7 @@
     .dashboard {
       display: flex;
       gap: var(--col-gap);
-      width: 1920px;
+      width: 1600px;
       padding: var(--col-gap);
       border-radius: 12px;
     }
@@ -307,7 +305,7 @@
   </style>
 </svelte:head>
 
-<div class="parent app-container">
+<div style="width:100%" class="parent app-container">
   <center>
   <header class="nav">
     <ul>
