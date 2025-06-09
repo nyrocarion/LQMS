@@ -88,7 +88,6 @@
           isToday,
           isFuture
         });
-        console.log("Day: " + day + ", week: " + week + ", isFuture: " + isFuture)
       }
 
       calendarData.push(weekData);

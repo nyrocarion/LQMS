@@ -20,7 +20,6 @@ export const actions: Actions = {
     }
 
     const { efficiency, totalseconds, motivation } = parsed.data;
-    console.log(totalseconds)
 
     try {
       // JWT wird vom Cookie abgegriffen und decoded um ID zu extrahieren
