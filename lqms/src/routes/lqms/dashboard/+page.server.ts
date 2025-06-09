@@ -21,7 +21,6 @@ async function fetchDateFact() {
       }
     );
     const data = await response.json(); 
-    console.log(data);
     if (data.found) {
       return data.text;
     } else {
@@ -129,7 +128,6 @@ export const load: PageServerLoad = async ({ cookies }) => {
   // Gibt eine Ausgabe egal welcher Fall auftritt
   const tip = (result[0] && result[0][0]?.tipps) ?? 'Kein Tipp gefunden';
 
-  
   const userId = user.id;
 
   // get profile data from db
