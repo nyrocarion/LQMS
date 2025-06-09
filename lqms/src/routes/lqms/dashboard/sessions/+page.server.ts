@@ -18,7 +18,6 @@ onMount(async () => {
   const streakData = await streakRes.json();
   streak = streakData.streak;
   streak = streak + 1;
-  console.log(streak)
 });
 
 function getCurrentDate(): string {
@@ -48,16 +47,12 @@ export const actions: Actions = {
       // JWT wird vom Cookie abgegriffen und decoded um ID zu extrahieren
       const jwt = cookies.get('authToken');
       const userId = verifyJWT(jwt)?.id ?? null;
-      console.log(userId)
 
       if(userId == null)
         return { error: 'Du bist nicht angemeldet!'};
 
 
       const result = await db.query('SELECT * FROM `session` WHERE DATE(`date`) = ? AND `completedby` = ?', [date_today, userId]);
-      console.log(result[0])
-      console.log(result[0].length)
-      console.log(result.length)
 
       // DB-Eintrag
       await db.query(
@@ -67,9 +62,7 @@ export const actions: Actions = {
 
       if(!result[0] || result[0].length === 0)
       {
-        console.log("Hat funktioniert")
         const update = await db.query('UPDATE user SET streak = streak+1 WHERE id = ?', [userId]);
-        console.log(update)
       }
 
       return { success: 'Feedback gespeichert!' };
