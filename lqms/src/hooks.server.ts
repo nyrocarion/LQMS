@@ -4,6 +4,7 @@ import { db } from '$lib/server/database';
 import { redirect } from '@sveltejs/kit';
 
 export const handle: Handle = async ({ event, resolve }) => {
+  
   const token = event.cookies.get('authToken');
   const currentPath = event.url.pathname;
 
