@@ -197,7 +197,7 @@
   };
 </script>
 
-<div style="height:100ch" class="parent app-container">
+<div style="min-height:100ch" class="parent app-container">
   <header class="nav">
     <ul>
       <li id="sessions"><a href="../dashboard/sessions/">Sessions</a></li>
