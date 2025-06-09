@@ -173,6 +173,12 @@
       }
     }
   }
+
+  const addDays = (date, days) => {
+    const result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  };
 </script>
 
 <div class="parent app-container">
@@ -261,7 +267,7 @@
                 <div
                   class="heatmap-day"
                   style="background-color: {day.isFuture ? '#dedede' : getHeatmapColor(day.count)}"
-                  title={day ? `${formatDate(day.date + 1)}: ${day.count} Sessions` : ''}
+                  title={day ? `${formatDate(addDays(day.date, 1))}: ${day.count} Sessions` : ''}
                 ></div>
               {/each}
             </div>
