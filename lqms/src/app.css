@@ -7,7 +7,6 @@ html {
 
 body {
   margin: 0;
-  height: 100vh;
   font-family: "Poppins", sans-serif;
   font-weight: 400;
   font-style: normal;
@@ -35,6 +34,7 @@ p {
   padding: 0 2rem 2rem;
   margin: 0 auto auto auto;
   position: relative;
+  height: 100vh;
   background: linear-gradient(90deg, #FEC996,#E37C95,#B894DC,#EAC4F4);
   background-color: rgba(255, 255, 255, 0.3);
 }
