@@ -46,6 +46,7 @@ export const actions: Actions = {
       // JWT wird vom Cookie abgegriffen und decoded um ID zu extrahieren
       const jwt = cookies.get('authToken');
       const userId = verifyJWT(jwt)?.id ?? null;
+      console.log(userId)
 
       if(userId == null)
         return { error: 'Du bist nicht angemeldet!'};
@@ -56,11 +57,14 @@ export const actions: Actions = {
         [totalseconds, efficiency, motivation, userId]
       );
 
-      const result = await db.query('SELECT * FROM `session` WHERE (`date` = ?,`completedby` = ?) LIMIT 1', [date, userId]) ?? null;
+      const result = await db.query('SELECT * FROM `session` WHERE (`date` = ?,`completedby` = ?) LIMIT 1', [date, userId]) ?? 500303;
       console.log(result)
 
       if(result == null)
-        await db.query('UPDATE user SET streak = ? WHERE id = ?',[streak, userId]);
+      {
+        const update = await db.query('UPDATE user SET streak = ? WHERE id = ?',[streak, userId]);
+        console.log(update)
+      }
 
       return { success: 'Feedback gespeichert!' };
     } catch (err) {
