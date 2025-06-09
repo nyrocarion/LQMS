@@ -163,81 +163,81 @@
 
 </script>
 
-  <div style="min-height:100vh,align-items:center,flex-direction:column,display:flex" class="app-container">
-    <div class="top-left-box">
-      <div class="auth-links">
-        <button class="register-button" on:click={() => openAuthModal('register')}>
-          Registrieren
-        </button>
-        oder
-        <button class="login-button" on:click={() => openAuthModal('login')}>
-          Anmelden
-        </button>
-      </div>
+<div style="min-height:100vh;" class="app-container">
+  <div class="top-left-box">
+    <div class="auth-links">
+      <button class="register-button" on:click={() => openAuthModal('register')}>
+        Registrieren
+      </button>
+      oder
+      <button class="login-button" on:click={() => openAuthModal('login')}>
+        Anmelden
+      </button>
     </div>
+  </div>
 
-    <button class="cta top-right-button" on:click={() => goto('/lqms/dashboard')}>Zum Start!</button>
+  <button class="cta top-right-button" on:click={() => goto('/lqms/dashboard')}>Zum Start!</button>
 
-    <div class="headline">
-      <h1>LQMS</h1>
-      <h2>Lernqualitätsmanagementsystem</h2>
-    </div>
+  <div class="headline">
+    <h1>LQMS</h1>
+    <h2>Lernqualitätsmanagementsystem</h2>
+  </div>
 
-    <div class="content-box">
-      <div class="info-columns"> <!--50 50 box-->
-        <div class="info-box">
-          <h3>Was ist das LQMS?</h3>
-          <div class="section">
-            <div class="text">
-              <b style="text-align:center">Optimiere dein Studium mit dem Lernqualitätsmanagementsystem</b>
-              <p >Verbessere deinen Lernprozess, behalte den Überblick und arbeite effizient mit deinen Kommilitonen.</p><br>
-              Das LQMS ist deine <b>zentrale Plattform</b> für strukturiertes und transparentes Lernen.<br>
-              Es verbindet klare Fortschrittsanalyse, interaktive <b>Lernsessions</b> und eine intuitive Benutzeroberfläche – alles in einer modernen Webanwendung. Mit deinem <b>persönlichen Dashboard</b>, aktuellen <b>Vorlesungsdaten</b> und visualisiertem Lernerfolg weißt du immer genau, wo du stehst.
-            </div>
-          </div>
-        </div>
-      {#if showMessage}
-        <div class="bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-3 rounded mb-4">
-          Deine E-Mail wurde noch nicht verifiziert.
-        </div>
-      {/if}
-        <div class="info-box">
-          <h3>Womit hilft es dir?</h3>
-          <div class="section">
-            <div class="text">
-              <b style="text-align:center">LQMS unterstützt dich beim Lernen, Planen und Reflektieren.</b>
-              <p>Es zeigt dir in Echtzeit deinen <b>Lernfortschritt</b>, hilft dir beim Organisieren deiner Sessions und liefert dir eine <b>visuelle Analyse</b> deines Lernverhaltens. 
-                So sparst du Zeit, erkennst Fortschritte schneller und bleibst motiviert – ganz ohne Zettelchaos. </p>
-            </div>
+  <div class="content-box">
+    <div class="info-columns"> <!--50 50 box-->
+      <div class="info-box">
+        <h3>Was ist das LQMS?</h3>
+        <div class="section">
+          <div class="text">
+            <b style="text-align:center">Optimiere dein Studium mit dem Lernqualitätsmanagementsystem</b>
+            <p >Verbessere deinen Lernprozess, behalte den Überblick und arbeite effizient mit deinen Kommilitonen.</p><br>
+            Das LQMS ist deine <b>zentrale Plattform</b> für strukturiertes und transparentes Lernen.<br>
+            Es verbindet klare Fortschrittsanalyse, interaktive <b>Lernsessions</b> und eine intuitive Benutzeroberfläche – alles in einer modernen Webanwendung. Mit deinem <b>persönlichen Dashboard</b>, aktuellen <b>Vorlesungsdaten</b> und visualisiertem Lernerfolg weißt du immer genau, wo du stehst.
           </div>
         </div>
       </div>
+    {#if showMessage}
+      <div class="bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-3 rounded mb-4">
+        Deine E-Mail wurde noch nicht verifiziert.
+      </div>
+    {/if}
+      <div class="info-box">
+        <h3>Womit hilft es dir?</h3>
+        <div class="section">
+          <div class="text">
+            <b style="text-align:center">LQMS unterstützt dich beim Lernen, Planen und Reflektieren.</b>
+            <p>Es zeigt dir in Echtzeit deinen <b>Lernfortschritt</b>, hilft dir beim Organisieren deiner Sessions und liefert dir eine <b>visuelle Analyse</b> deines Lernverhaltens. 
+              So sparst du Zeit, erkennst Fortschritte schneller und bleibst motiviert – ganz ohne Zettelchaos. </p>
+          </div>
+        </div>
+      </div>
+    </div>
 
-      <h3>Über uns</h3>
-      <div class="avatar-grid">
-        <div class="avatar-card">
-          <h4>Marco </h4>
-          <img src="https://avatars.githubusercontent.com/u/42667267?s=400&u=13540984947564df7cadf4831d28dbd3e62ce53c&v=4" alt="Avatar von El Don" />
-          <p>Backend-Profi</p>
-        </div>
-        <div class="avatar-card">
-          <h4>Lukas</h4>
-          <img src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/profile_pic_luk.jpg" alt="Avatar von Lukas" />
-          <p>Zeitmanipulator</p>
-        </div>
-        <div class="avatar-card">
-          <h4>Nastja</h4>
-          <img src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/profile_pic_nastja.jpg" alt="Avatar von Nastja" />
-          <p>Farbspezialist</p>
-        </div>
-        <div class="avatar-card">
-          <h4>Nik</h4>
-          <img src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/profile_pic_nik.jpg" alt="Avatar von Nik" />
-          <p>Spaghetticodemonster</p>
-        </div>
+    <h3>Über uns</h3>
+    <div class="avatar-grid">
+      <div class="avatar-card">
+        <h4>Marco </h4>
+        <img src="https://avatars.githubusercontent.com/u/42667267?s=400&u=13540984947564df7cadf4831d28dbd3e62ce53c&v=4" alt="Avatar von El Don" />
+        <p>Backend-Profi</p>
+      </div>
+      <div class="avatar-card">
+        <h4>Lukas</h4>
+        <img src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/profile_pic_luk.jpg" alt="Avatar von Lukas" />
+        <p>Zeitmanipulator</p>
+      </div>
+      <div class="avatar-card">
+        <h4>Nastja</h4>
+        <img src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/profile_pic_nastja.jpg" alt="Avatar von Nastja" />
+        <p>Farbspezialist</p>
+      </div>
+      <div class="avatar-card">
+        <h4>Nik</h4>
+        <img src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/profile_pic_nik.jpg" alt="Avatar von Nik" />
+        <p>Spaghetticodemonster</p>
       </div>
     </div>
   </div>
+
 
 {#if showAuthModal}
   <div class="modal-overlay" on:click={closeAuthModal}>
@@ -279,6 +279,7 @@
     </div>
   </div>
 {/if}
+</div>
 
 <style>
   .info-columns {
