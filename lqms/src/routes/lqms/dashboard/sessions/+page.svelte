@@ -115,7 +115,8 @@
 }
 
 .feedback-heading{
-  padding-bottom: 20%;
+  padding-top: 5%;
+  padding-bottom: 18%;
 }
 
 .timer-dot{
