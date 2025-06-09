@@ -370,7 +370,7 @@
               <div style="text-align:left;font-size: 1.5em; font-weight: bold; margin-bottom: 4px;">{profileName}</div>
               <div style="text-align:left;font-size: 0.95em; margin-bottom: 8px;">{profileMail}</div>
               <div style="text-align:left;font-size: 0.9em;">ID: {user.id}</div>
-              <div style="text-align:left;font-size: 1em;"><span style="font-weight: bold; color: orange;">🔥{streak}</span></div>
+              <div style="text-align:left;font-size: 2em;"><span style="font-weight: bold; color: orange;">🔥{streak}</span></div>
             </div>
           </div>
         </div>
