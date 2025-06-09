@@ -365,11 +365,11 @@
           <img src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png"
               alt="Avatar"
               style="width: 80px; height: 80px; border-radius: 50%; margin-right: 20px;" />
-          <div style="text-align:left" >
-            <div style="font-size: 1.5em; font-weight: bold; margin-bottom: 4px;">{profileName}</div>
-            <div style="font-size: 0.95em; margin-bottom: 8px;">{profileMail}</div>
-            <div style="font-size: 0.9em;">ID: {user.id}</div>
-            <div style="font-size: 1em;"><span style="font-weight: bold; color: orange;">🔥{streak}</span></div>
+          <div>
+            <div style="text-align:left,font-size: 1.5em; font-weight: bold; margin-bottom: 4px;">{profileName}</div>
+            <div style="text-align:left,font-size: 0.95em; margin-bottom: 8px;">{profileMail}</div>
+            <div style="text-align:left,font-size: 0.9em;">ID: {user.id}</div>
+            <div style="text-align:left,font-size: 1em;"><span style="font-weight: bold; color: orange;">🔥{streak}</span></div>
           </div>
         </div>
       </div>
