@@ -140,18 +140,27 @@
         body: JSON.stringify({ identifier: username, password })
       });
 
-      const data = await response.json();
+      const contentType = response.headers.get('content-type');
+
+      let data: any = {};
+      if (contentType && contentType.includes('application/json')) {
+        data = await response.json();
+      } else {
+        const text = await response.text();
+        console.warn('Keine JSON-Antwort erhalten:', text);
+        throw new Error('Unerwartete Serverantwort');
+      }
 
       if (response.ok) {
-        // Weiterleitung zum Dashboard
         window.location.href = '/lqms/dashboard';
       } else {
-        console.error('Login fehlgeschlagen:', data.message);
+        console.error('Login fehlgeschlagen:', data.message || 'Unbekannter Fehler');
       }
     } catch (error) {
       console.error('Fehler beim Login:', error);
     }
   }
+
 </script>
 
 <center>
