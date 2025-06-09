@@ -171,7 +171,7 @@
               method: 'PUT',
               credentials: 'include',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ id, status: newModuleStatus })
+              body: JSON.stringify({ id, field: 'status', newStatus: newModuleStatus })
             });
 
             if (!statusRes.ok) {
