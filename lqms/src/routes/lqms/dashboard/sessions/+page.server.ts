@@ -63,7 +63,7 @@ export const actions: Actions = {
       if(result == null)
       {
         console.log("Hat funktioniert")
-        const update = await db.query('UPDATE user SET (`streak` = ?) WHERE (`id` = ?)', [streak, userId]);
+        const update = await db.query('UPDATE user SET `streak` = ? WHERE `id` = ?', [streak, userId]);
         console.log(update)
       }
 
