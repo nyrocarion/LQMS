@@ -10,6 +10,7 @@
   let rawTasks = [];
   let streak = 0;
   let canvasEl;
+  let pendingItems = []
 
   onMount(async () => {
     const memeElement = document.getElementById("meme") as HTMLImageElement;
@@ -23,9 +24,7 @@
     date: string;
     name: string;
     };  
-
-    const pendingItems: TaskItem[] = [];
-
+    
     for (const [subject, entries] of Object.entries(rawTasks)) {
       for (const [date, tasks] of Object.entries(entries)) {
         for (const task of tasks) {
