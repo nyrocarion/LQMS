@@ -39,7 +39,7 @@ export const actions: Actions = {
 
     const { efficiency, totalseconds, motivation } = parsed.data;
 
-    let date = getCurrentDate();
+    let date_today = getCurrentDate();
     streak = streak + 1;
 
     try {
@@ -57,7 +57,7 @@ export const actions: Actions = {
         [totalseconds, efficiency, motivation, userId]
       );
 
-      const result = await db.query('SELECT * FROM `session` WHERE (`date` = ?,`completedby` = ?) LIMIT 1', [date, userId]) ?? 500303;
+      const result = await db.query('SELECT * FROM `session` WHERE (`date` = ? AND `completedby` = ?) LIMIT 1', [date_today, userId]) ?? 500303;
       console.log(result)
 
       if(result == null)
