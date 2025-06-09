@@ -138,7 +138,7 @@ export const load: PageServerLoad = async ({ cookies }) => {
 
   // get tasks with internal api
   let tasks = [];
-  const taskRes = await fetch("/api/tasks", {credentials: "include"});
+  const taskRes = await fetch("https://dhbw.marcoshub.de/api/tasks", {credentials: "include"});
   tasks = await taskRes.json();
   console.log("tasks that are read with api:",tasks);
 
