@@ -95,7 +95,6 @@
     return calendarData;
   }
 
-
   /** Reihenfolge der Wochentage */
   const weekdays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
 
@@ -242,7 +241,6 @@
         </article>
       </main>
     </div>
-
     <div class="div3">
       <h3>Aktivitäten (35 Tage)</h3>
       <div class="heatmap-wrapper">
@@ -259,7 +257,7 @@
               {#each week as day}
                 <div
                   class="heatmap-day"
-                  style="background-color: {day ? getHeatmapColor(day.count) : '#dedede'}"
+                  style="background-color: {day.isFuture ? '#dedede' : getHeatmapColor(day.count)}"
                   title={day ? `${formatDate(day.date)}: ${day.count} Sessions` : ''}
                 ></div>
               {/each}
