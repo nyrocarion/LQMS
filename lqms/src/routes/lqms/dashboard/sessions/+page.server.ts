@@ -65,7 +65,7 @@ export const actions: Actions = {
         [totalseconds, efficiency, motivation, userId]
       );
 
-      if(!result || result.length == 2)
+      if(!result[0] || result[0].length === 0)
       {
         console.log("Hat funktioniert")
         const update = await db.query('UPDATE user SET streak = streak+1 WHERE id = ?', [userId]);
