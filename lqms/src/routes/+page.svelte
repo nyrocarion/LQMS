@@ -164,6 +164,7 @@
 </script>
 
 <div style="min-height:100vh" class="app-container">
+<center>
 <div style="max-width:1600px">
   <div class="top-left-box">
     <div class="auth-links">
@@ -281,6 +282,7 @@
   </div>
 {/if}
 </div>
+</center>
 </div>
 
 <style>
