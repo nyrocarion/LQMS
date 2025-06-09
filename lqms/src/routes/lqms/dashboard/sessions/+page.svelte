@@ -53,11 +53,11 @@
 {#if showFeedbackPopup}
   <div class="feedback-modal-overlay">
     <div class="feedback-modal-content" on:click|stopPropagation>
-      <h1>
-        <div>
+      <h2>
+        <div class="feedback-heading">
           Session Feedback
         </div>
-      </h1>
+      </h2>
         <form method="POST">
           <div class="form-group">
             <label for="efficiency-slider">
@@ -100,8 +100,10 @@
               <span>Gut</span>
             </div>
           </div>
-          <button type="submit" class="submit-button"> Feedback senden! </button>
-        </form>
+          <div class="form-group">
+            <button type="submit" class="submit-button"> Feedback senden! </button>
+          </div>
+          </form>
     </div>
   </div>
 {/if}
@@ -110,6 +112,11 @@
 .timer-blank{
   position: relative;
   top: 75px;
+}
+
+.feedback-heading{
+  padding-top: 5%;
+  padding-bottom: 18%;
 }
 
 .timer-dot{
@@ -247,7 +254,7 @@
 
 .submit-button {
   display: block;
-  width: 100%-200px;
+  width: 100%;
   padding: 10px 15px;
   background-color: #28a745;
   color: white;
@@ -258,8 +265,7 @@
   font-weight: 500;
   transition: background-color 0.2s;
   margin-top: 10px;
-  margin-left: 100px;
-  margin-right: 100px;
+  text-align: center;
 }
 .submit-button:hover {
   background-color: #218838;
