@@ -138,6 +138,12 @@ export const load: PageServerLoad = async ({ cookies }) => {
   const profileName = profileRes[0][0]?.name;
   const profileMail = profileRes[0][0]?.email;
 
+  // get tasks with internal api
+  let tasks = [];
+  const taskRes = await fetch("/api/tasks", {credentials: "include"});
+  tasks = await taskRes.json();
+  console.log("tasks that are read with api:",tasks);
+
   // get activity data from db
   const rawData = await db.query(`
     SELECT 
