@@ -182,7 +182,6 @@
       display: flex;
       gap: var(--col-gap);
       max-width: 1920px;
-      background: #ffb49c;
       padding: var(--col-gap);
       border-radius: 12px;
     }
@@ -406,7 +405,7 @@
             {#each pendingItems as item}
               <div style="border: 1px solid #ccc; border-radius: 10px; padding: 12px; background: #ec7b6a;">
                 <div style="font-weight: bold; font-size: 1.2em;">{item.name}</div>
-                <div>Fällig am: {item.date}</div>
+                <div>vom: {item.date}</div>
               </div>
             {/each}
             {#if pendingItems.length === 0}
