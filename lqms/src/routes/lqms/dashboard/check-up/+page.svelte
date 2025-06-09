@@ -146,31 +146,43 @@
       for (const [date, items] of Object.entries(dates)) {
         const course = items.find(i => i.id === id);
         if (course) {
+          // Update lokal anwenden
           course[field] = newStatus;
 
-          // Überprüfen, ob alle Felder abgehakt sind
-          const allFieldsChecked = 
-            (course.presentationstatus === 1) &&
-            (course.scriptstatus === 1) &&
-            (course.notesstatus === 1) &&
-            (!course.exercisesheet || course.exercisestatus === 1); 
+          // Neue Status-Berechnung:
+          const statusFields = [
+            course.presentationstatus,
+            course.scriptstatus,
+            course.notesstatus
+          ];
 
-          if (allFieldsChecked) {
-            // Status auf 2 setzen, wenn alle Felder abgehakt sind
+          // exercisesheet ist optional
+          if (course.exercisesheet === 1) {
+            statusFields.push(course.exercisestatus);
+          }
+
+          const allDone = statusFields.every(s => s === 1);
+          const noneDone = statusFields.every(s => s === 0);
+
+          const newModuleStatus = allDone ? 2 : noneDone ? 0 : 1;
+
+          // Nur wenn sich der Status ändert, API call + update
+          if (course.status !== newModuleStatus) {
             const statusRes = await fetch('/api/tasks/', {
               method: 'PUT',
               credentials: 'include',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ id, status: 2 })
+              body: JSON.stringify({ id, status: newModuleStatus })
             });
 
             if (!statusRes.ok) {
-              console.error('Fehler beim Setzen des Status');
+              console.error('Fehler beim Setzen des Modul-Status');
             } else {
-              course.status = 1;  // Lokale Statusänderung
+              course.status = newModuleStatus;
             }
           }
 
+          // Gezwungener Re-render
           tasksByModule = structuredClone(tasksByModule);
           return;
         }
