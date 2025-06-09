@@ -18,7 +18,6 @@
 
     const taskRes = await fetch("/api/tasks", {credentials: "include"});
     rawTasks = await taskRes.json();
-    console.log(rawTasks);  
 
     const tasksToDo = [];
 
@@ -37,7 +36,6 @@
     }
 
     pendingItems = tasksToDo;
-    console.log(pendingItems);
 
     const heatmapRes = await fetch("/api/heatmap", {credentials: "include"});
     heatmapData = await heatmapRes.json();
