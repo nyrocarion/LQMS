@@ -1,12 +1,22 @@
 import { fail, type Actions } from '@sveltejs/kit';
 import { db } from '$lib/server/database';
 import { z } from 'zod';
+import { onMount } from "svelte";
 import { verifyJWT } from '$lib/server/jwt';
 
 const feedbackSchema = z.object({
   efficiency: z.coerce.number().int(),
   totalseconds: z.coerce.number().int(),
   motivation: z.coerce.number().int()
+});
+
+let streak = 0;
+
+/** Vorladen der Daten aus API-Endpunkten */
+onMount(async () => {
+  const streakRes = await fetch("/api/streak", {credentials: "include"});
+  const streakData = await streakRes.json();
+  streak = streakData.streak;
 });
 
 function getCurrentDate(): string {
@@ -16,7 +26,6 @@ function getCurrentDate(): string {
     const day = String(today.getDate()).padStart(2, '0');
     console.log(`${year}-${month}-${day}`)
     return `${year}-${month}-${day}`;
-    
 }
 
 export const actions: Actions = {
@@ -29,10 +38,7 @@ export const actions: Actions = {
     }
 
     const { efficiency, totalseconds, motivation } = parsed.data;
-    let streak = 0;
-    const streakRes = await fetch("/api/streak", {credentials: "include"});
-    const streakData = await streakRes.json();
-    streak = streakData.streak;
+
     let date = getCurrentDate();
     streak = streak + 1;
 
@@ -50,7 +56,7 @@ export const actions: Actions = {
         [totalseconds, efficiency, motivation, userId]
       );
 
-      const result = await db.query('SELECT * FROM `session` WHERE (`date` = ?,`completedby` = ?) LIMIT 1', [date, userId]) ?? null;
+      const result = await db.query('SELECT * FROM `session` WHERE (`timestamp` = ?,`completedby` = ?) LIMIT 1', [date, userId]) ?? null;
       console.log(result)
 
       if(result == null)
