@@ -41,60 +41,59 @@
   }
 
   export function generateCalendarData(heatmapData: { date: string; count: number }[]) {
-  const today = new Date();
-  const weekStart = 0; // 0 = Sonntag
+    const today = new Date();
+    const weekStart = 0; // 0 = Sonntag
 
-  // Wochentag relativ zum gewünschten Wochenstart (z. B. 1 bei Mo, 0 bei So)
-  const todayIndex = today.getDay();
-  const daysSinceWeekStart = (todayIndex - weekStart + 7) % 7;
+    // Wochentag relativ zum gewünschten Wochenstart (z. B. 1 bei Mo, 0 bei So)
+    const todayIndex = today.getDay();
+    const daysSinceWeekStart = (todayIndex - weekStart + 7) % 7;
 
-  // Sonntag (oder anderer Wochentag) der aktuellen Woche
-  const startOfCurrentWeek = new Date(today);
-  startOfCurrentWeek.setDate(today.getDate() - daysSinceWeekStart);
+    // Sonntag (oder anderer Wochentag) der aktuellen Woche
+    const startOfCurrentWeek = new Date(today);
+    startOfCurrentWeek.setDate(today.getDate() - daysSinceWeekStart);
 
-  // Startpunkt: 4 Wochen vor dem aktuellen Wochenstart
-  const startDate = new Date(startOfCurrentWeek);
-  startDate.setDate(startOfCurrentWeek.getDate() - 7 * 4);
+    // Startpunkt: 4 Wochen vor dem aktuellen Wochenstart
+    const startDate = new Date(startOfCurrentWeek);
+    startDate.setDate(startOfCurrentWeek.getDate() - 7 * 4);
 
-  const dataMap = new Map<string, number>();
-  for (const d of heatmapData) {
-    dataMap.set(d.date, d.count);
-  }
-
-  const calendarData: {
-    date: Date;
-    count: number;
-    isToday: boolean;
-    isFuture: boolean;
-  }[][] = [];
-
-  for (let week = 0; week < 5; week++) {
-    const weekData = [];
-
-    for (let day = 0; day < 7; day++) {
-      const currentDate = new Date(startDate);
-      currentDate.setDate(startDate.getDate() + week * 7 + day);
-
-      const iso = currentDate.toISOString().split("T")[0];
-      const count = dataMap.get(iso) ?? 0;
-
-      const isToday = iso === today.toISOString().split("T")[0];
-      const isFuture = currentDate > today;
-
-      weekData.push({
-        date: currentDate,
-        count,
-        isToday,
-        isFuture
-      });
+    const dataMap = new Map<string, number>();
+    for (const d of heatmapData) {
+      dataMap.set(d.date, d.count);
     }
 
-    calendarData.push(weekData);
+    const calendarData: {
+      date: Date;
+      count: number;
+      isToday: boolean;
+      isFuture: boolean;
+    }[][] = [];
+
+    for (let week = 0; week < 5; week++) {
+      const weekData = [];
+
+      for (let day = 0; day < 7; day++) {
+        const currentDate = new Date(startDate);
+        currentDate.setDate(startDate.getDate() + week * 7 + day);
+
+        const iso = currentDate.toISOString().split("T")[0];
+        const count = dataMap.get(iso) ?? 0;
+
+        const isToday = iso === today.toISOString().split("T")[0];
+        const isFuture = currentDate > today;
+
+        weekData.push({
+          date: currentDate,
+          count,
+          isToday,
+          isFuture
+        });
+      }
+
+      calendarData.push(weekData);
+    }
+
+    return calendarData;
   }
-
-  return calendarData;
-}
-
 
   /** Reihenfolge der Wochentage */
   const weekdays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
@@ -242,7 +241,6 @@
         </article>
       </main>
     </div>
-
     <div class="div3">
       <h3>Aktivitäten (35 Tage)</h3>
       <div class="heatmap-wrapper">
@@ -259,7 +257,7 @@
               {#each week as day}
                 <div
                   class="heatmap-day"
-                  style="background-color: {day ? getHeatmapColor(day.count) : '#dedede'}"
+                  style="background-color: {day.isFuture ? '#dedede' : getHeatmapColor(day.count)}"
                   title={day ? `${formatDate(day.date)}: ${day.count} Sessions` : ''}
                 ></div>
               {/each}
