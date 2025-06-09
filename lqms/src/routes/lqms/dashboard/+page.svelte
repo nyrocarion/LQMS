@@ -181,7 +181,7 @@
     .dashboard {
       display: flex;
       gap: var(--col-gap);
-      max-width: 1920px;
+      width: 1920px;
       padding: var(--col-gap);
       border-radius: 12px;
     }
@@ -307,7 +307,7 @@
   </style>
 </svelte:head>
 
-<div class="parent app-container">
+<div style="width:100%" class="parent app-container">
   <center>
   <header class="nav">
     <ul>
