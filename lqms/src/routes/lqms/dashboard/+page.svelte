@@ -307,7 +307,7 @@
   </style>
 </svelte:head>
 
-<div class="parent app-container">
+<div style="width:100%" class="parent app-container">
   <center>
   <header class="nav">
     <ul>
