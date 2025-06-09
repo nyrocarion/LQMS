@@ -372,7 +372,6 @@
             <div style="text-align:left,font-size: 1em;"><span style="font-weight: bold; color: orange;">🔥{streak}</span></div>
           </div>
         </div>
-      </div>
         <div class="panel tall beige_bg">
           <h2>Etwas zum Lachen</h2>
           <img style="width:300px;" id="meme" src="" alt="Meme"/>
