@@ -40,40 +40,58 @@
     return `${d.getDate()}.${d.getMonth() + 1}`;
   }
 
-  function generateCalendarData(data: { date: string; count: number }[]) {
-    const todayString = new Date().toLocaleDateString('sv-SE');
-    const today = new Date(todayString);
+  export function generateCalendarData(heatmapData: { date: string; count: number }[]) {
+    const today = new Date();
+    const weekStart = 0; // Sonntag
+    const todayIndex = today.getDay(); // 0 = So, ..., 6 = Sa
 
-    // Finde den Start der Anzeige: Immer Montag vor 34 Tagen
-    const start = new Date(today);
-    start.setDate(start.getDate() - 34);
+    // Bestimme den Sonntag der aktuellen Woche
+    const startOfCurrentWeek = new Date(today);
+    startOfCurrentWeek.setDate(today.getDate() - todayIndex);
 
-    const startWeekday = (start.getDay() + 6) % 7; // 0 = Montag
-    start.setDate(start.getDate() - startWeekday); // Auf Montag der Woche zurückspringen
+    // Berechne den Starttag für 5 volle Wochen (inklusive aktueller Woche)
+    const startDate = new Date(startOfCurrentWeek);
+    startDate.setDate(startOfCurrentWeek.getDate() - 7 * 4); // 4 Wochen zurück
 
-    const calendarMap = new Map(data.map(d => [d.date, d.count]));
-    const calendar: { date: string; count: number }[][] = [];
-
-    const current = new Date(start);
-    for (let i = 0; i < 5 * 7; i++) { // 5 Wochen
-      const iso = current.toISOString().split("T")[0];
-      const isFuture = current > today;
-      const count = isFuture
-        ? -1
-        : calendarMap.get(iso) ?? 0;
-
-      const weekday = (current.getDay() + 6) % 7; // 0 = Montag
-
-      if (calendar.length === 0 || weekday === 0) {
-        calendar.push(Array(7).fill(null));
-      }
-
-      calendar[calendar.length - 1][weekday] = { date: iso, count };
-      current.setDate(current.getDate() + 1);
+    const dataMap = new Map<string, number>();
+    for (const d of heatmapData) {
+      dataMap.set(d.date, d.count);
     }
 
-    return calendar;
+    const calendarData: {
+      date: Date;
+      count: number;
+      isToday: boolean;
+      isFuture: boolean;
+    }[][] = [];
+
+    for (let week = 0; week < 5; week++) {
+      const weekData = [];
+
+      for (let day = 0; day < 7; day++) {
+        const currentDate = new Date(startDate);
+        currentDate.setDate(startDate.getDate() + week * 7 + day);
+
+        const iso = currentDate.toISOString().split("T")[0];
+        const count = dataMap.get(iso) ?? 0;
+
+        const isToday = iso === today.toISOString().split("T")[0];
+        const isFuture = currentDate > today;
+
+        weekData.push({
+          date: currentDate,
+          count,
+          isToday,
+          isFuture
+        });
+      }
+
+      calendarData.push(weekData);
+    }
+
+    return calendarData; // 5 Zeilen, 7 Spalten – fertig fürs Grid
   }
+
 
   /** Reihenfolge der Wochentage */
   const weekdays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
