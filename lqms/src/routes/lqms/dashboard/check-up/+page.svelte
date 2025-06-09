@@ -56,6 +56,11 @@
     const startDate = new Date(startOfCurrentWeek);
     startDate.setDate(startOfCurrentWeek.getDate() - 7 * 4);
 
+    console.log("Today: ", today.toISOString());
+    console.log("Today Index (getDay): ", today.getDay());
+    console.log("Start of current week: ", startOfCurrentWeek.toISOString());
+    console.log("Start date (4 weeks before): ", startDate.toISOString());
+
     const dataMap = new Map<string, number>();
     for (const d of heatmapData) {
       dataMap.set(d.date, d.count);
@@ -79,7 +84,7 @@
         const count = dataMap.get(iso) ?? 0;
 
         const isToday = iso === today.toISOString().split("T")[0];
-        const isFuture = currentDate >= today;
+        const isFuture = currentDate > today;
 
         weekData.push({
           date: currentDate,
