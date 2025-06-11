@@ -1,5 +1,5 @@
-<!-- Timer Block -->
 <div style="height:100ch" class="app-container">
+  <!-- Menu -->
   <header class="nav">
     <ul>
       <li id="sessions"><a href="../dashboard/sessions/">Sessions</a></li>
@@ -9,12 +9,15 @@
     </ul>
   </header>
 
+    <!-- Timer Block -->
     <div class="timer-block">
+
       <h1>
         <div>
         LERNSESSION
         </div>
       </h1>
+
       <div class="timer-blank">
         <div> 
           <span class ="timer-number">{number_padding(hours)}</span>
@@ -23,6 +26,8 @@
           <span class="timer-dot">:</span>
           <span class="timer-number">{number_padding(seconds)}</span>
         </div>
+
+        <!-- Play/Pause Button-->
         <div class="button-grid">
           <button class="clock" on:click={toggle_timer}>
             {#if isRunning}
@@ -37,12 +42,15 @@
               </svg>
             {/if}
           </button>
+
+          <!-- Stop Button-->
           <button class="clock" on:click={session_end}  disabled={isSession == false}>
             <!-- Stop Icon -->
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
               <path d="M6 6h12v12H6z"/>
             </svg>
           </button>
+
         </div>
       </div>
     </div> 
@@ -52,6 +60,7 @@
 <!-- Session Feedback Popup -->
 {#if showFeedbackPopup}
   <div class="feedback-modal-overlay">
+    <!-- Visible Popup -->
     <div class="feedback-modal-content" on:click|stopPropagation>
       <h2>
         <div class="feedback-heading">
@@ -60,9 +69,11 @@
       </h2>
         <form method="POST">
           <div class="form-group">
+            <!-- Efficincy Slider -->
             <label for="efficiency-slider">
               Deine Produktivität: <span class="value-display">{efficiency}</span>
             </label>
+            <!-- Input efficiency-->
             <input
               type="range"
               name="efficiency"
@@ -72,6 +83,7 @@
               bind:value={efficiency}
               class="slider"
             />
+            <!-- Hidden Handover of Sessionlength for Database saving -->
             <input
               type="hidden"
               name="totalseconds"
@@ -83,9 +95,11 @@
             </div>
           </div>
           <div class="form-group">
+            <!-- Motivation Slider -->
             <label for="motivation-slider">
               Deine Stimmung: <span class="emoji-display">{getmotivationEmoji(motivation)}</span> (<span class="value-display">{motivation}</span>)
             </label>
+            <!-- Input Motivation-->
             <input
               type="range"
               name="motivation"
@@ -101,6 +115,7 @@
             </div>
           </div>
           <div class="form-group">
+            <!-- Submit Button-->
             <button type="submit" class="submit-button"> Feedback senden! </button>
           </div>
           </form>
@@ -109,9 +124,6 @@
 {/if}
 
 <style>
-body {
-  height: 100%;
-}
 
 .timer-blank{
   position: relative;
@@ -129,7 +141,6 @@ body {
   transform: translateY(100px);
   font-size: 50px;
   padding: 0 0.2em;
-  
 }
 
 .timer-number{
@@ -173,13 +184,11 @@ body {
   flex: 1;
 }
 
-/* Wenn Button nicht gehen soll */
 .clock:disabled {
   background-color: #ccc;
   cursor: not-allowed;
 }
 
-/* Styles für das Feedback Popup */
 .feedback-modal-overlay {
   position: fixed;
   top: 0;
@@ -197,11 +206,8 @@ body {
   background-color: white;
   width: 75%;
   height: 75%;
-  /*padding: 25px 30px;*/
-  /*padding: 200px 200px;*/
   border-radius: 15px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  /*width: 1px;*/
   max-width: 90%;
   position: relative;
   text-align: left;
@@ -235,9 +241,11 @@ body {
   cursor: pointer;
   accent-color: #007bff;
 }
+
 .motivation-slider {
   accent-color: #e83e8c;
 }
+
 .slider-labels {
   display: flex;
   justify-content: space-between;
@@ -250,9 +258,10 @@ body {
   font-weight: bold;
   color: #333;
 }
+
 .emoji-display {
-  font-size: 1.2em; /* Um Emoji größer zu machen */
-  vertical-align: -0.15em; /* Vertikale Verschiebung */
+  font-size: 1.2em;
+  vertical-align: -0.15em;
   margin-right: 3px;
 }
 
@@ -271,9 +280,11 @@ body {
   margin-top: 10px;
   text-align: center;
 }
+
 .submit-button:hover {
   background-color: #218838;
 }
+
 .submit-button:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
@@ -287,12 +298,12 @@ let clock = 0;
 let isRunning = false;
 let isSession = false;
 
-// Zeitberechnung
+// Time Calculation
 $: hours = Math.floor(totalSeconds / 3600);
 $: minutes = Math.floor(totalSeconds / 60) % 3600;
 $: seconds = totalSeconds % 60;
 
-//Startet den Sessiontimer
+// Starts the Session
 function session_start(){
     totalSeconds = 0;
     isSession = true
@@ -300,18 +311,19 @@ function session_start(){
     clock = setInterval(() => {totalSeconds +=1}, 1000);
 }
 
+// Resumes the Session
 function session_resume(){
     isRunning = true;
     clock = setInterval(() => {totalSeconds +=1}, 1000);
 }
 
-//Pausiert den Sessiontimer
+// Pauses the Session
 function session_pause(){
   isRunning = false;
   clearInterval(clock);
 }
 
-//Beendet den Sessiontimer
+// Stops the Session
 function session_end(){
   isRunning = false;
   clearInterval(clock);
@@ -319,7 +331,7 @@ function session_end(){
   isSession = false;
 }
 
-// Start/Pause Umschaltfunktion
+// Start/Pause Toogle Function
 function toggle_timer() {
   if (isRunning) {
     session_pause();
@@ -332,6 +344,7 @@ function toggle_timer() {
   }
 }
 
+// Padding for Timer number, so that they are always double digit
 function number_padding(value){
   if (value < 10){
     return `0${value}`;
@@ -339,23 +352,25 @@ function number_padding(value){
   return value.toString();
 }
 	
-//Session Feedback Popup Logik
+// Session Feedback Popup Logic
 let showFeedbackPopup: boolean = false;
-let efficiency: number = 5; //Default Wert
-let motivation: number = 5; //Default Wert
-  
+let efficiency: number = 5; //Default Values
+let motivation: number = 5; //Default Values
+
+// Opens the Feedback Popup
 function openFeedbackPopup(): void {
-  //Beim Öfnnen der Popups wird der Wert auf den Default Wert zurückgesetzt
+  // When opening a new Popup, the values get reset to the original value
   efficiency = 5;
   motivation = 5;
   showFeedbackPopup = true;
 }
 
+// Closes the Feedback Popup
 function closeFeedbackPopup(): void {
   showFeedbackPopup = false;
 }
 
-// Funktion
+// Showcases Emoji based on Value
 const getmotivationEmoji = (value: number): string => {
   if (value <= 3) return '🙁'; // Traurig
   if (value <= 7) return '😐'; // Neutral
