@@ -5,22 +5,37 @@ import bcrypt from 'bcrypt';
 import { z } from 'zod';
 import { sendRegistrationMail } from '$lib/server/mailer';
 
-/** Das ist die Anzahl der verwendeten Salt-Runden für die Verschlüsselung des Passworts! */ 
+/**
+ * Number of salt rounds used for password hashing.
+ */
 const SALT_ROUNDS = 12;
 
-/** Ein Schema zur Sicherstellung der benötigten Daten bei der Registrierung */
+/**
+ * Zod schema to validate registration input data.
+ * - username: 2-16 characters
+ * - email: valid email format
+ * - password: at least 10 characters, excludes certain unsafe characters
+ */
 const registerSchema = z.object({
   username: z.string().min(2).max(16),
   email: z.string().email(),
   password: z.string().regex(/^[^"'\\;`<>]{10,}$/, 'Das Passwort ist nicht sicher genug.'),
 });
 
-/** Hier erfolgt die eigentliche Registrierung: */
+/**
+ * Handles user registration.
+ * 
+ * @param {Object} param0 - The request context.
+ * @param {Request} param0.request - The incoming HTTP request.
+ * @param {Cookies} param0.cookies - The cookies object for setting/deleting cookies.
+ * @returns {Response} JSON response indicating registration result.
+ */
 export const POST: RequestHandler = async ({ request, cookies }) => {
   try {
+    // Parse request body as JSON
     const body = await request.json();
 
-    /** Check für die Einhaltung des Schemas */
+    // Validate input data against schema
     const validationResult = registerSchema.safeParse(body);
     if (!validationResult.success) {
       return json({ message: 'Ungültige Eingabedaten', errors: validationResult.error.issues }, { status: 400 });
@@ -28,46 +43,52 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 
     const { username, email, password } = validationResult.data;
 
-    /** 1.) Prüfung für Benutzername */
+    // 1. Check if username already exists
     const existingUserByUsername = await db.query('SELECT * FROM user WHERE name = ?', [username]);
     if (existingUserByUsername[0].length > 0) {
       return json({ message: 'Benutzername bereits vergeben' }, { status: 409 });
     }
 
-    /** 2.) Prüfung für E-Mail */
+    // 2. Check if email already exists
     const existingUserByEmail = await db.query('SELECT * FROM user WHERE email = ?', [email]);
     if (existingUserByEmail[0].length > 0) {
       return json({ message: 'E-Mail wurde bereits registriert' }, { status: 409 });
     }
 
-    /** 3.) Benutzerdaten in der DB speichern */
+    // 3. Hash password and insert user into database
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
-    const result = await db.query('INSERT INTO user (name, email, password, streak, cookies, emailv) VALUES (?, ?, ?, 0, 1, 0)', [username, email, hashedPassword]);
-    const insertId = result[0].insertId; // ID des neuen Benutzers
+    const result = await db.query(
+      'INSERT INTO user (name, email, password, streak, cookies, emailv) VALUES (?, ?, ?, 0, 1, 0)',
+      [username, email, hashedPassword]
+    );
+    const insertId = result[0].insertId; // ID of the new user
 
-    /** War die Registrierung erfolgreich, so wird ein JWT erstellt */
+    // If registration was successful, create a JWT and set it as a cookie.
     if (insertId) {
+
+      // JWT payload containing user id and username.
       const payload: { id: number; username: string } = {
         id: insertId,
         username
       };
 
-      /** Erstellen eines JWTs */
+      // Create JWT token
       const token = createJWT(payload);
 
-      /** Re-Set eines Tokens */
-      if(cookies.get('authToken')) {
+      // Remove existing authToken cookie if present
+      if (cookies.get('authToken')) {
         cookies.delete('authToken', { path: '/' });
       }
 
+      // Set new authToken cookie
       cookies.set('authToken', token, {
         httpOnly: true,
         secure: true,
         path: '/',
-        maxAge: 60 * 60 * 8, // 8 Stunden Gültigkeiten für einen JWT
+        maxAge: 60 * 60 * 8, // 8 hours validity
       });
 
-      /** Senden der Registrierungsemail */
+      // Send registration confirmation email
       await sendRegistrationMail(email, username, insertId);
 
       if (result[0].affectedRows === 1) {
@@ -77,6 +98,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
       }
     }
   } catch (error) {
+    // Handle unexpected server errors
     return json({ message: 'Serverfehler' }, { status: 500 });
   }
 };

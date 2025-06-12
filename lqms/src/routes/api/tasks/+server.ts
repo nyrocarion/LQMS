@@ -3,33 +3,41 @@ import { db } from '$lib/server/database';
 import { verifyJWT } from '$lib/server/jwt';
 import { json, type RequestHandler } from '@sveltejs/kit';
 
+/**
+ * GET handler for fetching grouped course tasks for the authenticated user.
+ * 
+ * @param {Object} context - The request context object.
+ * @param {Request} context.request - The incoming HTTP request.
+ * @returns {Response} JSON response containing grouped course data or error.
+ */
 export const GET: RequestHandler = async ({ request  }) => {
 
-  /** Laden des authTokens */
+  // Load the authToken from cookies
   const cookieHeader = request.headers.get('cookie');
   const cookies = parse(cookieHeader || '');
   const token = cookies.authToken;
 
   let payload;
 
-  /** Verrifizieren des Tokens */
+  // Verify the JWT token
   try {
     payload = verifyJWT(token);
   } catch (err) {
-    return new Response(JSON.stringify({ error: 'Token ungültig' }), { status: 403 });
+    return new Response(JSON.stringify({ error: 'Token invalid' }), { status: 403 });
   }
 
-  /** Laden der User-ID */
+  // Extract user ID from token payload
   const userId = payload.id;
 
-  /** Modellierung eines Kurses */
+  // Query courses for the user
   const [courses] = await db.query(
-  `SELECT id, module, displayname, status, date, presentationstatus, scriptstatus, notesstatus, exercisestatus, exercisesheet
-   FROM course
-   WHERE userid = ?`,
-  [userId]
+    `SELECT id, module, displayname, status, date, presentationstatus, scriptstatus, notesstatus, exercisestatus, exercisesheet
+     FROM course
+     WHERE userid = ?`,
+    [userId]
   );
   
+  // Group courses by module and date
   const grouped = {};
 
   for (const course of courses) {
@@ -37,6 +45,7 @@ export const GET: RequestHandler = async ({ request  }) => {
       grouped[course.module] = {};
     }
 
+    // Format date as YYYY-MM-DD
     const formatter = new Intl.DateTimeFormat('sv-SE', {
       timeZone: 'Europe/Stockholm',
       year: 'numeric',
@@ -62,19 +71,29 @@ export const GET: RequestHandler = async ({ request  }) => {
     });
   }
 
-return json(grouped);
+  return json(grouped);
 };
 
+/**
+ * PUT handler for updating a specific status field of a course.
+ * 
+ * @param {Object} context - The request context object.
+ * @param {Request} context.request - The incoming HTTP request.
+ * @returns {Response} JSON response indicating success or error.
+ */
 export const PUT: RequestHandler = async ({ request }) => {
   try {
+    // Parse request body for update parameters
     const { id, field, newStatus } = await request.json();
 
+    // Only allow specific fields to be updated
     const allowed = ['status','presentationstatus','scriptstatus','notesstatus','exercisestatus'];
     if (!allowed.includes(field)) {
-      console.warn(`Illegal field update attempt: ${field}`);
-      return new Response('Invalid field', { status: 400 });
+      console.warn(`Ungültiges Feld-Update: ${field}`);
+      return new Response('Ungültiges Feld', { status: 400 });
     }
 
+    // Update the specified field in the database
     await db.query(
       `UPDATE course SET ${field} = ? WHERE id = ?`,
       [newStatus, id]
@@ -83,7 +102,7 @@ export const PUT: RequestHandler = async ({ request }) => {
     return json({ success: true });
 
   } catch (err) {
-    console.error('Fehler im PUT-Handler:', err);
-    return new Response('Server error', { status: 500 });
+    console.error('Fehler im Put-Handler:', err);
+    return new Response('Serverfehler:', { status: 500 });
   }
 };

@@ -1,9 +1,11 @@
-import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { verifyJWT } from '$lib/server/jwt';
 import { db } from '$lib/server/database';
 
-
+/**
+ * Fetches a historical fact for today's date from the NumbersAPI via RapidAPI.
+ * @returns {Promise<string>} The fact text or an error message.
+ */
 async function fetchDateFact() {
   var today = new Date();
   var day = String(today.getDate()).padStart(2, '0');
@@ -34,6 +36,11 @@ async function fetchDateFact() {
   }
 }
 
+/**
+ * Formats a time string to "HH:MM".
+ * @param {string} timeString - The time string to format.
+ * @returns {string} The formatted time.
+ */
 function formatTime(timeString: string): string {
   const [hours, minutes] = new Date(timeString)
     .toISOString()
@@ -42,12 +49,23 @@ function formatTime(timeString: string): string {
   return `${hours}:${minutes}`;
 }
 
+/**
+ * Adds a specified number of hours to a Date object.
+ * @param {Date} date - The date to modify.
+ * @param {number} hours - The number of hours to add.
+ * @returns {Date} The updated date.
+ */
 function addHours(date, hours) {
   const hoursToAdd = hours * 60 * 60 * 1000;
   date.setTime(date.getTime() + hoursToAdd);
   return date;
 }
 
+/**
+ * Loads today's lectures for the group MA-TINF24CS1 from the DHBW API.
+ * Adjusts times to local time (UTC+2).
+ * @returns {Promise<Array<{ name: string; startTime: string; endTime: string; room: string }>>}
+ */
 async function loadLecturesForToday(): Promise<
   { name: string; startTime: string; endTime: string; room: string }[]
 > {
@@ -84,6 +102,10 @@ async function loadLecturesForToday(): Promise<
     });
 }
 
+/**
+ * Fetches a meme image URL from the Imgflip API using provided credentials.
+ * @returns {Promise<string | undefined>} The meme image URL or undefined on error.
+ */
 async function getMeme() {
   try {
     const user = process.env.IMGFLIP_USER;
@@ -114,29 +136,32 @@ async function getMeme() {
   };
 };
 
-
-// nur eine load Funktion erlaubt pro Datei :(
+/**
+ * The main load function for the dashboard page.
+ * Loads user data, a random tip, daily fact, meme, lectures, and activity statistics.
+ * @param {Object} param0 - The context object containing cookies.
+ * @returns {Promise<Object>} The data to be used in the dashboard page.
+ */
 export const load: PageServerLoad = async ({ cookies }) => {
-  // User Kram
+  
+  // User authentication
   const token = cookies.get('authToken');
   const user = token && verifyJWT(token);
 
-  // get tip from db
-  // random value between 0 and 1, transform it so we get range(1,11)
+  // Get a random tip from the database (IDs 1-11)
   const id = Math.floor(Math.random() * 11) + 1;
   const result = await db.query('SELECT `tipps` FROM `content` WHERE `id` = ?', [id]);
-  // Gibt eine Ausgabe egal welcher Fall auftritt
+  // Always returns a value, fallback if not found
   const tip = (result[0] && result[0][0]?.tipps) ?? 'Kein Tipp gefunden';
 
   const userId = user.id;
 
-  // get profile data from db
-  // get profile name and email
+  // Get profile data (name and email) from the database
   const profileRes = await db.query('SELECT `name`,`email` FROM `user` WHERE `id` = ?', [userId]);
   const profileName = profileRes[0][0]?.name;
   const profileMail = profileRes[0][0]?.email;
 
-  // get activity data from db
+  // Get activity data (learning sessions) from the database for the last 5 days
   const rawData = await db.query(`
     SELECT 
       DATE(date + INTERVAL 2 HOUR) as session_date,
@@ -147,10 +172,10 @@ export const load: PageServerLoad = async ({ cookies }) => {
     GROUP BY session_date
     ORDER BY session_date
   `, [userId]);
-  // generated a list of the last 5 days for the legend
+  // List of the last 5 days for the chart legend
   const rows = rawData[0];
 
-  // local time berlin
+  // Generate date labels for the last 5 days (format: 'YYYY-MM-DD')
   const today = new Date();
   const labels = [];
   for (let i = 4; i >= 0; i--) {
@@ -159,26 +184,26 @@ export const load: PageServerLoad = async ({ cookies }) => {
     labels.push(d.toLocaleDateString('sv-SE'));  // 'YYYY-MM-DD'
   }
 
-  // Map from session_date (String 'YYYY-MM-DD') to total_duration (sec)
+  // Map from session_date (string 'YYYY-MM-DD') to total_duration (seconds)
   const map = Object.fromEntries(
     rows.map(d => [
-      new Date(d.session_date).toLocaleDateString('sv-SE'), // <- korrekt formatiert!
+      new Date(d.session_date).toLocaleDateString('sv-SE'),
       Number(d.total_duration)
     ])
   );
 
-  // time in min (rounded up)
+  // Convert durations to minutes (rounded up, 0 if less than 1 minute)
   const durations = labels.map(date => {
     const seconds = map[date] || 0;
     return seconds < 60 ? 0 : Math.ceil(seconds / 60);
   });
 
-  // loaded from external api
+  // Load external API data
   const dailyfact =  await fetchDateFact();
   const dailymeme =  await getMeme();
   const lectures =  await loadLecturesForToday();
 
-  // Zusammen zurückgeben (wird in dashboard geladen)
+  // Return all data for the dashboard page
   return {
     user,
     tip,

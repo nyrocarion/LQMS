@@ -1,16 +1,21 @@
-import { db } from '../server/database';
-import { actions } from '../../../src/routes/lqms/lukas/+page.server';
+import { db } from '$lib/server/database';
+import { actions } from '../../../src/routes/lqms/dashboard/sessions/+page.server';
 
 jest.mock('$lib/server/database');
 
-describe('Session-Speicherung', () => {
+/**
+ * Test suite for session data saving functionality.
+ */
+describe('Session Speicherung', () => {
   let request;
   let cookies;
 
   beforeEach(() => {
+    // Mock console methods to suppress output during tests
     jest.spyOn(console, 'error').mockImplementation(() => {});
     jest.spyOn(console, 'log').mockImplementation(() => {});
 
+    // Mock request object with formData method returning test data
     request = {
       formData: jest.fn().mockResolvedValue(new Map([
         ['efficiency', '5'],
@@ -19,6 +24,7 @@ describe('Session-Speicherung', () => {
       ]))
     };
 
+    // Mock cookies object with get method returning a dummy token
     cookies = {
       get: jest.fn().mockReturnValue('dummy.token')
     };
@@ -36,6 +42,16 @@ describe('Session-Speicherung', () => {
     }
   });
 
+  /**
+   * Test: Should succeed and return success message if data is saved successfully.
+   * 
+   * Params:
+   *   - request: mocked request object
+   *   - cookies: mocked cookies object
+   * 
+   * Expects:
+   *   - Response object with success message 'Feedback gespeichert!'
+   */
   it('Erwartet: Erfolg - Erfolgreiche Datenspeicherung', async () => {
     db.query.mockResolvedValue({});
 

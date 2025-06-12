@@ -69,9 +69,9 @@
       </h2>
         <form method="POST">
           <div class="form-group">
-            <!-- Efficincy Slider -->
+            <!-- Efficiency Slider -->
             <label for="efficiency-slider">
-              Deine Produktivität: <span class="value-display">{efficiency}</span>
+              Your Productivity: <span class="value-display">{efficiency}</span>
             </label>
             <!-- Input efficiency-->
             <input
@@ -83,7 +83,7 @@
               bind:value={efficiency}
               class="slider"
             />
-            <!-- Hidden Handover of Sessionlength for Database saving -->
+            <!-- Hidden handover of session length for database saving -->
             <input
               type="hidden"
               name="totalseconds"
@@ -293,37 +293,56 @@
 </style>
 
 <script lang="ts">
-let totalSeconds = 0;
-let clock = 0;
-let isRunning = false;
-let isSession = false;
 
-// Time Calculation
+// Total seconds elapsed in the session.
+let totalSeconds = 0;
+// Reference to the timer interval.
+let clock = 0;
+// Indicates if the timer is currently running.
+let isRunning = false;
+// Indicates if a session is active.
+let isSession = false;
+// Time Calculation - Hours part of the timer.
+
 $: hours = Math.floor(totalSeconds / 3600);
+// Minutes part of the timer.
 $: minutes = Math.floor(totalSeconds / 60) % 3600;
+// Seconds part of the timer.
 $: seconds = totalSeconds % 60;
 
-// Starts the Session
+/**
+ * Starts a new session and timer.
+ * Resets totalSeconds, sets session and running state, and starts the interval.
+ */
 function session_start(){
     totalSeconds = 0;
-    isSession = true
+    isSession = true;
     isRunning = true;
     clock = setInterval(() => {totalSeconds +=1}, 1000);
 }
 
-// Resumes the Session
+/**
+ * Resumes the timer for the current session.
+ * Sets running state and starts the interval.
+ */
 function session_resume(){
     isRunning = true;
     clock = setInterval(() => {totalSeconds +=1}, 1000);
 }
 
-// Pauses the Session
+/**
+ * Pauses the timer for the current session.
+ * Clears the interval and sets running state to false.
+ */
 function session_pause(){
   isRunning = false;
   clearInterval(clock);
 }
 
-// Stops the Session
+/**
+ * Ends the current session.
+ * Stops the timer, opens the feedback popup, and resets session state.
+ */
 function session_end(){
   isRunning = false;
   clearInterval(clock);
@@ -331,21 +350,28 @@ function session_end(){
   isSession = false;
 }
 
-// Start/Pause Toogle Function
+/**
+ * Toggles the timer between running and paused states.
+ * Starts a new session if none is active.
+ */
 function toggle_timer() {
   if (isRunning) {
     session_pause();
   } else{
     if(isSession == false) {
-      session_start()
+      session_start();
     } else {
       session_resume();
     }
   }
 }
 
-// Padding for Timer number, so that they are always double digit
-function number_padding(value){
+/**
+ * Pads a number with a leading zero if less than 10.
+ * @param value - The number to pad.
+ * @returns The padded string.
+ */
+function number_padding(value: number): string {
   if (value < 10){
     return `0${value}`;
   }
@@ -353,27 +379,31 @@ function number_padding(value){
 }
 	
 // Session Feedback Popup Logic
-let showFeedbackPopup: boolean = false;
-let efficiency: number = 5; //Default Values
-let motivation: number = 5; //Default Values
 
-// Opens the Feedback Popup
+// Controls visibility of the feedback popup.
+let showFeedbackPopup: boolean = false;
+// User's self-reported efficiency (0-10).
+let efficiency: number = 5; // Default value
+// User's self-reported motivation/mood (0-10).
+let motivation: number = 5; // Default value
+
+/**
+ * Opens the feedback popup and resets values to defaults.
+ */
 function openFeedbackPopup(): void {
-  // When opening a new Popup, the values get reset to the original value
   efficiency = 5;
   motivation = 5;
   showFeedbackPopup = true;
 }
 
-// Closes the Feedback Popup
-function closeFeedbackPopup(): void {
-  showFeedbackPopup = false;
-}
-
-// Showcases Emoji based on Value
+/**
+ * Returns an emoji representing the user's motivation/mood.
+ * @param value - The motivation value (0-10).
+ * @returns Emoji string.
+ */
 const getmotivationEmoji = (value: number): string => {
-  if (value <= 3) return '🙁'; // Traurig
+  if (value <= 3) return '🙁'; // Sad
   if (value <= 7) return '😐'; // Neutral
-  return '🙂'; // Fröhlich
+  return '🙂'; // Happy
 };
 </script>

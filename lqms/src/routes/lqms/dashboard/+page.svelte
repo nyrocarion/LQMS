@@ -1,10 +1,11 @@
-<!--Daten aus dem Typscript Programm holen-->
 <script lang="ts">
 	import type { PageData } from './$types';
   import { onMount } from 'svelte';
   import Chart from 'chart.js/auto';
   import { goto } from '$app/navigation';
-  // data that is created on server side
+
+  // --- Data Initialization ---
+  // Data provided from the server-side load function
 	export let data: PageData;
 	const { user, tip, dailyfact, dailymeme, lectures, labels, durations, profileName, profileMail } = data;
   let heatmapData = [];
@@ -13,11 +14,15 @@
   let streak = 0;
   let canvasEl;
   let pendingItems = []
-  // executed when page is loaded
+
+  // --- onMount: Fetch and Prepare Data, Render Chart ---
+  // Runs when the component is mounted. Fetches tasks, heatmap, streak, and initializes the chart.
   onMount(async () => {
+    // Set meme image
     const memeElement = document.getElementById("meme") as HTMLImageElement;
     memeElement.src = dailymeme;
 
+    // Fetch tasks and filter for pending items
     const taskRes = await fetch("/api/tasks", {credentials: "include"});
     rawTasks = await taskRes.json();
 
@@ -39,100 +44,113 @@
 
     pendingItems = tasksToDo;
 
+    // Fetch heatmap data and generate calendar structure
     const heatmapRes = await fetch("/api/heatmap", {credentials: "include"});
     heatmapData = await heatmapRes.json();
     heatmapCalendar = generateCalendarData(heatmapData);
 
+    // Fetch streak data
     const streakRes = await fetch("/api/streak", {credentials: "include"});
     const streakData = await streakRes.json();
     streak = streakData.streak;
 
-    /** all the stuff for the diagram generation*/
+    // --- Chart.js: Render Bar Chart for Session Durations ---
     new Chart(canvasEl, {
-    type: 'bar',
-    data: {
-      labels, // 
-      datasets: [{
-        label: 'Lernzeit in Minuten',
-        data: durations, 
-        backgroundColor: 'rgba(71, 148, 150, 1)',
-        borderColor: 'rgba(54, 162, 235, 1)',
-        borderWidth: 1,
-        borderRadius: 6
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        title: {
-          display: true,
-          text: 'Lernzeit der letzten 5 Tage'
-        },
-        tooltip: {
-          callbacks: {
-            label: context => `${context.parsed.y} Minuten`
-          }
-        },
-        legend: {
-          display: true
-        }
+      type: 'bar',
+      data: {
+        labels, // Dates for the last 5 days
+        datasets: [{
+          label: 'Lernzeit in Minuten',
+          data: durations, 
+          backgroundColor: 'rgba(71, 148, 150, 1)',
+          borderColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 1,
+          borderRadius: 6
+        }]
       },
-      scales: {
-        y: {
-          beginAtZero: true,
-          ticks: {
-            stepSize: 1,
-            callback: value => Number.isInteger(value) ? value : ''
-          },
+      options: {
+        responsive: true,
+        plugins: {
           title: {
             display: true,
-            text: 'Minuten'
+            text: 'Lernzeit der letzten 5 Tage'
+          },
+          tooltip: {
+            callbacks: {
+              label: context => `${context.parsed.y} Minuten`
+            }
+          },
+          legend: {
+            display: true
           }
         },
-        x: {
-          title: {
-            display: true,
-            text: 'Datum'
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              stepSize: 1,
+              callback: value => Number.isInteger(value) ? value : ''
+            },
+            title: {
+              display: true,
+              text: 'Minuten'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Datum'
+            }
           }
         }
       }
-    }
-  });
+    });
   });
 
-  /** Copied from check up tab */
-    /** Selektion der Farbe der Heatmap zu je einem Tag */
+  // --- Heatmap Color Selection ---
+  /**
+   * Returns the color for a heatmap cell based on the activity count.
+   * @param count Number of sessions for the day
+   */
   function getHeatmapColor(count) {
-    if (count === -1) return '#dedede';  // zukünftiger Tag
-    if (count === 0) return '#bababa';   // keine Aktivität
+    if (count === -1) return '#dedede';  // future day
+    if (count === 0) return '#bababa';   // no activity
     if (count === 1) return '#66e85a';
     if (count === 2) return '#33de23';
     if (count >= 3) return '#18ba09';
   }
 
-  /** Formatieren des Datums */
+  // --- Date Formatting ---
+  /**
+   * Formats a date string as "day.month".
+   * @param date Date string
+   */
   function formatDate(date: string) {
     const d = new Date(date);
     return `${d.getDate()}.${d.getMonth() + 1}`;
   }
 
-  /** Konstruieren der Kalenderdaten */
+  // --- Heatmap Calendar Data Generation ---
+  /**
+   * Generates a 5x7 calendar grid for the heatmap, marking today and future days.
+   * @param heatmapData Array of { date, count }
+   * @returns 2D array for 5 weeks x 7 days
+   */
   export function generateCalendarData(heatmapData: { date: string; count: number }[]) {
     const today = new Date();
-    const weekStart = 0; // 0 = Sonntag
+    const weekStart = 0; // 0 = Sunday
 
-    // Wochentag relativ zum gewünschten Wochenstart (z. B. 1 bei Mo, 0 bei So)
+    // Calculate start of current week
     const todayIndex = today.getDay();
     const daysSinceWeekStart = (todayIndex - weekStart + 7) % 7;
-
-    // Sonntag (oder anderer Wochentag) der aktuellen Woche
     const startOfCurrentWeek = new Date(today);
     startOfCurrentWeek.setDate(today.getDate() - daysSinceWeekStart);
 
-    // Startpunkt: 4 Wochen vor dem aktuellen Wochenstart
+    // Start date: 4 weeks before current week
     const startDate = new Date(startOfCurrentWeek);
     startDate.setDate(startOfCurrentWeek.getDate() - 7 * 4);
 
+    // Map date strings to activity counts
     const dataMap = new Map<string, number>();
     for (const d of heatmapData) {
       dataMap.set(d.date, d.count);
@@ -145,8 +163,10 @@
       isFuture: boolean;
     }[][] = [];
 
+    // Move today to yesterday for marking
     today.setDate(today.getDate() - 1)
 
+    // Build 5 weeks x 7 days grid
     for (let week = 0; week < 5; week++) {
       const weekData = [];
       for (let day = 0; day < 7; day++) {
@@ -157,7 +177,6 @@
         const count = dataMap.get(iso) ?? 0;
 
         const isToday = iso === today.toISOString().split("T")[0];
-        
         const isFuture = currentDate > today;
 
         weekData.push({
@@ -174,26 +193,36 @@
     return calendarData;
   }
 
-  /** Reihenfolge der Wochentage */
+  // --- Weekday Labels for Heatmap ---
+  // Array of weekday abbreviations (Monday to Sunday)
   const weekdays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
 
-  /** Hinzufügen eines Tages zu einem Datum */
+  // --- Utility: Add Days to Date ---
+  /**
+   * Returns a new Date object with a given number of days added.
+   * @param date Date object
+   * @param days Number of days to add
+   */
   const addDays = (date, days) => {
     const result = new Date(date);
     result.setDate(result.getDate() + days);
     return result;
   };
 
-  // Function that is used by logout button
-  function logout() {
-    // redirect to landing page
+  // --- Logout Function ---
+  /**
+   * Logs out the user and redirects to the home page.
+   */
+  async function logout() {
+    await fetch('/api/logout', { method: 'POST' });
     goto('/');
-    // remove cookie
-    // TODO: use API to logout
   }
 </script>
 
 <svelte:head>
+  <!--
+    CSS styles for dashboard layout, panels, heatmap, and other UI elements.
+  -->
   <style>
     :root {
       --col-gap: 1rem;
@@ -352,8 +381,12 @@
   </style>
 </svelte:head>
 
+<!--
+  Main dashboard layout: navigation, three columns (left, middle, right)
+-->
 <div style="width:100%" class="parent app-container">
   <center>
+    <!-- Navigation Bar -->
     <header class="nav">
       <ul>
         <li id="sessions"><a href="./dashboard/sessions/">Sessions</a></li>
@@ -363,9 +396,9 @@
       </ul>
     </header>
     <div class="dashboard">
-      <!-- L -->
+      <!-- Left Column: Tip, Chart, Heatmap -->
       <div class="column">
-          <!-- Tip -->
+          <!-- Daily Learning Tip Panel -->
           <div class="panel medium beige_bg">
               <h2>Dein täglicher Lerntipp</h2>
               <div>{tip}</div>
@@ -380,13 +413,13 @@
             <div class="div3">
               <h2>Deine Aktivitäten (35 Tage)</h2>
               <div class="heatmap-wrapper">
+                <!-- Weekday Labels -->
                 <div class="heatmap-header">
                   {#each weekdays as label}
                     <div class="weekday-label">{label}</div>
                   {/each}
                 </div>
-
-                <!-- Grid für 5 Wochen x 7 Tage -->
+                <!-- 5x7 Heatmap Grid -->
                 <div class="heatmap-grid">
                   {#each heatmapCalendar as week}
                     <div class="week-row">
@@ -405,14 +438,14 @@
           </div>
       </div>
 
-      <!-- M -->
+      <!-- Middle Column: Daily Fact, Today's Lectures -->
       <div class="column">
-          <!-- Daily Fact -->
+          <!-- Daily Fact Panel -->
           <div class="panel beige_bg">
               <h2 >Ein Fakt über den heutigen Tag</h2><br>
               <span>{dailyfact}</span>
           </div>
-          <!-- VL -->
+          <!-- Today's Lectures Panel -->
           <div class="panel beige_bg lecture-container">
             <h2>Deine heutigen Vorlesungen</h2>
             {#if lectures.length === 0}
@@ -429,9 +462,9 @@
           </div>
       </div>
 
-      <!-- R -->
+      <!-- Right Column: Profile, Meme, To-Do List -->
       <div class="column">
-          <!-- Profile -->
+          <!-- Profile Panel -->
           <div class="panel tall beige_bg">
             <div style="display: flex; align-items: flex-start;">
               <img src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png"
@@ -445,12 +478,12 @@
               </div>
             </div>
           </div>
-          <!-- Meme -->
+          <!-- Meme Panel -->
           <div class="panel tall beige_bg">
             <h2>Etwas zum Lachen</h2>
             <img style="width:300px;" id="meme" src="" alt="Meme"/>
           </div>
-          <!-- ToDos -->
+          <!-- To-Do List Panel -->
           <div style="flex: 1" class="panel tall beige_bg">
             <div class="div1">
             <h2>To-Do Übersicht</h2>

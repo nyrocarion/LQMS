@@ -2,14 +2,23 @@
   import { onMount } from "svelte";
   import { slide } from 'svelte/transition';
 
+  // List of all tasks fetched from the API
   let tasks = [];
+  // Raw heatmap data from the API
   let heatmapData = [];
+  // Processed heatmap data for calendar display
   let heatmapCalendar = [];
+  // Tasks grouped by module and date
   let tasksByModule = {};
+  // Tracks which modules/dates are expanded in the UI
   let expanded = {};
+  // Current activity streak (days in a row)
   let streak = 0;
 
-  /** Vorladen der Daten aus API-Endpunkten */
+  /**
+   * Loads data from API endpoints on component mount.
+   * Fetches tasks, heatmap data, and streak.
+   */
   onMount(async () => {
     const taskRes = await fetch("/api/tasks", {credentials: "include"});
     tasks = await taskRes.json();
@@ -25,35 +34,47 @@
     streak = streakData.streak;
   });
 
-  /** Selektion der Farbe der Heatmap zu je einem Tag */
+  /**
+   * Returns the color for a heatmap cell based on activity count.
+   * @param {number} count - Number of activities for the day.
+   * @returns {string} - Hex color code.
+   */
   function getHeatmapColor(count) {
-    if (count === -1) return '#dedede';  // zukünftiger Tag
-    if (count === 0) return '#bababa';   // keine Aktivität
+    if (count === -1) return '#dedede';  // future day
+    if (count === 0) return '#bababa';   // no activity
     if (count === 1) return '#66e85a';
     if (count === 2) return '#33de23';
     if (count >= 3) return '#18ba09';
   }
 
-  /** Formatieren des Datums */
+  /**
+   * Formats a date string as "D.M".
+   * @param {string} date - ISO date string.
+   * @returns {string} - Formatted date.
+   */
   function formatDate(date: string) {
     const d = new Date(date);
     return `${d.getDate()}.${d.getMonth() + 1}`;
   }
 
-  /** Konstruieren der Kalenderdaten */
+  /**
+   * Generates a 5-week calendar grid for the heatmap.
+   * @param {Array<{date: string, count: number}>} heatmapData - Array of activity data.
+   * @returns {Array<Array<{date: Date, count: number, isToday: boolean, isFuture: boolean}>>}
+   */
   export function generateCalendarData(heatmapData: { date: string; count: number }[]) {
     const today = new Date();
     const weekStart = 0; // 0 = Sonntag
 
-    // Wochentag relativ zum gewünschten Wochenstart (z. B. 1 bei Mo, 0 bei So)
+    // Weekday relative to weekstart (e.g. 1 - Mo, 0 - So)
     const todayIndex = today.getDay();
     const daysSinceWeekStart = (todayIndex - weekStart + 7) % 7;
 
-    // Sonntag (oder anderer Wochentag) der aktuellen Woche
+    // Sunday or current weekday
     const startOfCurrentWeek = new Date(today);
     startOfCurrentWeek.setDate(today.getDate() - daysSinceWeekStart);
 
-    // Startpunkt: 4 Wochen vor dem aktuellen Wochenstart
+    // Beginning: 4 weeks before the current weekstart
     const startDate = new Date(startOfCurrentWeek);
     startDate.setDate(startOfCurrentWeek.getDate() - 7 * 4);
 
@@ -98,10 +119,14 @@
     return calendarData;
   }
 
-  /** Reihenfolge der Wochentage */
+  // Order of weekdays for the heatmap header
   const weekdays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
 
-  /** Holen des Status je Modul */
+  /**
+   * Returns the status text for a module.
+   * @param {number} status - Status code (0, 1, 2).
+   * @returns {string} - Status as string.
+   */
   function getStatusTextModul(status: number): string {
     switch (status) {
       case 0: return 'Wartend';
@@ -111,7 +136,11 @@
     }
   }
 
-  /** Holen des Status je Aufgabe */
+  /**
+   * Returns the status text for a task.
+   * @param {number} status - Status code (0, 1).
+   * @returns {string} - Status as string.
+   */
   function getStatusText(status: number): string {
     switch (status) {
       case 0: return 'Wartend';
@@ -120,13 +149,23 @@
     }
   }
 
-  /** Ein- und Ausklappen der Module */
+  /**
+   * Toggles the expanded/collapsed state for a module and date.
+   * @param {string} modul - Module name.
+   * @param {string} date - Date string.
+   */
   function toggle(modul: string, date: string) {
     const key = modul + '_' + date;
     expanded = { ...expanded, [key]: !expanded[key]};
   }
 
-  /** Update des Status nach Interaktion */
+  /**
+   * Updates the status of a task and its parent module.
+   * Sends a PUT request to the API and updates local state.
+   * @param {number} id - Task ID.
+   * @param {string} field - Field to update.
+   * @param {number} newStatus - New status value.
+   */
   async function updateStatus(id: number, field: string, newStatus: number) {
     const res = await fetch('/api/tasks', {
       method: 'PUT',
@@ -189,7 +228,12 @@
     }
   }
 
-  /** Hinzufügen eines Tages zu einem Datum */
+  /**
+   * Adds a number of days to a date.
+   * @param {Date} date - The base date.
+   * @param {number} days - Number of days to add.
+   * @returns {Date} - New date.
+   */
   const addDays = (date, days) => {
     const result = new Date(date);
     result.setDate(result.getDate() + days);

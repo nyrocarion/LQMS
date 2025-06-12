@@ -4,49 +4,64 @@ import bcrypt from 'bcrypt';
 import { z } from 'zod';
 import { createJWT } from '$lib/server/jwt';
 
-/** Ein Schema zur Sicherstellung der benötigten Daten beim Login */
+/**
+ * Schema to ensure required data for login.
+ * The identifier can be either username or email.
+ */
 const loginSchema = z.object({
-  identifier: z.string().min(2), // Kann Benutzername oder E-Mail sein
+  identifier: z.string().min(2), // Can be username or email
   password: z.string().min(10),
 });
 
-/** Hier erfolgt der eigentliche Login: */
+/**
+ * Handles POST requests for user login.
+ * - Validates input data.
+ * - Checks if user exists by username or email.
+ * - Verifies password.
+ * - Issues JWT and sets it as an HTTP-only cookie.
+ * - Returns user info on success.
+ * 
+ * @param request - The incoming request object.
+ * @param cookies - The cookies object for setting/deleting cookies.
+ * @returns JSON response with status and user info or error message.
+ */
 export const POST: RequestHandler = async ({ request, cookies }) => {
   try {
+    // Parse request body as JSON
     const body = await request.json();
 
-    /** Check für die Einhaltung des Schemas */
+    // Validate input against schema
     const validationResult = loginSchema.safeParse(body);
     if (!validationResult.success) {
-      return json({ message: 'Ungültige Anmeldedaten', errors: validationResult.error.issues }, { status: 400 });
+      return json({ message: 'Ungültige Anmeldedaten!', errors: validationResult.error.issues }, { status: 400 });
     }
 
     const { identifier, password } = validationResult.data;
 
-    /** Prüfung für bereits vorhandenen Benutzername -> Existiert Benutzer bereits? */
+    // Check if user exists by username
     const userResultByUsername = await db.query('SELECT * FROM user WHERE name = ?', [identifier]);
     const userByUsername = userResultByUsername[0][0];
 
-    /** Prüfung für bereits vorhandene Email -> Existiert Benutzer bereits? */
+    // Check if user exists by email
     const userResultByEmail = await db.query('SELECT * FROM user WHERE email = ?', [identifier]);
     const userByEmail = userResultByEmail[0][0];
 
-    /** Der Benutzer ist entweder der Name oder die Email. */
+    // User can be found by username or email
     const user = userByUsername || userByEmail;
 
-    /** Wenn die Anmeldung fehlschlägt, weil der Benutzer weder durch Email noch seinen Namen gefunden wurde. */
+    // If user not found, return error
     if (!user) {
-      return json({ message: 'Ungültige Anmeldedaten' }, { status: 401 });
+      return json({ message: 'Ungültige Anmeldedaten!' }, { status: 401 });
     }
 
-    /** Wenn der Passwortvergleich fehlschlägt. */
+    // Compare provided password with stored hash
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
-      return json({ message: 'Ungültige Anmeldedaten' }, { status: 401 });
+      return json({ message: 'Ungültige Anmeldedaten!' }, { status: 401 });
     }
 
-    /** Erfolgreiche Anmeldung: JWT erstellen und als Cookie senden. */ 
+    // Successful login: create JWT and set as cookie
     const payload: { id: number; username: string;} = {
       id: user.id,
       username: user.username,
@@ -54,7 +69,7 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
 
     const token = createJWT(payload);
   
-    /** Egal, ob Cookie gesetzt oder nicht Re-Set */
+    // Remove existing authToken cookie if present
     if(cookies.get('authToken')) {
       cookies.delete('authToken', { path: '/' });
     }
@@ -63,13 +78,14 @@ export const POST: RequestHandler = async ({ request, cookies }) => {
       httpOnly: true,
       secure: true,
       path: '/',
-      maxAge: 60 * 60 * 8, // 8 Stunden Gültigkeiten für einen JWT
+      maxAge: 60 * 60 * 8, // JWT valid for 8 hours
     });
 
     return json({ message: 'Anmeldung erfolgreich', user: { id: user.id, username: user.username, email: user.email } }, { status: 200 });
 
     /** Mögliche Fehlerbehandlung bei "verlorener" Verbindung*/
   } catch (error) {
+    // Handle server errors
     return json({ message: 'Serverfehler' }, { status: 500 });
   }
 };

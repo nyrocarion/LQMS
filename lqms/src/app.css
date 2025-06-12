@@ -1,4 +1,3 @@
-/* Schriftart für die Anwendung */
 html {
   margin: 0;
   padding: 0;
@@ -67,8 +66,8 @@ p {
 #lectures  { background-color: #ec7b6a; }
 
 #sessions, #checkup, #dashboard, #lectures {
-  padding: 15px 25px; /* Top - Right - Bottom - Left */
-  border-bottom-left-radius: 15px; /*Runde Ecken*/
+  padding: 15px 25px;
+  border-bottom-left-radius: 15px;
   border-bottom-right-radius: 15px;
   min-width: 155px;
   text-align: center;

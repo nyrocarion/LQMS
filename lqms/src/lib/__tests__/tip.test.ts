@@ -7,19 +7,28 @@ jest.mock('$lib/server/database', () => ({
 
 const fakeCookies = { get: jest.fn(() => undefined) } as any;
 
+/**
+ * Test suite for loading tips from the database.
+ */
 describe('Tip von der DB laden', () => {
-  it('liefert DB‑Wert', async () => {
+  /**
+   * Tests that the tip is returned from the database value.
+   */
+  it('Liefert DB‑Wert', async () => {
     (db.query as jest.Mock).mockResolvedValueOnce([
-      [{ tipps: 'Unga Bunga' }], // Wichtiger Part für diesen Test
-      []                         // Restliche Felder der Datenbank Antwort (später evtl relevant)
+      [{ tipps: 'Unga Bunga' }], // Important part for this test: mocked DB response
+      []                         // Remaining fields of the DB response (potentially relevant later)
     ]);
 
     const { tip } = await load({ cookies: fakeCookies } as any);
     expect(tip).toBe('Unga Bunga');
   });
 
-  it('liefert Fallback‑String', async () => {
-    (db.query as jest.Mock).mockResolvedValueOnce([[], []]); // alles ist leer Fall 
+  /**
+   * Tests that the fallback string is returned when the DB is empty.
+   */
+  it('Liefert Fallback‑String', async () => {
+    (db.query as jest.Mock).mockResolvedValueOnce([[], []]);
 
     const { tip } = await load({ cookies: fakeCookies } as any);
     expect(tip).toBe('Kein Tipp gefunden');
