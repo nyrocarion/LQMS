@@ -32,16 +32,24 @@ describe('Tip von der DB laden', () => {
    */
   it('Liefert DB‑Wert', async () => {
     (db.query as jest.Mock).mockResolvedValueOnce([
-      [{ tipps: 'Unga Bunga' }], // Important part for this test: mocked DB response
-      []                         // Remaining fields of the DB response (potentially relevant later)
+      [{ tipps: 'Unga Bunga' }] // Important part for this test: mocked DB response
     ]);
+
+    const allLectures = await db.query('SELECT * FROM lectures');
+    console.log("allLectures:", allLectures);
 
     ;(db.query as jest.Mock).mockResolvedValueOnce([[{ name: '', email: '' }]]);
     ;(db.query as jest.Mock).mockResolvedValueOnce([[]]);
 
     const { tip } = await load({ cookies: fakeCookies } as any);
-    console.log("Returned tip:", tip);
     expect(tip).toBe('Unga Bunga');
+
+    if (Array.isArray(allLectures)) {
+    const filteredLectures = allLectures.filter(/* dein Filter-Code */);
+    console.log("filteredLectures:", filteredLectures);
+  } else {
+    console.error("allLectures ist kein Array:", allLectures);
+  }
   });
 
   /**
