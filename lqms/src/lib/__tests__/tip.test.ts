@@ -9,6 +9,13 @@ jest.mock('$lib/server/jwt', () => ({
   verifyJWT: jest.fn(() => ({ id: 16 }))
 }));
 
+global.fetch = jest.fn(() =>
+  Promise.resolve({
+    ok: true,
+    json: () => Promise.resolve({ found: true, text: 'Beispiel-Fact' }),
+  })
+) as jest.Mock;
+
 const fakeCookies = { get: jest.fn(() => 'some.token') } as any;
 
 /**
