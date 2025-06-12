@@ -37,20 +37,17 @@ describe('Tip von der DB laden', () => {
     ]);
 
     const allLectures = await db.query('SELECT * FROM lectures');
-    console.log("allLectures:", allLectures);
 
-    ;(db.query as jest.Mock).mockResolvedValueOnce([[{ name: '', email: '' }]]);
-    ;(db.query as jest.Mock).mockResolvedValueOnce([[]]);
+    const tip = allLectures[0]?.[0]?.tipps;
 
-    const { tip } = await load({ cookies: fakeCookies } as any);
-    expect(tip).toBe('Unga Bunga');
+    if (tip) {
+      expect(tip).toBe('Unga Bunga');
+    } else {
+      console.error("Kein Tipp gefunden");
+    }
 
-    if (Array.isArray(allLectures)) {
-    const filteredLectures = allLectures.filter(/* dein Filter-Code */);
-    console.log("filteredLectures:", filteredLectures);
-  } else {
-    console.error("allLectures ist kein Array:", allLectures);
-  }
+    const { tip: resultTip } = await load({ cookies: fakeCookies } as any);
+    expect(resultTip).toBe('Unga Bunga');
   });
 
   /**
