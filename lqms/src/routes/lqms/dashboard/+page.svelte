@@ -101,7 +101,7 @@
   });
 
   /** Copied from check up tab */
-  /** Selektion der Farbe der Heatmap zu je einem Tag */
+    /** Selektion der Farbe der Heatmap zu je einem Tag */
   function getHeatmapColor(count) {
     if (count === -1) return '#dedede';  // zukünftiger Tag
     if (count === 0) return '#bababa';   // keine Aktivität
@@ -177,10 +177,12 @@
   /** Reihenfolge der Wochentage */
   const weekdays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
 
-  /** Holen des Status je Modul */
-  function getStatusLabel(status: number): string {
-    return ["Waiting", "Doing", "Done"][status] || "Unknown";
-  }
+  /** Hinzufügen eines Tages zu einem Datum */
+  const addDays = (date, days) => {
+    const result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  };
 
   // Function that is used by logout button
   function logout() {
@@ -363,14 +365,17 @@
     <div class="dashboard">
       <!-- L -->
       <div class="column">
+          <!-- Tip -->
           <div class="panel medium beige_bg">
               <h2>Dein täglicher Lerntipp</h2>
               <div>{tip}</div>
           </div>
+          <!-- Session Time Diagram -->
           <div class="panel medium beige_bg">
             <h2>Deine Sessions in den letzten 5 Tagen</h2>
             <canvas bind:this={canvasEl}></canvas>
           </div>
+          <!-- Heatmap -->
           <div class="panel beige_bg" style="flex:1">
             <div class="div3">
               <h2>Deine Aktivitäten (35 Tage)</h2>
@@ -402,10 +407,12 @@
 
       <!-- M -->
       <div class="column">
+          <!-- Daily Fact -->
           <div class="panel beige_bg">
               <h2 >Ein Fakt über den heutigen Tag</h2><br>
               <span>{dailyfact}</span>
           </div>
+          <!-- VL -->
           <div class="panel beige_bg lecture-container">
             <h2>Deine heutigen Vorlesungen</h2>
             {#if lectures.length === 0}
@@ -424,6 +431,7 @@
 
       <!-- R -->
       <div class="column">
+          <!-- Profile -->
           <div class="panel tall beige_bg">
             <div style="display: flex; align-items: flex-start;">
               <img src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png"
@@ -437,10 +445,12 @@
               </div>
             </div>
           </div>
+          <!-- Meme -->
           <div class="panel tall beige_bg">
             <h2>Etwas zum Lachen</h2>
             <img style="width:300px;" id="meme" src="" alt="Meme"/>
           </div>
+          <!-- ToDos -->
           <div style="flex: 1" class="panel tall beige_bg">
             <div class="div1">
             <h2>To-Do Übersicht</h2>

@@ -126,7 +126,7 @@
     expanded = { ...expanded, [key]: !expanded[key]};
   }
 
-  /** Update des Statu nach Interaktion */
+  /** Update des Status nach Interaktion */
   async function updateStatus(id: number, field: string, newStatus: number) {
     const res = await fetch('/api/tasks', {
       method: 'PUT',
