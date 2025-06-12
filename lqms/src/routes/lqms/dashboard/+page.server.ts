@@ -107,6 +107,7 @@ async function loadLecturesForToday(): Promise<
  * @returns {Promise<string | undefined>} The meme image URL or undefined on error.
  */
 async function getMeme() {
+
   try {
     const user = process.env.IMGFLIP_USER;
     const pw = process.env.IMGFLIP_PW;
@@ -127,6 +128,8 @@ async function getMeme() {
 
     if (data.success) {
       return data.data.url;
+    } else if (data.found) {
+      return data.text;
     } else {
       console.error("Meme API Error: ", data.error_message ?? JSON.stringify(data));
       return undefined;
