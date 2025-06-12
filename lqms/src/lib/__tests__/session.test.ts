@@ -2,15 +2,20 @@ import { db } from '$lib/server/database';
 import { actions } from '../../../src/routes/lqms/dashboard/sessions/+page.server';
 
 jest.mock('$lib/server/database');
+jest.mock('$lib/server/jwt', () => ({
+  verifyJWT: jest.fn(() => ({ id: 16 }))
+}));
 
 /**
  * Test suite for session data saving functionality.
  */
 describe('Session Speicherung', () => {
+
   let request;
   let cookies;
 
   beforeEach(() => {
+
     // Mock console methods to suppress output during tests
     jest.spyOn(console, 'error').mockImplementation(() => {});
     jest.spyOn(console, 'log').mockImplementation(() => {});

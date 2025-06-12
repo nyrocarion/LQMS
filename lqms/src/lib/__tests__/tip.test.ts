@@ -5,12 +5,21 @@ jest.mock('$lib/server/database', () => ({
   db: { query: jest.fn() }
 }));
 
-const fakeCookies = { get: jest.fn(() => undefined) } as any;
+jest.mock('$lib/server/jwt', () => ({
+  verifyJWT: jest.fn(() => ({ id: 16 }))
+}));
+
+const fakeCookies = { get: jest.fn(() => 'some.token') } as any;
 
 /**
  * Test suite for loading tips from the database.
  */
 describe('Tip von der DB laden', () => {
+ 
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   /**
    * Tests that the tip is returned from the database value.
    */
@@ -19,6 +28,9 @@ describe('Tip von der DB laden', () => {
       [{ tipps: 'Unga Bunga' }], // Important part for this test: mocked DB response
       []                         // Remaining fields of the DB response (potentially relevant later)
     ]);
+
+    ;(db.query as jest.Mock).mockResolvedValueOnce([[{ name: '', email: '' }]]);
+    ;(db.query as jest.Mock).mockResolvedValueOnce([[]]);
 
     const { tip } = await load({ cookies: fakeCookies } as any);
     expect(tip).toBe('Unga Bunga');
@@ -29,6 +41,9 @@ describe('Tip von der DB laden', () => {
    */
   it('Liefert Fallback‑String', async () => {
     (db.query as jest.Mock).mockResolvedValueOnce([[], []]);
+
+    ;(db.query as jest.Mock).mockResolvedValueOnce([[{ name: '', email: '' }]]);
+    ;(db.query as jest.Mock).mockResolvedValueOnce([[]]);
 
     const { tip } = await load({ cookies: fakeCookies } as any);
     expect(tip).toBe('Kein Tipp gefunden');

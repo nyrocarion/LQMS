@@ -148,6 +148,13 @@ export const load: PageServerLoad = async ({ cookies }) => {
   const token = cookies.get('authToken');
   const user = token && verifyJWT(token);
 
+  if (!user) {
+    return {
+      user: null,
+      error: 'Nicht authentifiziert',
+    };
+  }
+
   // Get a random tip from the database (IDs 1-11)
   const id = Math.floor(Math.random() * 11) + 1;
   const result = await db.query('SELECT `tipps` FROM `content` WHERE `id` = ?', [id]);
