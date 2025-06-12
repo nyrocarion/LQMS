@@ -1,5 +1,11 @@
-import { load } from '../../routes/lqms/dashboard/+page.server';
 import { db } from '$lib/server/database';
+
+global.fetch = jest.fn(() =>
+  Promise.resolve({
+    ok: true,
+    json: () => Promise.resolve({ found: true, text: 'Beispiel-Fact' }),
+  })
+) as jest.Mock;
 
 jest.mock('$lib/server/database', () => ({
   db: { query: jest.fn() }
@@ -9,12 +15,7 @@ jest.mock('$lib/server/jwt', () => ({
   verifyJWT: jest.fn(() => ({ id: 16 }))
 }));
 
-global.fetch = jest.fn(() =>
-  Promise.resolve({
-    ok: true,
-    json: () => Promise.resolve({ found: true, text: 'Beispiel-Fact' }),
-  })
-) as jest.Mock;
+import { load } from '../../routes/lqms/dashboard/+page.server';
 
 const fakeCookies = { get: jest.fn(() => 'some.token') } as any;
 
