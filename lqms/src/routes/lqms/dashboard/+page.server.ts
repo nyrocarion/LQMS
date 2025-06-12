@@ -126,13 +126,13 @@ async function getMeme() {
     const data = await response.json();
 
     if (data.success) {
-        return data.data.url;
+      return data.data.url;
     } else {
-        console.error("Meme API Error: ", data.error_message);
+      console.error('Meme API Error:', data.error?.message ?? data.error);
     }
   } 
   catch (error) {
-      console.error("Error getting the meme:", error);
+    console.error("Error getting the meme:", error);
   };
 };
 
