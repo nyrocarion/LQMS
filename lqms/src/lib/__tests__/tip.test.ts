@@ -1,4 +1,3 @@
-import { load } from '../../routes/lqms/dashboard/+page.server';
 import { db } from '$lib/server/database';
 
 jest.mock('$lib/server/database', () => ({
@@ -15,6 +14,8 @@ global.fetch = jest.fn(() =>
     json: () => Promise.resolve({ found: true, text: 'Beispiel-Fact' }),
   })
 ) as jest.Mock;
+
+import { load } from '../../routes/lqms/dashboard/+page.server';
 
 const fakeCookies = { get: jest.fn(() => 'some.token') } as any;
 
