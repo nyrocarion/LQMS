@@ -10,5 +10,6 @@ import { json } from '@sveltejs/kit';
 export function POST({ cookies }) {
   // Delete the authentication token cookie to log out the user
   cookies.delete('authToken', { path: '/' });
+  console.log("Sollte Funktioniert haben")
   return json({ success: true });
 }

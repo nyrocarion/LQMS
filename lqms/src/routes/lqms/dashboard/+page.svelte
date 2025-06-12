@@ -473,8 +473,8 @@
               <div>
                 <div style="text-align:left;font-size: 1.5em; font-weight: bold; margin-bottom: 4px;">{profileName}</div>
                 <div style="text-align:left;font-size: 0.95em; margin-bottom: 8px;">{profileMail}</div>
-                <div style="text-align:left"><button style="margin-bottom:0px" class="cta" on:click={logout}>Logout</button></div>
                 <div style="text-align:left;font-size: 2em;"><span style="font-weight: bold;">🔥{streak}</span></div>
+                <div style="text-align:left"><button style="margin-bottom:0px" class="cta" on:click={logout}>Logout</button></div>
               </div>
             </div>
           </div>
