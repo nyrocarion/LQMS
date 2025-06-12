@@ -187,6 +187,7 @@
     // redirect to landing page
     goto('/');
     // remove cookie
+    // TODO: use API to logout
   }
 </script>
 
