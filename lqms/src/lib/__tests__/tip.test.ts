@@ -1,18 +1,45 @@
 import { db } from '$lib/server/database';
 
-global.fetch = jest.fn(() =>
-  Promise.resolve({
-    ok: true,
-    json: () => Promise.resolve({ found: true, text: 'Beispiel-Fact' }),
-  })
-) as jest.Mock;
+global.fetch = jest.fn((url, options) => {
+  // Mock NumbersAPI (Fact)
+  if (typeof url === 'string' && url.includes('numbersapi')) {
+    return Promise.resolve({
+      ok: true,
+      json: () => Promise.resolve({ found: true, text: 'Beispiel-Fact' }),
+    });
+  }
+  // Mock Imgflip (Meme)
+  if (typeof url === 'string' && url.includes('imgflip')) {
+    return Promise.resolve({
+      ok: true,
+      json: () => Promise.resolve({ success: true, data: { url: 'https://meme.url' } }),
+    });
+  }
+  // Mock DHBW Lectures API
+  if (typeof url === 'string' && url.includes('dhbw.app')) {
+    return Promise.resolve({
+      ok: true,
+      json: () =>
+        Promise.resolve([
+          {
+            name: 'Testvorlesung',
+            startTime: new Date().toISOString(),
+            endTime: new Date(Date.now() + 3600000).toISOString(),
+            rooms: ['A123'],
+          },
+        ]),
+    });
+  }
+  // Default fallback
+  return Promise.resolve({ ok: true, json: () => Promise.resolve({}) });
+}) as jest.Mock;
 
 jest.mock('$lib/server/database', () => ({
-  db: { query: jest.fn() }
+  db: { query: jest.fn() },
 }));
 
 jest.mock('$lib/server/jwt', () => ({
-  verifyJWT: jest.fn(() => ({ id: 16 }))
+  verifyJWT: jest.fn(() => ({ id: 16 })),
 }));
 
 import { load } from '../../routes/lqms/dashboard/+page.server';
@@ -32,19 +59,20 @@ describe('Tip von der DB laden', () => {
    * Tests that the tip is returned from the database value.
    */
   it('Liefert DB‑Wert', async () => {
+    // Tipp
     (db.query as jest.Mock).mockResolvedValueOnce([
-      [{ tipps: 'Unga Bunga' }] // Important part for this test: mocked DB response
+      [{ tipps: 'Unga Bunga' }],
     ]);
-
-    const allLectures = await db.query('SELECT * FROM lectures');
-
-    const tip = allLectures[0]?.[0]?.tipps;
-
-    if (tip) {
-      expect(tip).toBe('Unga Bunga');
-    } else {
-      console.error("Kein Tipp gefunden");
-    }
+    // Profil
+    (db.query as jest.Mock).mockResolvedValueOnce([
+      [{ name: 'Testuser', email: 'test@example.com' }],
+    ]);
+    // Sessions
+    (db.query as jest.Mock).mockResolvedValueOnce([
+      [
+        { session_date: new Date().toISOString(), total_duration: 120 },
+      ],
+    ]);
 
     const { tip: resultTip } = await load({ cookies: fakeCookies } as any);
     expect(resultTip).toBe('Unga Bunga');
@@ -54,10 +82,11 @@ describe('Tip von der DB laden', () => {
    * Tests that the fallback string is returned when the DB is empty.
    */
   it('Liefert Fallback‑String', async () => {
-    (db.query as jest.Mock).mockResolvedValueOnce([[], []]);
-
-    ;(db.query as jest.Mock).mockResolvedValueOnce([[{ name: '', email: '' }]]);
-    ;(db.query as jest.Mock).mockResolvedValueOnce([[]]);
+    (db.query as jest.Mock).mockResolvedValueOnce([[]]);
+    (db.query as jest.Mock).mockResolvedValueOnce([
+      [{ name: '', email: '' }],
+    ]);
+    (db.query as jest.Mock).mockResolvedValueOnce([[]]);
 
     const { tip } = await load({ cookies: fakeCookies } as any);
     expect(tip).toBe('Kein Tipp gefunden');
