@@ -351,111 +351,112 @@
 
 <div style="width:100%" class="parent app-container">
   <center>
-  <header class="nav">
-    <ul>
-      <li id="sessions"><a href="./dashboard/sessions/">Sessions</a></li>
-      <li id="checkup"><a href="./dashboard/check-up">Check-Up</a></li>
-      <li id="dashboard"><a href="./dashboard/">Dashboard</a></li>
-      <li id="lectures"><a href="./dashboard/lectures/">Vorlesungen</a></li>
-    </ul>
-  </header>
-  <div class="dashboard">
-    <!-- L -->
-    <div class="column">
-        <div class="panel medium beige_bg">
-            <h2>Dein täglicher Lerntipp</h2>
-            <div>{tip}</div>
-        </div>
-        <div class="panel medium beige_bg">
-          <h2>Deine Sessions in den letzten 5 Tagen</h2>
-          <canvas bind:this={canvasEl}></canvas>
-        </div>
-        <div class="panel beige_bg" style="flex:1">
-          <div class="div3">
-            <h2>Deine Aktivitäten (35 Tage)</h2>
-            <div class="heatmap-wrapper">
-              <div class="heatmap-header">
-                {#each weekdays as label}
-                  <div class="weekday-label">{label}</div>
-                {/each}
-              </div>
-
-              <!-- Grid für 5 Wochen x 7 Tage -->
-              <div class="heatmap-grid">
-                {#each heatmapCalendar as week}
-                  <div class="week-row">
-                    {#each week as day}
-                      <div
-                        class="heatmap-day"
-                        style="background-color: {day.isFuture ? '#dedede' : getHeatmapColor(day.count)}"
-                        title={day ? `${formatDate(addDays(day.date, 1))}: ${day.count} Sessions` : ''}
-                      ></div>
-                    {/each}
-                  </div>
-                {/each}
-              </div>
+    <header class="nav">
+      <ul>
+        <li id="sessions"><a href="./dashboard/sessions/">Sessions</a></li>
+        <li id="checkup"><a href="./dashboard/check-up">Check-Up</a></li>
+        <li id="dashboard"><a href="./dashboard/">Dashboard</a></li>
+        <li id="lectures"><a href="./dashboard/lectures/">Vorlesungen</a></li>
+      </ul>
+    </header>
+    <div class="dashboard">
+      <!-- L -->
+      <div class="column">
+          <div class="panel medium beige_bg">
+              <h2>Dein täglicher Lerntipp</h2>
+              <div>{tip}</div>
           </div>
-        </div>
-    </div>
+          <div class="panel medium beige_bg">
+            <h2>Deine Sessions in den letzten 5 Tagen</h2>
+            <canvas bind:this={canvasEl}></canvas>
+          </div>
+          <div class="panel beige_bg" style="flex:1">
+            <div class="div3">
+              <h2>Deine Aktivitäten (35 Tage)</h2>
+              <div class="heatmap-wrapper">
+                <div class="heatmap-header">
+                  {#each weekdays as label}
+                    <div class="weekday-label">{label}</div>
+                  {/each}
+                </div>
 
-    <!-- M -->
-    <div class="column">
-        <div class="panel beige_bg">
-            <h2 >Ein Fakt über den heutigen Tag</h2><br>
-            <span>{dailyfact}</span>
-        </div>
-        <div class="panel beige_bg lecture-container">
-          <h2>Deine heutigen Vorlesungen</h2>
-          {#if lectures.length === 0}
-            <p>Keine Vorlesungen heute.</p>
-          {:else}
-            {#each lectures as lecture}
-              <div class="lecture-card">
-                <h3>{lecture.name}</h3>
-                <p><strong>Raum:</strong> {lecture.room}</p>
-                <p><strong>Uhrzeit:</strong> {lecture.startTime} – {lecture.endTime}</p>
-              </div>
-            {/each}
-          {/if}
-      </div>
-    </div>
-
-    <!-- R -->
-    <div class="column">
-        <div class="panel tall beige_bg">
-          <div style="display: flex; align-items: flex-start;">
-            <img src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png"
-                alt="Avatar"
-                style="width: 80px; height: 80px; border-radius: 50%; margin-right: 20px;" />
-            <div>
-              <div style="text-align:left;font-size: 1.5em; font-weight: bold; margin-bottom: 4px;">{profileName}</div>
-              <div style="text-align:left;font-size: 0.95em; margin-bottom: 8px;">{profileMail}</div>
-              <div><button class="cta" on:click={logout}>Logout</button></div>
-              <div style="text-align:left;font-size: 2em;"><span style="font-weight: bold;">🔥{streak}</span></div>
+                <!-- Grid für 5 Wochen x 7 Tage -->
+                <div class="heatmap-grid">
+                  {#each heatmapCalendar as week}
+                    <div class="week-row">
+                      {#each week as day}
+                        <div
+                          class="heatmap-day"
+                          style="background-color: {day.isFuture ? '#dedede' : getHeatmapColor(day.count)}"
+                          title={day ? `${formatDate(addDays(day.date, 1))}: ${day.count} Sessions` : ''}
+                        ></div>
+                      {/each}
+                    </div>
+                  {/each}
+                </div>
             </div>
           </div>
-        </div>
-        <div class="panel tall beige_bg">
-          <h2>Etwas zum Lachen</h2>
-          <img style="width:300px;" id="meme" src="" alt="Meme"/>
-        </div>
-        <div style="flex: 1" class="panel tall beige_bg">
-          <div class="div1">
-          <h2>To-Do Übersicht</h2>
-          <div style="display: flex; flex-direction: column; gap: 12px;">
-            {#each pendingItems as item}
-              <div style="border: 1px solid #ccc; border-radius: 10px; padding: 12px; background: #ec7b6a;">
-                <div style="font-weight: bold; font-size: 1.2em;">{item.name}</div>
-                <div>vom: {item.date}</div>
-              </div>
-            {/each}
-            {#if pendingItems.length === 0}
-              <div style="color: #666;">Alle Aufgaben sind erledigt 🎉</div>
+          </div>
+      </div>
+
+      <!-- M -->
+      <div class="column">
+          <div class="panel beige_bg">
+              <h2 >Ein Fakt über den heutigen Tag</h2><br>
+              <span>{dailyfact}</span>
+          </div>
+          <div class="panel beige_bg lecture-container">
+            <h2>Deine heutigen Vorlesungen</h2>
+            {#if lectures.length === 0}
+              <p>Keine Vorlesungen heute.</p>
+            {:else}
+              {#each lectures as lecture}
+                <div class="lecture-card">
+                  <h3>{lecture.name}</h3>
+                  <p><strong>Raum:</strong> {lecture.room}</p>
+                  <p><strong>Uhrzeit:</strong> {lecture.startTime} – {lecture.endTime}</p>
+                </div>
+              {/each}
             {/if}
           </div>
-        </div>
-        </div>
+      </div>
+
+      <!-- R -->
+      <div class="column">
+          <div class="panel tall beige_bg">
+            <div style="display: flex; align-items: flex-start;">
+              <img src="https://raw.githubusercontent.com/nyrocarion/LQMS/refs/heads/main/temp_images/temp_avatar_placeholder.png"
+                  alt="Avatar"
+                  style="width: 80px; height: 80px; border-radius: 50%; margin-right: 20px;" />
+              <div>
+                <div style="text-align:left;font-size: 1.5em; font-weight: bold; margin-bottom: 4px;">{profileName}</div>
+                <div style="text-align:left;font-size: 0.95em; margin-bottom: 8px;">{profileMail}</div>
+                <div><button class="cta" on:click={logout}>Logout</button></div>
+                <div style="text-align:left;font-size: 2em;"><span style="font-weight: bold;">🔥{streak}</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="panel tall beige_bg">
+            <h2>Etwas zum Lachen</h2>
+            <img style="width:300px;" id="meme" src="" alt="Meme"/>
+          </div>
+          <div style="flex: 1" class="panel tall beige_bg">
+            <div class="div1">
+            <h2>To-Do Übersicht</h2>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              {#each pendingItems as item}
+                <div style="border: 1px solid #ccc; border-radius: 10px; padding: 12px; background: #ec7b6a;">
+                  <div style="font-weight: bold; font-size: 1.2em;">{item.name}</div>
+                  <div>vom: {item.date}</div>
+                </div>
+              {/each}
+              {#if pendingItems.length === 0}
+                <div style="color: #666;">Alle Aufgaben sind erledigt 🎉</div>
+              {/if}
+            </div>
+          </div>
+          </div>
+      </div>
     </div>
-  </div>
-</center>
+  </center>
 </div>
