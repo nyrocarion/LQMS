@@ -3,6 +3,8 @@
 	import type { PageData } from './$types';
   import { onMount } from 'svelte';
   import Chart from 'chart.js/auto';
+  import { goto } from '$app/navigation';
+  // data that is created on server side
 	export let data: PageData;
 	const { user, tip, dailyfact, dailymeme, lectures, labels, durations, profileName, profileMail } = data;
   let heatmapData = [];
@@ -11,7 +13,7 @@
   let streak = 0;
   let canvasEl;
   let pendingItems = []
-
+  // executed when page is loaded
   onMount(async () => {
     const memeElement = document.getElementById("meme") as HTMLImageElement;
     memeElement.src = dailymeme;
@@ -155,6 +157,13 @@
   /** Holen des Status je Modul */
   function getStatusLabel(status: number): string {
     return ["Waiting", "Doing", "Done"][status] || "Unknown";
+  }
+
+  // Function that is used by logout button
+  function logout() {
+    // redirect to landing page
+    goto('/');
+    // remove cookie
   }
 </script>
 
@@ -302,6 +311,18 @@
       background-color: #dddddd;
       transition: background-color 0.3s;
     }
+
+    /*copied from landing page*/
+    .cta {
+    padding: 10px 20px;
+    background-color: #d65ba9;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-bottom: 20px;
+    }
   </style>
 </svelte:head>
 
@@ -387,8 +408,8 @@
             <div>
               <div style="text-align:left;font-size: 1.5em; font-weight: bold; margin-bottom: 4px;">{profileName}</div>
               <div style="text-align:left;font-size: 0.95em; margin-bottom: 8px;">{profileMail}</div>
-              <div style="text-align:left;font-size: 0.9em;">ID: {user.id}</div>
-              <div style="text-align:left;font-size: 2em;"><span style="font-weight: bold; color: orange;">🔥{streak}</span></div>
+              <div><button class="cta" on:click={logout}>Logout</button></div>
+              <div style="text-align:left;font-size: 2em;"><span style="font-weight: bold;">🔥{streak}</span></div>
             </div>
           </div>
         </div>
