@@ -2,7 +2,7 @@
 
 # Lern-Qualitäts-Management-System
 
-# Konventionen für Commit-Nachrichten
+## Konventionen für Commit-Nachrichten
 
 - `feat`: Ein neues Feature (Funktion)
 - `fix`: Ein Bugfix (Fehlerbehebung)
@@ -13,7 +13,7 @@
 - `test`: Hinzufügen fehlender Tests
 - `chore`: Änderungen am Build-Prozess oder an unterstützenden Tools und Bibliotheken (z. B. zur Dokumentationserstellung)
 
-# Value Proposition Canvas
+## Value Proposition Canvas
 
 ![alt text](VPC.png)
 
