@@ -2,6 +2,16 @@
 
 # Lern-Qualitäts-Management-System
 
+## Vorzeitiges EOL (German)
+
+Das Projekt im Rahmen der Web- und App-Engineering - Vorlesung im SoSe 2025 wird unter Vorbehalt zunächst als EOL markiert.
+Im Projekt selbst steckt viel Potential! Für die Weiterentwicklung bitte die Lizenz beachten :D
+
+## Premature EOL (German)
+
+The project within the framework of the Web and App Engineering lecture in the 2025 summer semester is initially marked as EOL, subject to change.
+The project itself has a lot of potential! Please note the license for further development :D
+
 ## Konventionen für Commit-Nachrichten
 
 - `feat`: Ein neues Feature (Funktion)
